@@ -1,0 +1,160 @@
+Des travaux initiaux avait été réalisé en Python par Samuel Charron. Il avait créé un plugin Python capable de récupérer des signaux taggés depuis une API. N'étant pas formé au Python, j'ai préféré commencer mes travaux en utilisant le Java. Je savais en m'orientant vers le Java, qu'une fois que l'application obtiendrait de bonnes performance, j'aurais à implémenter son fonctionnement général en Python sous forme de plugin.
+
+\section{Démarche de travail}
+    Ce projet s'inscrit parfaitement dans le type de projet R\&D. De ce fait, l'avancement est très difficile à planifier dans le temps. Surtout lorsque l'on ne connaît pas les différentes notions sous-jacentes au projet et qu'il y a une bonne part d'auto-formation avant de pouvoir développer une application.\\
+
+    \subsection{Mes acquis à l'INSA}
+        Les connaissances générales que j'avais en \textit{Data Science}, avant le début du stage, concernaient le \textit{Data Mining} en contexte \textbf{numérique} et étaient les suivantes :
+        \begin{itemize}
+            \item Concepts en analyse et normalisation de données : Analyse en Composantes Principales (ACP), centrage et réduction de données numériques ;
+            \item Concepts d'apprentissage non-supervisé : méthodes de regroupement des données (Clustering : Classification Hiérarchique Ascendante, Algorithme des K-Means, Modèles de mélanges et Algorithmes EM) ;
+            \item Base de l'optimisation : méthodes du gradient et de Newton, introduction aux outils mathématiques pour l'optimisation sous contraintes convexe ;
+            \item Concepts d'apprentissage supervisé : méthodes pour la discrimination de données (Décision Bayésienne, Régression logistique, SVM linéaire) et notions de validation croisée.\\
+        \end{itemize}
+
+\color{red}
+
+        Mes connaissances en apprentissage non-supervisé ne m'étaient pas très utiles car ce projet est de type apprentissage supervisé. Cependant, les notions d'apprentissage supervisé telles que : la démarche à suivre pour construire un classifieur, les concepts liées à la validation des performances (validation croisée) et la notion de sur-apprentissage ; m'ont été très utiles.\\
+
+        Malgré tout, mes connaissances n'étaient pas suffisamment étoffées pour pouvoir dire tel classifieur est plus performant qu'un autre dans tel contexte. En effet, mes connaissances sont axées manipulation et traitement de données en contexte \textbf{numérique}. De ce fait, la manipulation et le traitement de données textuelles m'étaient inconnus. De plus, je n'étais pas capable de choisir le meilleur classifieur que le contexte soit binaire ou multi-classes.\\
+
+        Une formation en manipulation et traitement de contenu textuel m'a donc été indispensable avant de pouvoir commencer à travailler.
+
+\color{black}
+
+        \subsection{Formation en fouille de texte et en traitement automatique du language naturel}
+            Dans ses travaux initiaux, Samuel Charron s'était intéressé au domaine du traitement automatique du langage naturel. Ainsi, il avait connaissance de l'existence de la bibliothèque de Stanford implémentée en Java (\textit{Stanford Natural Language Processing}). Il m'a donc conseillé de me former en fouille de texte et traitement automatique du language naturel au travers de celle-ci dans un premier temps. Une fois formé à ces domaines et à cette bibliothèque, je serais en mesure de construire un premier classifieur.\\
+
+            Je me suis donc plongé dedans. J'ai commencé par lire les cours de l’université de Stanford sur le sujet, accessibles librement sur Internet. En parallèle, j'ai visionné sur coursera les vidéos que cette même université avait diffusé suite à un MOOC sur le traitement automatique du language naturel. Grâce à ces cours, j'ai pris conscience de toute l'importance du travail de prétraitement nécessaire à mettre en place, afin de bien normaliser et formater les données textuelles avant d'en faire quelque chose.\\
+
+            Cette remarque prend tout son sens quand les données manipulées en plus d'être textuelles, ne sont pas normalisées (ou non structurées).\\
+
+            Pour ma formation au traitement automatique du langage naturel, j'ai également lu les livres \autocite{nlp_p}, \autocite{nltk} et \autocite{ir_book} et les pages internets \autocite{ir_web}.
+
+    \subsection{Déroulement du stage}
+        Durant les deux premiers mois, j'ai exploré cette bibliothèque ainsi que les cours associés, et construit une première application Spring répondant aux contraintes évoquées en partie \ref{sec:ma_mission_chez_data_publica} (sauf le critère du langage : Python). Le travail en ressortant est décrit en partie \ref{sec:travaux_realises_en_java}.\\
+
+        Ensuite, lors du dernier mois, j’ai implémenté le comportement général de cette application sous la forme d’un plugin Python, visible en partie \ref{}. J'ai ré-implémenté certain composants qui n'existaient pas en Python.
+
+\section{Présentation des signaux}
+    Les signaux sont des posts Facebook, des tweets ou bien des flux RSS publiés par des entreprises.
+
+    \paragraph{Hypothèses de départ :}
+        On considérera qu'un signal est intéressant si son contenu a pour sujet :
+        \begin{itemize}
+            \item Une offre d'emploi (ou un stage) à pourvoir au sein de l'entreprise qui l'a postée. Par la suite, on associera le tag \textit{JOB} à cette catégorie.
+            \item Un évènement auquel l'entreprise participe (un salon par exemple). Par la suite, on associera le tag \textit{EVENT} à cette catégorie.
+            \item Un produit que l'entreprise vient de présenter. Par la suite, on associera le tag \textit{PRODUCT} à cette catégorie.
+            \item Une nomination d'un employé dans l'entreprise ou d'une entreprise vers une autre entreprise. Par la suite, on associera le tag \textit{PEOPLE} à cette catégorie.
+            \item Une levée de fonds, un investissement, ou encore une déclaration de résultats ou de chiffre d'affaire.. Par la suite, on associera le tag \textit{MONEY} à cette catégorie.
+        \end{itemize}
+
+    \paragraph{Exemple de signal type pour chaque catégorie :}
+        \begin{itemize}
+            \item \textit{JOB} : \og Offre d'emploi: Ingénieur d'études et développement JAVA H/F (Orléans) http://t.co/LOvN8rLHIe \#jobs \fg
+            \item \textit{EVENT} : \og  Fraispertuis sera présent dès demain jusqu'à dimanche inclus au salon \og Tourrissimo \fg de Strasbourg Parc des Expositions, Hall 21 Stand B40, venez rendre visite au capt'ain Fraisp ! \fg
+            \item \textit{PRODUCT} : \og Découvrez quelques unes de nos réalisations de Pergola Biotempérée pour notre clientèle de Toulouse et sa région. Plus d'informations sur notre site www.pergola-biotemperee.com \fg
+            \item \textit{PEOPLE} : \og Matthieu Frairot a été nommé Directeur Associé au sein de l'agence FullSIX France, l'agence marketin http://t.co/Z2ENeeWZmF \fg
+            \item \textit{MONEY} : \og Keyrus : Publication des résultats annuels 2013. http://t.co/k4TPJ11fW4 \fg
+        \end{itemize}
+
+    \paragraph{État de la base de données contentant les signaux :}
+        Au 08/06/2015, seul 1426 signaux ont été validés manuellement.
+        La proportion des classes de cet échantillon est mauvaise, c'est-à-dire que les données souffrent d'un fort déséquilibre entre classes : il y a beaucoup plus de signaux inintéressants qu'intéressants. On avait donc pas assez d'exemples de signaux intéressants pour pouvoir considérer les éventuelles prédictions d'un classifieur construit sur la base de ces données comme correctes. Il est donc nécessaire d'en valider d'autres manuellement.
+
+\section{Travaux réalisés en Java}
+\label{sec:travaux_realises_en_java}
+    \subsection{Présentation de mon environnement de travail}
+        Pour pouvoir créer une application permettant de classifier les signaux, Loïc Petit m'a créé une application Spring de base permettant de se connecter en local à une base de données Mongo. Cette base de données Mongo sert à stocker un échantillon des signaux captés par C-Radar ainsi que les 1426 signaux validés.\\
+        Je me suis rapidement formé à Spring pour pouvoir interfacer l'application Spring avec la base de données Mongo.\\
+
+        Un signal capté est stocké au format JSON dans une base de données Mongo sous cette forme :
+        \begin{verbatim}
+        {
+            "id" : "TWITTER:agencenetdesign:329129810423083009",
+            "content" : "Salon eCom Genève : l'équipe ND est en place au
+                         stand E1 :) #ecomSITB http://t.co/YtsEs6rcDR",
+            "publicationDate" : ISODate("2013-04-30T07:07:16Z"),
+            "sourceId" : "TWITTER:agencenetdesign",
+            "source" : {
+                "type" : "TWITTER",
+                "resourceId" : "agencenetdesign"
+            },
+            "externalSignalId" : "329129810423083009",
+            "validated" : false,
+            "validatedTags" : [ ],
+            "tags" : [
+                "EVENT"
+            ],
+            "url" : "http://twitter.com/agencenetdesign/status/329129810423083009"
+        }
+        \end{verbatim}
+        Le signal comporte :
+        \begin{itemize}
+            \item un identifieur unique \textit{id}
+            \item un contenu \textit{content}
+            \item une date de publication \textit{publicationDate}
+            \item l'identifieur de la source \textit{sourceId}
+            \item la source \textit{source} composé :
+            \begin{itemize}
+                \item du type de réseau dont provient le signal \textit{type}
+                \item de l'identifieur du publieur dans ce réseau \textit{resourceId}
+            \end{itemize}
+            \item un identifeur externe \textit{externalSignalId}
+            \item un booléen spécifiant si le signal a été manuellement validé ou non \textit{validated}
+            \item la liste des tags s'il a été validé \textit{validatedTags}, la liste des tags potentiels (trouvés par le classifieur)
+            \item l'url là où a été publié le signal
+        \end{itemize}
+
+
+        \subsubsection{Première application Spring}
+            \paragraph{Contenu de la base Mongo et description des signaux :}
+                Ma base de données locale contient environ 350.000 signaux au format JSON car Mongo est une base de données orientées documents.\\
+            Parmi, ces signaux, 1426 signaux ont été validés manuellement avec potentiellement un tag (JOB, EVENT, PRODUCT, MONEY ou PEOPLE), dans le cas où le signal est intéressant.\\
+            Une fois, les bases de Spring et Mongo acquises, j'ai pu construire une application réalisant ces actions :
+            \begin{itemize}
+                \item Récupérer les signaux stockés dans Mongo sous forme de liste ;
+                \item Créer un ensemble de données à partir des signaux validés manuellement ;
+                \item Diviser aléatoirement cet ensemble de données en deux ensembles (un pour entraîner le classifieur et un pour le tester) tout en gardant la proportion de chaque tag dans les deux ensembles ;
+                \item la suite de la démarche...
+            \end{itemize}
+        Ainsi, j'ai construit une première application capable de récupérer les signaux sous forme de liste depuis une base Mongo en locale, de construire un ensemble de données dans lequel un signal ...blablabla
+
+        \paragraph{Le QA ou Quality Assessment :}
+            L'objectif du QA est de demander la contribution d'un maximum de personnes sur une tâche de validation manuelle pénible.\\
+            Durant mon stage j'ai organisé plusieurs QA pour approfondir l'ensemble des signaux d’apprentissage et de test.
+
+        \paragraph{Proportion de signaux intéressants :}
+            La quantité de signaux n'ayant pas d'intérêt, ici, est énorme (plus de 70\%). De ce fait, une pré-sélection des signaux à valider est nécessaire.\\
+            Ainsi, j'ai réutilisé le premier classifieur implémenté en Python, construit sur la base des 1426 signaux. Ce classifieur a permis de classifier des signaux non validés.\\
+            Ce sont ces signaux classifiés par le classifieur Python qui ont été sélectionnés pour être validés manuellement. Notamment ceux appartenant aux catégories EVENT, JOB et PRODUCT.\\
+            Pour ceux appartenant aux catégories MONEY et PEOPLE, ils ont été sélectionnés pour être validés à l'aide d'expressions rationnelles pour faire ressortir des termes tels que \og levée de fonds \fg, \og chiffre d'affaire \fg, \og nommer \fg, \og nomination \fg, etc.
+            De cette manière 2574 nouveaux signaux ont été validés manuellement.\\
+
+        Au 27.07.2015, il y avait donc 4000 signaux validés manuellement par un humain :
+        \begin{itemize}
+            \item 488 catégorisés EVENT soit 12,2\%
+            \item 258 catégorisés JOB soit 6,4\%
+            \item 118 catégorisés MONEY soit 3\%
+            \item 83 catégorisés PRODUCT soit 2,1\%
+            \item 49 catégorisés PEOPLE soit 1,3\%
+            \item 3004 validés mais considérés comme inintéressant soit 75\%
+        \end{itemize}
+
+\section{Travail de prétraitement des données} % (fold)
+\label{sec:travail_de_pretraitement}
+
+    \subsection{Présentation de la bibliothèque \textit{Stanford Natural Language Processing}}
+        La bibliothèque de Stanford propose un ensemble d'outils pour le traitement automatique du langage naturel de la langue anglaise, chinoise et espagnole.
+        Ces différents outils sont les suivants :
+        \begin{itemize}
+            \item \textit{Stanford Parser} : permet de connaître la structure grammaticale d'une phrase (sujet, verbe, complément, etc);
+            \item \textit{Stanford POS Tagger} (Part-Of-Speech) : permet de savoir la fonction grammaticale de chaque mot d'une phrase ;
+            \item \textit{Stanford Named Entity Recognizer} : permet d'identifier les groupes de mots qui sont des noms de personne, d'entreprises, de gènes, etc ;
+            \item \textit{Stanford Classifier} : permet de construire un classifieur automatique pour la catégorisation de texte ;
+            \item \textit{Stanford Deterministic Coreference Resolution System} : permet de trouver les expressions qui font référence à une même entité ;
+            \item \textit{Stanford CoreNLP} : permet de construire une suite de traitements automatiques (les traitements précédents) sur de l'anglais, du chinois, de l'espagnol
+        \end{itemize}
+
+    \subsection{Débuts avec la bibliothèque}
+        Au départ, Samuel Charron m'a simplement demandé de réutiliser cette bibliothèque afin de créer un classifieur binaire (2 classes) permettant de classer les signaux relatifs aux offres d'emploi et de stage (soit le tag \textit{JOB}).\\
