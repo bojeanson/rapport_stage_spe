@@ -1,7 +1,7 @@
-Des travaux initiaux avait été réalisé en Python par Samuel Charron. Il avait créé un plugin Python capable de récupérer des signaux taggés depuis une API. N'étant pas formé au Python, j'ai préféré commencer mes travaux en utilisant le Java. Je savais en m'orientant vers le Java, qu'une fois que l'application obtiendrait de bonnes performance, j'aurais à implémenter son fonctionnement général en Python sous forme de plugin.
+Des travaux initiaux avaient été réalisés en Python par Samuel Charron. Il avait créé un plugin Python capable de récupérer des signaux depuis une API. N'étant pas formé au Python, j'ai préféré commencer mes travaux en utilisant le Java. Je savais en m'orientant vers le Java, qu'une fois que l'application obtiendrait de bonnes performance, j'aurais à implémenter son fonctionnement général en Python sous forme de plugin.
 
 \section{Démarche de travail}
-    Ce projet s'inscrit parfaitement dans le type de projet R\&D. De ce fait, l'avancement est très difficile à planifier dans le temps. Surtout lorsque l'on ne connaît pas les différentes notions sous-jacentes au projet et qu'il y a une bonne part d'auto-formation avant de pouvoir développer une application.\\
+    Ce projet s'inscrit parfaitement dans le type de projet R\&D. De ce fait, l'avancement est très difficile à planifier dans le temps. Surtout lorsque l'on ne connaît pas les différentes notions sous-jacentes au projet et qu'il y a une bonne part d'auto-formation avant de pouvoir développer une application.
 
     \subsection{Mes acquis à l'INSA}
         Les connaissances générales que j'avais en \textit{Data Science}, avant le début du stage, concernaient le \textit{Data Mining} en contexte \textbf{numérique} et étaient les suivantes :
@@ -14,102 +14,84 @@ Des travaux initiaux avait été réalisé en Python par Samuel Charron. Il avai
 
 \color{red}
 
-        Mes connaissances en apprentissage non-supervisé ne m'étaient pas très utiles car ce projet est de type apprentissage supervisé. Cependant, les notions d'apprentissage supervisé telles que : la démarche à suivre pour construire un classifieur, les concepts liées à la validation des performances (validation croisée) et la notion de sur-apprentissage ; m'ont été très utiles.\\
+        Ce projet ne permet pas de mettre mes connaissances en apprentissage non-supervisé en avant. Cependant, mes notions d'apprentissage supervisé telles que : la démarche à suivre pour construire un classifieur, les concepts liées à la validation des performances (validation croisée) et la notion de sur-apprentissage ; ont été fort utiles.\\
 
-        Malgré tout, mes connaissances n'étaient pas suffisamment étoffées pour pouvoir dire tel classifieur est plus performant qu'un autre dans tel contexte. En effet, mes connaissances sont axées manipulation et traitement de données en contexte \textbf{numérique}. De ce fait, la manipulation et le traitement de données textuelles m'étaient inconnus. De plus, je n'étais pas capable de choisir le meilleur classifieur que le contexte soit binaire ou multi-classes.\\
+        D'une manière générale, mes connaissances en \textit{Text Mining} n'étaient pas suffisamment étoffées pour pouvoir dire tel classifieur est plus performant qu'un autre dans tel contexte (binaire ou multi-classes). En effet, ma formation (à l'INSA) est axée manipulation et traitement de données en contexte \textbf{numérique}. De ce fait, la manipulation et le traitement de données textuelles m'étaient inconnus.\\
 
-        Une formation en manipulation et traitement de contenu textuel m'a donc été indispensable avant de pouvoir commencer à travailler.
+        Une formation en \textit{Text Mining} m'a donc été indispensable avant de pouvoir commencer à travailler.
 
 \color{black}
 
-        \subsection{Formation en fouille de texte et en traitement automatique du language naturel}
-            Dans ses travaux initiaux, Samuel Charron s'était intéressé au domaine du traitement automatique du langage naturel. Ainsi, il avait connaissance de l'existence de la bibliothèque de Stanford implémentée en Java (\textit{Stanford Natural Language Processing}). Il m'a donc conseillé de me former en fouille de texte et traitement automatique du language naturel au travers de celle-ci dans un premier temps. Une fois formé à ces domaines et à cette bibliothèque, je serais en mesure de construire un premier classifieur.\\
+    \subsection{Formation en fouille de texte et en traitement automatique du language naturel}
+        Dans ses travaux initiaux, Samuel Charron s'était intéressé au domaine du traitement automatique du langage naturel. Ainsi, il avait connaissance de l'existence de la bibliothèque de Stanford implémentée en Java (\textit{Stanford Natural Language Processing}). Il m'a donc conseillé de me former en fouille de texte et traitement automatique du language naturel au travers de celle-ci dans un premier temps. Une fois formé à ces domaines et à cette bibliothèque, je serais en mesure de construire un premier classifieur.\\
 
-            Je me suis donc plongé dedans. J'ai commencé par lire les cours de l’université de Stanford sur le sujet, accessibles librement sur Internet. En parallèle, j'ai visionné sur coursera les vidéos que cette même université avait diffusé suite à un MOOC sur le traitement automatique du language naturel. Grâce à ces cours, j'ai pris conscience de toute l'importance du travail de prétraitement nécessaire à mettre en place, afin de bien normaliser et formater les données textuelles avant d'en faire quelque chose.\\
+        Je me suis donc plongé dedans. J'ai commencé par lire les cours de l’université de Stanford sur le sujet, accessibles librement sur Internet. En parallèle, j'ai visionné sur coursera les vidéos que cette même université avait diffusé suite à un MOOC sur le traitement automatique du language naturel. Grâce à ces cours, j'ai pris conscience de toute l'importance du travail de prétraitement nécessaire à mettre en place, afin de bien normaliser et formater les données textuelles avant d'en faire quelque chose.\\
 
-            Cette remarque prend tout son sens quand les données manipulées en plus d'être textuelles, ne sont pas normalisées (ou non structurées).\\
+        Cette remarque prend tout son sens quand les données manipulées en plus d'être textuelles, ne sont pas normalisées (ou pas structurées).\\
 
-            Pour ma formation au traitement automatique du langage naturel, j'ai également lu les livres \autocite{nlp_p}, \autocite{nltk} et \autocite{ir_book} et les pages internets \autocite{ir_web}.
+        Pour ma formation au traitement automatique du langage naturel, j'ai également lu les livres \textit{Naturel Language Processing with Python}\autocite{nlp_p} et \textit{Python 3 Text Processing with NLTK 3 Cookbook}\autocite{nltk} , et les pages internets \textit{Introduction to Information Retrieval}\autocite{ir_web}.
 
     \subsection{Déroulement du stage}
         Durant les deux premiers mois, j'ai exploré cette bibliothèque ainsi que les cours associés, et construit une première application Spring répondant aux contraintes évoquées en partie \ref{sec:ma_mission_chez_data_publica} (sauf le critère du langage : Python). Le travail en ressortant est décrit en partie \ref{sec:travaux_realises_en_java}.\\
 
         Ensuite, lors du dernier mois, j’ai implémenté le comportement général de cette application sous la forme d’un plugin Python, visible en partie \ref{}. J'ai ré-implémenté certain composants qui n'existaient pas en Python.
 
-\section{Présentation des signaux}
-    Les signaux sont des posts Facebook, des tweets ou bien des flux RSS publiés par des entreprises.
-
-    \paragraph{Hypothèses de départ :}
-        On considérera qu'un signal est intéressant si son contenu a pour sujet :
-        \begin{itemize}
-            \item Une offre d'emploi (ou un stage) à pourvoir au sein de l'entreprise qui l'a postée. Par la suite, on associera le tag \textit{JOB} à cette catégorie.
-            \item Un évènement auquel l'entreprise participe (un salon par exemple). Par la suite, on associera le tag \textit{EVENT} à cette catégorie.
-            \item Un produit que l'entreprise vient de présenter. Par la suite, on associera le tag \textit{PRODUCT} à cette catégorie.
-            \item Une nomination d'un employé dans l'entreprise ou d'une entreprise vers une autre entreprise. Par la suite, on associera le tag \textit{PEOPLE} à cette catégorie.
-            \item Une levée de fonds, un investissement, ou encore une déclaration de résultats ou de chiffre d'affaire.. Par la suite, on associera le tag \textit{MONEY} à cette catégorie.
-        \end{itemize}
-
-    \paragraph{Exemple de signal type pour chaque catégorie :}
-        \begin{itemize}
-            \item \textit{JOB} : \og Offre d'emploi: Ingénieur d'études et développement JAVA H/F (Orléans) http://t.co/LOvN8rLHIe \#jobs \fg
-            \item \textit{EVENT} : \og  Fraispertuis sera présent dès demain jusqu'à dimanche inclus au salon \og Tourrissimo \fg de Strasbourg Parc des Expositions, Hall 21 Stand B40, venez rendre visite au capt'ain Fraisp ! \fg
-            \item \textit{PRODUCT} : \og Découvrez quelques unes de nos réalisations de Pergola Biotempérée pour notre clientèle de Toulouse et sa région. Plus d'informations sur notre site www.pergola-biotemperee.com \fg
-            \item \textit{PEOPLE} : \og Matthieu Frairot a été nommé Directeur Associé au sein de l'agence FullSIX France, l'agence marketin http://t.co/Z2ENeeWZmF \fg
-            \item \textit{MONEY} : \og Keyrus : Publication des résultats annuels 2013. http://t.co/k4TPJ11fW4 \fg
-        \end{itemize}
-
-    \paragraph{État de la base de données contentant les signaux :}
-        Au 08/06/2015, seul 1426 signaux ont été validés manuellement.
-        La proportion des classes de cet échantillon est mauvaise, c'est-à-dire que les données souffrent d'un fort déséquilibre entre classes : il y a beaucoup plus de signaux inintéressants qu'intéressants. On avait donc pas assez d'exemples de signaux intéressants pour pouvoir considérer les éventuelles prédictions d'un classifieur construit sur la base de ces données comme correctes. Il est donc nécessaire d'en valider d'autres manuellement.
-
 \section{Travaux réalisés en Java}
 \label{sec:travaux_realises_en_java}
     \subsection{Présentation de mon environnement de travail}
-        Pour pouvoir créer une application permettant de classifier les signaux, Loïc Petit m'a créé une application Spring de base permettant de se connecter en local à une base de données Mongo. Cette base de données Mongo sert à stocker un échantillon des signaux captés par C-Radar ainsi que les 1426 signaux validés.\\
+        Pour pouvoir créer une application permettant de classifier les signaux, Loïc Petit m'a créé une application Spring de base permettant de se connecter en local à une base de données Mongo. Cette base de données Mongo sert à stocker les signaux captés par C-Radar, et notamment les 1426 signaux validés.\\
         Je me suis rapidement formé à Spring pour pouvoir interfacer l'application Spring avec la base de données Mongo.\\
 
-        Un signal capté est stocké au format JSON dans une base de données Mongo sous cette forme :
-        \begin{verbatim}
-        {
-            "id" : "TWITTER:agencenetdesign:329129810423083009",
-            "content" : "Salon eCom Genève : l'équipe ND est en place au
-                         stand E1 :) #ecomSITB http://t.co/YtsEs6rcDR",
-            "publicationDate" : ISODate("2013-04-30T07:07:16Z"),
-            "sourceId" : "TWITTER:agencenetdesign",
-            "source" : {
-                "type" : "TWITTER",
-                "resourceId" : "agencenetdesign"
-            },
-            "externalSignalId" : "329129810423083009",
-            "validated" : false,
-            "validatedTags" : [ ],
-            "tags" : [
-                "EVENT"
-            ],
-            "url" : "http://twitter.com/agencenetdesign/status/329129810423083009"
-        }
-        \end{verbatim}
-        Le signal comporte :
-        \begin{itemize}
-            \item un identifieur unique \textit{id}
-            \item un contenu \textit{content}
-            \item une date de publication \textit{publicationDate}
-            \item l'identifieur de la source \textit{sourceId}
-            \item la source \textit{source} composé :
+        \subsubsection{Spring} % (fold)
+        \label{ssub:spring}
+            Spring est un framework Java permettant de créer des applications
+        % subsubsection spring (end)
+
+        \subsubsection{MongoDB} % (fold)
+        \label{ssub:mongodb}
+            MongoDB est une base de données NoSQL orientée documents. Les documents y sont stockés au format JSON.\\
+            Dans notre cas, Mongo nous sert à stocker les signaux captés. Ils sont stockés sous cette forme :
+            \begin{verbatim}
+            {
+                "id" : "TWITTER:agencenetdesign:329129810423083009",
+                "content" : "Salon eCom Genève : l'équipe ND est en place au
+                             stand E1 :) #ecomSITB http://t.co/YtsEs6rcDR",
+                "publicationDate" : ISODate("2013-04-30T07:07:16Z"),
+                "sourceId" : "TWITTER:agencenetdesign",
+                "source" : {
+                    "type" : "TWITTER",
+                    "resourceId" : "agencenetdesign"
+                },
+                "externalSignalId" : "329129810423083009",
+                "validated" : false,
+                "validatedTags" : [ ],
+                "tags" : [
+                    "EVENT"
+                ],
+                "url" : "http://twitter.com/agencenetdesign/status/329129810423083009"
+            }
+            \end{verbatim}
+            Le signal comporte :
             \begin{itemize}
-                \item du type de réseau dont provient le signal \textit{type}
-                \item de l'identifieur du publieur dans ce réseau \textit{resourceId}
+                \item un identifieur unique \textit{id}
+                \item un contenu \textit{content}
+                \item une date de publication \textit{publicationDate}
+                \item l'identifieur de la source \textit{sourceId}
+                \item la source \textit{source} composé :
+                \begin{itemize}
+                    \item du type de réseau dont provient le signal \textit{type}
+                    \item de l'identifieur du publieur dans ce réseau \textit{resourceId}
+                \end{itemize}
+                \item un identifeur externe \textit{externalSignalId}
+                \item un booléen spécifiant si le signal a été manuellement validé ou non \textit{validated}
+                \item la liste des tags s'il a été validé \textit{validatedTags}, la liste des tags potentiels (trouvés par le classifieur)
+                \item l'url là où a été publié le signal
             \end{itemize}
-            \item un identifeur externe \textit{externalSignalId}
-            \item un booléen spécifiant si le signal a été manuellement validé ou non \textit{validated}
-            \item la liste des tags s'il a été validé \textit{validatedTags}, la liste des tags potentiels (trouvés par le classifieur)
-            \item l'url là où a été publié le signal
-        \end{itemize}
+        % subsubsection mongodb (end)
 
-
-        \subsubsection{Première application Spring}
-            \paragraph{Contenu de la base Mongo et description des signaux :}
-                Ma base de données locale contient environ 350.000 signaux au format JSON car Mongo est une base de données orientées documents.\\
+    \subsection{Première application Spring}
+        \paragraph{Contenu de la base Mongo et description des signaux :}
+            Ma base de données locale contient environ 350.000 signaux au format JSON car Mongo est une base de données orientées documents.\\
             Parmi, ces signaux, 1426 signaux ont été validés manuellement avec potentiellement un tag (JOB, EVENT, PRODUCT, MONEY ou PEOPLE), dans le cas où le signal est intéressant.\\
             Une fois, les bases de Spring et Mongo acquises, j'ai pu construire une application réalisant ces actions :
             \begin{itemize}

@@ -25,7 +25,7 @@
 \label{sec:ma_mission_chez_data_publica}
     Ma mission est de construire une chaîne de traitement automatique, un plugin Python, récupérant la liste des signaux émis par les entreprises en entrée depuis un point d'API, leur appliquer les traitements nécessaires afin de fournir, en sortie, la liste des signaux intéressants ainsi que leur catégories respectives.\\
 
-    Il s'agit donc de construire une application, un plugin Python, capable de classifier un signal dans une catégorie par la seul connaissance de son contenu (éventuellement un titre). L'application traitera donc des documents textuels.\\
+    Il s'agit donc de construire une application, un plugin Python, capable de classifier un signal dans une catégorie par la seule connaissance de son contenu (éventuellement un titre). L'application traitera donc des documents textuels.\\
     Le travail se divise en deux étapes :
     \begin{enumerate}
         \item Appliquer une série de prétraitements sur le contenu des signaux afin de sélectionner les features jugés porteurs d'information. En effet, comme les données manipulées sont textuelles, il faut filtrer certaines chaînes de caractères considérées comme du bruit.
@@ -49,5 +49,31 @@
             \caption{La tâche du plugin Python.}
             \label{fig:process}
         \end{figure}
+
+\section{Présentation des signaux}
+    Les signaux sont des posts Facebook, des tweets ou bien des flux RSS publiés par des entreprises.
+
+    \paragraph{Hypothèses de départ :}
+        On considérera qu'un signal est intéressant si son contenu a pour sujet :
+        \begin{itemize}
+            \item Une offre d'emploi (ou un stage) à pourvoir au sein de l'entreprise qui l'a postée. Par la suite, on associera le tag \textit{JOB} à cette catégorie.
+            \item Un évènement auquel l'entreprise participe (un salon par exemple). Par la suite, on associera le tag \textit{EVENT} à cette catégorie.
+            \item Un produit que l'entreprise vient de présenter. Par la suite, on associera le tag \textit{PRODUCT} à cette catégorie.
+            \item Une nomination d'un employé dans l'entreprise ou d'une entreprise vers une autre entreprise. Par la suite, on associera le tag \textit{PEOPLE} à cette catégorie.
+            \item Une levée de fonds, un investissement, ou encore une déclaration de résultats ou de chiffre d'affaire.. Par la suite, on associera le tag \textit{MONEY} à cette catégorie.
+        \end{itemize}
+
+    \paragraph{Exemple de signal type pour chaque catégorie :}
+        \begin{itemize}
+            \item \textit{JOB} : \og Offre d'emploi: Ingénieur d'études et développement JAVA H/F (Orléans) http://t.co/LOvN8rLHIe \#jobs \fg
+            \item \textit{EVENT} : \og  Fraispertuis sera présent dès demain jusqu'à dimanche inclus au salon \og Tourrissimo \fg de Strasbourg Parc des Expositions, Hall 21 Stand B40, venez rendre visite au capt'ain Fraisp ! \fg
+            \item \textit{PRODUCT} : \og Découvrez quelques unes de nos réalisations de Pergola Biotempérée pour notre clientèle de Toulouse et sa région. Plus d'informations sur notre site www.pergola-biotemperee.com \fg
+            \item \textit{PEOPLE} : \og Matthieu Frairot a été nommé Directeur Associé au sein de l'agence FullSIX France, l'agence marketin http://t.co/Z2ENeeWZmF \fg
+            \item \textit{MONEY} : \og Keyrus : Publication des résultats annuels 2013. http://t.co/k4TPJ11fW4 \fg
+        \end{itemize}
+
+    \paragraph{État de la base de données contentant les signaux :}
+        Au 08/06/2015, seul 1426 signaux ont été validés manuellement.
+        La proportion des classes de cet échantillon est mauvaise, c'est-à-dire que les données souffrent d'un fort déséquilibre entre classes : il y a beaucoup plus de signaux inintéressants qu'intéressants. Je n'avait donc pas assez d'exemples de signaux intéressants pour pouvoir considérer les éventuelles prédictions d'un classifieur construit sur la base de ces données comme correctes. Il est donc nécessaire d'en valider d'autres manuellement.
 
 % section ma_mission_chez_data_publica (end)
