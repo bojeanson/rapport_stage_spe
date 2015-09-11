@@ -80,8 +80,6 @@ C’est le rôle des entreprises spécialisées dans l'exploitation de ces donn�
             \label{fig:teamd_data_publica}
         \end{figure}
 
-\newpage
-
         \paragraph{L'équipe commerciale :}
             Elle est composé de 4 commerciaux (ordonnés par ancienneté visible en figure \ref{fig:teamc_data_publica}) :
             \begin{itemize}
@@ -149,6 +147,7 @@ C’est le rôle des entreprises spécialisées dans l'exploitation de ces donn�
 
 
         \subsubsection{L'architecture technique de C-Radar}
+        \label{subsub:archi_tech}
             L'architecture de C-Radar peut être divisée en plusieurs parties (visible en figure \ref{fig:archi}) :
             \begin{itemize}
                 \item Différentes bases de données pour différents stockages (une base de données Mongo, une base de données Cassandra et une base de données PostGreSQL) ;
@@ -160,20 +159,20 @@ C’est le rôle des entreprises spécialisées dans l'exploitation de ces donn�
             \end{itemize}
 
             \paragraph{Le JBM ou Java Base Manager :}
-                Le JBM est le projet Java qui rassemble le Workflow et l'application \href{app.c-radar.com}{app.c-radar.com}. Ce projet a été conçu et construit au dessus de Spring. Spring est un framework Java permettant de créer des applications web. Il prend en charge énormément de chose dont notamment le modèle MVC, la sécurité de l'application, l'interface avec les gestionnaire de queue, etc. (Pour plus d'information, voir \href{http://spring.io/}{http://spring.io/}).
+                Le JBM est le projet Java qui rassemble le Workflow et l'application \href{app.c-radar.com}{app.c-radar.com}. Ce projet a été conçu et construit au dessus de Spring. Le framework Spring est une plate-forme Java qui fournit une architecture complète permettant de développer des applications Java. Spring gère l'architecture de manière à ce que le développeur n'est à s'occuper que de l'application. Il prend en charge énormément de chose dont notamment le modèle MVC, la sécurité de l'application, l'interface avec les gestionnaire de queue, etc. (Pour plus d'information, voir \href{http://spring.io/}{http://spring.io/}).
 
             \paragraph{Le Workflow :}
-                Le Workflow est le gestionnaire de flux permettant de lancer les différents processus de récupération et d'analyses des données. Il gère tout ce qui est \og computing \fg. Par exemple, c'est lui qui lance RabbitMQ qui lui même lance l'exécution des plugins Python gérant le processus de crawling de sites web, par exemple. Une fois les sites webs crawlés, le Workflow va les stocker dans Cassandra. Il gère tout ce qui est exécution des plugins Python (crawling et scraping du web, capture et catégorisation des signaux, etc), stockage des données produites à l'issue de ces exécutions et indexation dans Elastic Search.\\
+                Le Workflow est le gestionnaire de flux permettant de lancer les différents processus de récupération et d'analyses des données. Il gère tout ce qui est \og computing \fg. C'est lui qui lance RabbitMQ qui lui même lance l'exécution des plugins Python gérant le processus de crawling de sites web, par exemple. Une fois les sites webs crawlés, le Workflow va les stocker dans Cassandra. Il gère tout ce qui est exécution des plugins Python (crawling et scraping du web, capture et catégorisation des signaux, etc), stockage des données produites à l'issue de ces exécutions et indexation dans Elastic Search.\\
                 Pour résumer, il prépare les données que l'application va se charger de présenter à l'utilisateur.
 
             \paragraph{L'application \href{app.c-radar.com}{app.c-radar.com} :}
                 L'application, \og présente \fg les données aux utilisateurs. Elle fait le reporting des données produites par le Workflow. Elle permet de rechercher des entreprises, de voir leur répartitions géographiques, de créer des listes d'entreprises, etc. C'est l'application visible et utilisée par l'utilisateur.
 
             \paragraph{Les bases de données :}
-                Les bases de données stockent différentes données. La base Mongo stocke les données liées aux entreprises et les signaux, par exemple.
+                Les bases de données stockent différents types de données. La base Mongo stocke les données liées aux entreprises et les signaux, par exemple. (MongoDB est une base de données NoSQL orientée documents. Les documents y sont stockés au format JSON.)
 
             \paragraph{Les plugins Python :}
-                Enfin, les plugins Python sont des applications Python connectées à d'autres composants, afin d'exécuter une tâche sur des données. Ces données sont reçues des autres composants et le plugin leur retourne les résultats de sa tâche.
+                Enfin, les plugins Python sont des applications Python connectées à d'autres composants, afin d'exécuter une tâche sur des données. Ces données sont reçues depuis d'autres composants et le plugin leur retourne les résultats de sa tâche.
 
             \color{black}
 

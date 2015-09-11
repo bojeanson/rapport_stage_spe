@@ -19,8 +19,49 @@
 \usepackage[top=2.1cm,bottom=2.2cm,left=2cm,right=2cm]{geometry}
 \usepackage[final]{pdfpages}
 \usepackage{subcaption}
+\usepackage{amsmath}
 \captionsetup{compatibility=false}
 
+\lstdefinelanguage{xml}{morestring=[b]",
+                        morestring=[s]{>}{<},
+                        morecomment=[s]{<?}{?>},
+                        stringstyle=\color{black},
+                        identifierstyle=\color{darkblue},
+                        keywordstyle=\color{cyan},
+                        morekeywords={ROOT,S,NP,VP,ADVP,PRP\$,NN,NNP,NNS,JJ,DT,VBD,PP,PDT,TO,IN}% list your attributes here
+                        }
+
+
+\lstset{language=xml,
+        escapeinside={K}{W},
+        %basicstyle=\ttfamily,
+        columns=fullflexible,
+        commentstyle=\color{gray}\upshape
+        tabsize=3,
+        label=code:sample,
+        frame=shadowbox,
+        rulesepcolor=\color{gray},
+        xleftmargin=20pt,
+        framexleftmargin=15pt,
+        numbers=left,
+        numberstyle=\tiny,
+        numbersep=5pt,
+        breaklines=true,
+        showstringspaces=false,
+        basicstyle=\footnotesize,
+        emph={food,name,price},emphstyle={\color{magenta}}
+        }
+
+\newcommand{\hlc}[2][yellow]{ {\sethlcolor{#1} \hl{#2}} }
+\newcommand{\highlight}[2][yellow]{\mathchoice%
+  {\colorbox{#1}{$\displaystyle#2$}}%
+  {\colorbox{#1}{$\textstyle#2$}}%
+  {\colorbox{#1}{$\scriptstyle#2$}}%
+  {\colorbox{#1}{$\scriptscriptstyle#2$}}}
+
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
 
 % Pour sommaire cliquable
 \usepackage{hyperref} % Créer des liens et des signets

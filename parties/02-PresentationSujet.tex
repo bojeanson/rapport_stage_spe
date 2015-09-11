@@ -33,7 +33,7 @@
     \end{enumerate}
 
     \subsection{Inscription dans le domaine du \textit{Big Data}}
-        Les tâches qui découlent de ma mission, et notamment tout les prétraitements, sont directement liées à la discipline de la fouille de textes (\textit{Text Mining}) (et de l'\textit{Information Retrieval}) pour trouver des informations dans le contenu des signaux. Elles sont également liées à la discipline du traitement automatique du langage naturel (\textit{Naturel Language Processing}). Enfin, la construction du classifieur automatique implique des compétences en \textit{Machine Learning}.\\
+        Les tâches qui découlent de ma mission, et notamment tout les prétraitements, sont directement liées à la discipline de la fouille de textes (\textit{Text Mining}) (et de l'\textit{Information Retrieval}) pour trouver des informations dans le contenu des signaux. Elles sont également liées à la discipline du traitement automatique du langage naturel (\textit{Natural Language Processing}). Enfin, la construction du classifieur automatique implique des compétences en \textit{Machine Learning}.\\
 
     \subsection{Synthèse du travail à réaliser}
         Si l'on devait résumer le travail à effectuer (visible en figure \ref{fig:capture_process}), on pourrait le synthétiser comme ceci : Construire une application (plugin Python), qui prend en entrée un signal émis par une entreprise et répond aux questions suivantes :
@@ -51,6 +51,7 @@
         \end{figure}
 
 \section{Présentation des signaux}
+\label{sec:etat_bd}
     Les signaux sont des posts Facebook, des tweets ou bien des flux RSS publiés par des entreprises.
 
     \paragraph{Hypothèses de départ :}
@@ -72,8 +73,8 @@
             \item \textit{MONEY} : \og Keyrus : Publication des résultats annuels 2013. http://t.co/k4TPJ11fW4 \fg
         \end{itemize}
 
-    \paragraph{État de la base de données contentant les signaux :}
-        Au 08/06/2015, seul 1426 signaux ont été validés manuellement.
+    \paragraph{État de l'ensemble des signaux :}
+        Au 08/06/2015, seul 1426 signaux ont été validés manuellement avec potentiellement un tag (JOB, EVENT, PRODUCT, MONEY ou PEOPLE), dans le cas où le signal est intéressant.\\
         La proportion des classes de cet échantillon est mauvaise, c'est-à-dire que les données souffrent d'un fort déséquilibre entre classes : il y a beaucoup plus de signaux inintéressants qu'intéressants. Je n'avait donc pas assez d'exemples de signaux intéressants pour pouvoir considérer les éventuelles prédictions d'un classifieur construit sur la base de ces données comme correctes. Il est donc nécessaire d'en valider d'autres manuellement.
 
 % section ma_mission_chez_data_publica (end)
