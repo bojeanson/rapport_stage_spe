@@ -74,7 +74,14 @@
         \end{itemize}
 
     \paragraph{État de l'ensemble des signaux :}
-        Au 08/06/2015, seul 1426 signaux ont été validés manuellement avec potentiellement un tag (JOB, EVENT, PRODUCT, MONEY ou PEOPLE), dans le cas où le signal est intéressant.\\
-        La proportion des classes de cet échantillon est mauvaise, c'est-à-dire que les données souffrent d'un fort déséquilibre entre classes : il y a beaucoup plus de signaux inintéressants qu'intéressants. Je n'avait donc pas assez d'exemples de signaux intéressants pour pouvoir considérer les éventuelles prédictions d'un classifieur construit sur la base de ces données comme correctes. Il est donc nécessaire d'en valider d'autres manuellement.
-
+        Les travaux a réalisé implique de l’apprentissage supervisé. Ainsi, une base de signaux a été validée manuellement. Au 8 juin 2015, seul 1426 signaux étaient validés manuellement avec potentiellement un tag (JOB, EVENT, PRODUCT, MONEY ou PEOPLE), dans le cas où le signal est intéressant.\\
+        Le nombre de signaux validés par classes était le suivant :
+        \begin{itemize}
+            \item la classe \textit{JOB} : 123 ;
+            \item la classe \textit{EVENT} : 100 ;
+            \item la classe \textit{MONEY} : 14 ;
+            \item la classe \textit{PRODUCT} : 6 ;
+            \item la classe \textit{PEOPLE} : 0 ;
+            \item le reste (soit 1183) est dit \og inintéressant\fg.
+        \end{itemize}
 % section ma_mission_chez_data_publica (end)
