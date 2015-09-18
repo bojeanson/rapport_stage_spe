@@ -117,7 +117,7 @@ K$\highlight[magenta]{François}$W K$\highlight[magenta]{Bancilhon}$W is the CEO
                 Les mots surlignés en magenta comme $\highlight[magenta]{François}$ $\highlight[magenta]{Bancilhon}$ sont potentiellement des noms de personnes (\textit{$\highlight[magenta]{PERSON}$}). Ceux surlignés en orange comme $\highlight[orange]{Data}$ $\highlight[orange]{Publica}$ sont potentiellement des noms d'organisations (\textit{$\highlight[orange]{ORGANIZATION}$}). Enfin, les mots surlignés en violet comme $\highlight[violet]{Paris}$ sont potentiellement des noms de lieux (\textit{$\highlight[violet]{LOCATION}$}).
 
             \subsubsection{Stanford Classifier :}
-                Le \textit{Classifier} permet de construire un classifieur automatique pour la catégorisation de texte. Un classifier est un outils d'apprentissage automatique qui prend des données et les classifie dans k classes. Un classifieur probabiliste peut aussi donner la distribution des probabilités de chaque classes pour une donnée. L’implémentation Java de Stanford est un classifieur \textit{maximum entropy}. Les modèles \textit{maximum entropy} sont aussi connu sous le noms de \textit{softmax classifiers} et sont équivalent aux modèles de régression logistique multi-classe (avec des paramètres différents, dans le sens où ce modèle est avantageux en cas de données sparse). Cet outils sera détaillé d'avantage par la suite.
+                Le \textit{Classifier} permet de construire un classifieur automatique pour la catégorisation de texte. Un classifier est un outils d'apprentissage automatique qui prend des données et les classifie dans k classes. Un classifieur probabiliste peut aussi donner la distribution des probabilités de chaque classes pour une donnée. L’implémentation Java de Stanford est un classifieur \textit{maximum entropy} et un classifieur naïf bayésien.
 
             \subsubsection{Stanford CoreNLP :}
                 Le \textit{CoreNLP} permet de construire une suite de traitements automatiques (les traitements précédents) sur de l'anglais, du chinois, de l'espagnol. Un exemple de chaîne de traitement est visible en figure \ref{fig:coreNLP}. La particularité de cet outils par rapport aux précédents, est qu'il permet de réutiliser les traitements précédents les uns à la suite des autres (sauf le \textit{Stanford Classifier}). De plus, il permet aussi d'appliquer des traitements supplémentaires à ceux énoncés jusque là. En effet, celui-ci réutilise certain des traitements précédents pour faire de la recherche morphologique telle que la lemmatisation ou du stemming. Le \textit{POS Tagger} et le \textit{Tokenizer} sont notamment réutilisés.
@@ -236,6 +236,11 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     \label{tab:classif_perf}
                 \end{table}
 
+            \paragraph{Remarques :}
+                Il est important de noter que lorsqu'on fait ce type de classification, on met l'accent sur le fait d'avoir une précision très élevée quitte à avoir un rappel un peu diminué, car quand l'un augmente l'autre diminue et vice versa.\\
+
+                En effet, la précision mesure le nombre de fois où on a bien classifié un document. Alors que le rappel mesure le fait qu'on ait bien trouvé tout les documents d'une classe. Ainsi, on préfère se tromper très rarement dans notre classification (précision élevée) quitte à rater des signaux que l'on jugerait inutile alors que ça n'était pas le cas (rappel moyen). Ce qui est logique : on préfère qu'un utilisateur voit moins de signaux correctement classifié plutôt qu'il voit beaucoup de signaux plus ou moins correctement classifié.
+
             \subsubsection{Premier bilan :}
                 Le classifieur construit est prometteur mais il ne s'agit que d'un classifieur binaire. La généralisation à plusieurs classes, va amener à faire de nouveau choix : Faut-il adopter une stratégie de type :
                 \begin{itemize}
@@ -248,42 +253,81 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 Un prétraitement spécifique à chaque classe n'est-il pas nécessaire ?\\
 
         \subsection{Amélioration de ma première application et prétraitement}
+            \subsubsection{Agrandissement de mon ensemble de signaux validés :}
+                Avant de pouvoir passer à un classifieur multi-classe, il fallait que mon ensemble de signaux validés grandissent. En effet, celui-ci souffre d'un fort déséquilibre entre les classes : il y a beaucoup plus de signaux inintéressants qu'intéressants. Je n'avais donc pas assez d'exemples de signaux intéressants pour pouvoir considérer les éventuelles prédictions d'un classifieur construit sur la base de ces données comme correctes. Il a donc été nécessaire d'en valider d'autres manuellement.
+
+                \paragraph{Le QA ou Quality Assessment :}
+                    L'objectif du QA est de demander la contribution d'un maximum de personnes sur une tâche de validation manuelle pénible.\\
+                    Durant mon stage, j'ai organisé plusieurs QA pour approfondir l'ensemble des signaux d’apprentissage et de test.
+
+                \paragraph{Proportion de signaux intéressants :}
+                    La quantité de signaux n'ayant pas d'intérêt est énorme (plus de 80\% sur environ 300.000). De ce fait, une pré-sélection des signaux à valider est nécessaire. Pour cela, j'ai réutilisé le premier classifieur implémenté en Python de Samuel Charron, construit sur la base des 1426 signaux. Ce classifieur a permis de classifier des signaux non validés. Ce sont ces signaux classifiés par le classifieur Python qui ont été sélectionnés pour être validés manuellement. Notamment ceux appartenant potentiellement aux catégories EVENT, JOB et PRODUCT.\\
+                    Pour ceux appartenant aux catégories MONEY et PEOPLE, ils ont été sélectionnés pour être validés à l'aide d'expressions rationnelles pour faire ressortir des termes tels que \og levée de fonds \fg, \og chiffre d'affaire \fg, \og nommer \fg, \og nomination \fg, etc.\\
+                    De cette manière 2574 nouveaux signaux ont été validés manuellement. J'ai conscience que ce type de méthodes biaise la dispersion des classes de signaux intéressantes par rapport à celle sans intérêt, mais autrement il mettait impossible d'obtenir plus d'exemple.\\
+
+                    Au 27.07.2015, il y avait donc 4000 signaux validés manuellement par un humain :
+                    \begin{itemize}
+                        \item 488 catégorisés EVENT soit 12,2\%
+                        \item 258 catégorisés JOB soit 6,4\%
+                        \item 118 catégorisés MONEY soit 3\%
+                        \item 83 catégorisés PRODUCT soit 2,1\%
+                        \item 49 catégorisés PEOPLE soit 1,3\%
+                        \item 3004 validés mais considérés comme inintéressant soit 75\%
+                    \end{itemize}
+
             \subsubsection{Le passage au multi-classe :}
-                Avant de pouvoir passer à un classifieur multi-classe
+                Pour le passage au multi-classe, la bibliothèque de Stanford ne propose pas de stratégie \textit{One vs All} ou \textit{One vs One}. Je ne sais donc pas laquelle des deux est choisie. En ce qui est du modèle de classifieur, deux options s'offraient à moi :
+                \begin{itemize}
+                    \item Un modèle génératif et notamment un classifieur naïf bayésien ;
+                    \item Un modèle discriminatif et notamment un classifieur qui maximise l'entropie.
+                \end{itemize}
+                Le modèle génératif maximise la vraisemblance de la probabilité jointe $P(classe, donnée)$ alors que le modèle discriminatif maximise la vraisemblance de la probabilité conditionnelle $P(classe | donnée)$. Jusque là, j'avais opté pour le modèle bayésien car c'est ce qui ressortait le plus souvent dans la littérature. J'ai donc repris mon application précédente et j'ai construit un classifieur naïf bayésien multinomial sur la base de mes 4000 signaux taggés, en employant la même méthode de construction de mon ensemble de données. Les performances obtenues (visibles en table \ref{tab:classif_perf2}) avaient grandement baissées (la classe \textit{PRODUCT} n'y figure pas car elle n'était pas suffisament représentée).
+                \begin{table}[h]
+                    \centering
+                    \begin{tabular}{| c | c | c | c | c | c |}
+                        \hline
+                         & \textit{JOB} & \textit{EVENT} & \textit{PEOPLE} & \textit{MONEY} \\
+                        \hline
+                        Précision & 0,63 & 0,51 & 0,46 & 0,44 \\
+                        Rappel & 0,91 & 0,88 & 0,63 & 0,87 \\
+                        \hline
+                    \end{tabular}
+                    \caption{Performances du classifieur naïf bayésien multinomial.}
+                    \label{tab:classif_perf2}
+                \end{table}
+
+            \subsubsection{Le modèle discriminatif maximisant l'entropie}
+                Par curiosité, j'ai changé le modèle pour le modèle maximisant l'entropie car je ne connaissais pas et je voulais voir ce que ça donnerait. À ma grande surprise, le modèle discriminatif maximisant l'entropie obtint de bien meilleures performances que le modèle bayésien dans les mêmes conditions (construction de l'ensemble de données identique, prétraitements identiques, etc). Les performances sont visibles en table \ref{tab:classif_perf3}.
+                \begin{table}[h]
+                    \centering
+                    \begin{tabular}{| c | c | c | c | c | c |}
+                        \hline
+                         & \textit{JOB} & \textit{EVENT} & \textit{PEOPLE} & \textit{MONEY} \\
+                        \hline
+                        Précision & 0,96 & 0,82 & 0,73 & 0,81 \\
+                        Rappel & 0,73 & 0,60 & 0,50 & 0,49 \\
+                        \hline
+                    \end{tabular}
+                    \caption{Performances du classifieur maximisant l'entropie.}
+                    \label{tab:classif_perf3}
+                \end{table}
+
+                \paragraph{La régression logistique binomiale :}
+                    Elle consiste à prédire une valeur parmi deux valeurs possibles (vrai ou faux), telle que :\\
+                    $logit(\ p(x=vrai)\ )\ =\ une\ combinaison\ linéaire\ d'un\ vecteur\ de\ poids\ et\ d'un\ vecteur\ de\ traits$ ;\\
+                    Cela correspond à une classification binaire qui maximise le log de vraisemblance
+
+                \paragraph{Le \textit{MaxEnt} ou \textit{Maximum Entropy} :}
+                    Les modèles \textit{maximum entropy} sont aussi connu sous le noms de \textit{softmax classifiers} et sont équivalent aux modèles de régression logistique multi-classe (avec des paramètres différents). Il s'agit de la généralisation de la régression logistique au cas multinomial. Dans ce cas, maximiser la vraisemblance revient à maximiser l'entropie. Il s'agit ni plus ni moins que du passage du cas binaire au cas N classes.\\
+                    Ce type de modèle est avantageux dans le cas où les données sont \textit{sparse}. Ce qui est mon, c'est pourquoi les résultats sont meilleurs qu'avec le modèle bayésien.
+
             \subsubsection{Les cours de l'université de Stanford :}
-                Afin de perfectionner mon application, j'ai lu les cours de l’université de Stanford concernant le \textit{Natural Language Processing}, accessibles librement sur Internet. Ces cours proviennent du livre \textit{Introduction to Information Retrieval}\autocite{ir_web}.\\
+                Les cours de l’université de Stanford concernant le \textit{Natural Language Processing}, accessibles librement sur Internet, m'ont permis de découvrir de nombreux concepts dans ce domaine (notamment le modèle \textit{maximum entropy}). Ces cours proviennent du livre \textit{Introduction to Information Retrieval}\autocite{ir_web}.\\
 
-                En parallèle, j'ai visionné sur coursera les vidéos que cette même université avait diffusé suite à un MOOC sur le \textit{Natural Language Processing}. Grâce à ces cours, j'ai pris conscience de toute l'importance du travail de prétraitement nécessaire à mettre en place, afin de bien normaliser et formater les données textuelles avant d'en faire quelque chose.\\
-
-                Cette remarque prend tout son sens quand les données manipulées en plus d'être textuelles, ne sont pas normalisées (ou pas structurées).\\
+                En parallèle, j'ai visionné sur coursera les vidéos que cette même université avait diffusé suite à un MOOC sur le \textit{Natural Language Processing}. Grâce à ces cours, j'ai pris conscience de toute l'importance de bien choisir son modèle de classifieur. De plus, j'ai également compris tout l'intérêt du travail de prétraitement, permettant de normaliser et formater les données textuelles afin d'augmenter les performances et la généralisation.\\
 
                 Durant ma formation au \textit{Natural Language Processing}, j'ai également lu les livres \textit{Natural Language Processing with Python}\autocite{nlp_p} et \textit{Python 3 Text Processing with NLTK 3 Cookbook}\autocite{nltk} , ainsi que les pages internets \textit{Introduction to Information Retrieval}\autocite{ir_web}.
 
-            \subsection{Les travaux de prétraitement :}
+            \subsubsection{Les travaux de prétraitement :}
 
 
-
-            \paragraph{Le QA ou Quality Assessment :}
-                L'objectif du QA est de demander la contribution d'un maximum de personnes sur une tâche de validation manuelle pénible.\\
-                Durant mon stage j'ai organisé plusieurs QA pour approfondir l'ensemble des signaux d’apprentissage et de test.
-
-La proportion des classes de cet échantillon est mauvaise, c'est-à-dire que les données souffrent d'un fort déséquilibre entre classes : il y a beaucoup plus de signaux inintéressants qu'intéressants. Je n'avait donc pas assez d'exemples de signaux intéressants pour pouvoir considérer les éventuelles prédictions d'un classifieur construit sur la base de ces données comme correctes. Il est donc nécessaire d'en valider d'autres manuellement.
-
-            \paragraph{Proportion de signaux intéressants :}
-                La quantité de signaux n'ayant pas d'intérêt, ici, est énorme (plus de 70\%). De ce fait, une pré-sélection des signaux à valider est nécessaire.\\
-                Ainsi, j'ai réutilisé le premier classifieur implémenté en Python, construit sur la base des 1426 signaux. Ce classifieur a permis de classifier des signaux non validés.\\
-                Ce sont ces signaux classifiés par le classifieur Python qui ont été sélectionnés pour être validés manuellement. Notamment ceux appartenant aux catégories EVENT, JOB et PRODUCT.\\
-                Pour ceux appartenant aux catégories MONEY et PEOPLE, ils ont été sélectionnés pour être validés à l'aide d'expressions rationnelles pour faire ressortir des termes tels que \og levée de fonds \fg, \og chiffre d'affaire \fg, \og nommer \fg, \og nomination \fg, etc.
-                De cette manière 2574 nouveaux signaux ont été validés manuellement.\\
-
-
-
-            Au 27.07.2015, il y avait donc 4000 signaux validés manuellement par un humain :
-            \begin{itemize}
-                \item 488 catégorisés EVENT soit 12,2\%
-                \item 258 catégorisés JOB soit 6,4\%
-                \item 118 catégorisés MONEY soit 3\%
-                \item 83 catégorisés PRODUCT soit 2,1\%
-                \item 49 catégorisés PEOPLE soit 1,3\%
-                \item 3004 validés mais considérés comme inintéressant soit 75\%
-            \end{itemize}
