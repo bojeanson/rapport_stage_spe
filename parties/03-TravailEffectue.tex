@@ -127,8 +127,8 @@ K$\highlight[magenta]{François}$W K$\highlight[magenta]{Bancilhon}$W is the CEO
                 %Par exemple, \textit{TokenizerAnnotator} est l'\textit{Annotator} permettant d'appliquer le traitement du \textit{Stanford Tokenizer} sur le texte donné en entrée.\\
                 %Le fonctionnement est le suivant : Premièrement, il faut instancier un objet \textit{pipeline} et lui assigner des \textit{Annotators}. Ainsi, une série de traitements devra être réalisée lors de l'appel de sa méthode principale \textit{annotate()}. Ensuite, il n'y a plus qu'à passer une chaîne de caractère à cette méthode \textit{annotate()} pour obtenir un objet annoté en retour.
 
-            \subsubsection{Lemmatisation :}
-                La lemmatisation est le traitement consistant à trouver les lemmes de chaque mots d'une phrase. Ce traitement est détaillé en partie \ref{}. Pour cela, ce traitement nécessite que la phrase soit préalablement découpée en token (les mots de la phrase) et que chacun d'entre eux soit tagué par le \textit{POS Tagger}. Ainsi, en couplant la fonction grammaticale d'un mot avec un dictionnaire, il est possible de retrouver le lemme du mot.
+            \subsubsection{Lemmatisation et stemming :}
+                La lemmatisation est le traitement consistant à trouver les lemmes de chaque mots d'une phrase. Ce traitement est détaillé en partie \ref{ssubsec:travaux_globaux}. Pour cela, ce traitement nécessite que la phrase soit préalablement découpée en token (les mots de la phrase) et que chacun d'entre eux soit tagué par le \textit{POS Tagger}. Ainsi, en couplant la fonction grammaticale d'un mot avec un dictionnaire, il est possible de retrouver le lemme du mot.
 
                 \paragraph{Exemple :}
                 Entrée \og No better example than these could have been found.\fg\\
@@ -137,8 +137,8 @@ K$\highlight[magenta]{François}$W K$\highlight[magenta]{Bancilhon}$W is the CEO
 K$\overbrace{No}^{\highlight[yellow]{no}}\ \overbrace{better}^{\highlight[yellow]{good}}\ \overbrace{example}^{\highlight[cyan]{example}}\ \overbrace{than}^{\highlight[orange]{than}}\ \overbrace{these}^{\highlight[magenta]{this}}\ \overbrace{could}^{\highlight[green]{can}}\ \overbrace{have}^{\highlight[green]{have}}\ \overbrace{been}^{\highlight[green]{be}}\ \overbrace{found}^{\highlight[green]{find}} \overbrace{.}^{\highlight[gray]{.}}$W
 \end{lstlisting}
 
-            \subsubsection{Stemming :}
-                Le stemming est un traitement assez similaire à la lemmatisation. En effet, celui-ci consiste à trouver les stems de chaque mots d'une phrase. Ce traitement est détaillé en partie \ref{}.
+                \paragraph{Le stemming :}
+                Le stemming est un traitement assez similaire à la lemmatisation. En effet, celui-ci consiste à trouver les stems de chaque mots d'une phrase. Ce traitement est détaillé en partie \ref{ssubsec:travaux_globaux}.
 
                 \paragraph{Exemple :}
                 Entrée \og Les chevaliers chevauchent leur chevaux, le cavalier son cheval.\fg\\
@@ -154,13 +154,13 @@ K$\overbrace{Les}^{le}\ \overbrace{chevaliers}^{cheva}\ \overbrace{chevauchent}^
                 \label{fig:coreNLP}
             \end{figure}
 
-            \subsubsection{Premier bilan sur la bibliothèque :}
+            \subsubsection{Premier bilan sur la bibliothèque}
                 Ces traitements n'ont pas tous un intérêt pour moi dans la construction de mon classifieur. En effet, dans un premier temps, mon objectif est seulement de réutiliser la partie \textit{Stanford Classifier} de la bibliothèque pour créer un classifieur binaire permettant de classifier les signaux relatifs aux offres d'emploi et de stage (soit le tag \textit{JOB}).\\
 
                 Cependant, il est certain que des traitement comme la lemmatisation ou le stemming me seront utiles par la suite, lorsqu'il faudra normaliser mes données.
 
         \subsection{Première mise en pratique de la bibliothèque de Stanford}
-            \subsubsection{Ma première application Spring :}
+            \subsubsection{Première application Spring}
                 J'ai construis une application réalisant les actions suivantes (visible en figure \ref{fig:classif_building} et expliquée ci-après) :
             \begin{itemize}
                 \item Récupérer les signaux stockés dans Mongo sous forme de liste ;
@@ -178,11 +178,11 @@ K$\overbrace{Les}^{le}\ \overbrace{chevaliers}^{cheva}\ \overbrace{chevauchent}^
                 \label{fig:classif_building}
             \end{figure}
 
-            \subsubsection{Le modèle de classifieur :}
+            \subsubsection{Le modèle de classifieur}
                 La première questions, à laquelle j'ai du répondre pour pouvoir créer un premier classifieur binaire sur la classe \textit{JOB}, est la suivante : Quel type de classifieur construire ? Un SVM, une régression logistique, une modèle naïf bayésien, etc.\\
                 Dans la littérature de la classification de texte, comme la détection de spam dans les emails ou l'analyse des sentiments (savoir si un texte est critique ou élogieux), il est plutôt commun de construire des classifieurs naïf bayésien avec comme caractéristiques la fréquence des mots. Ainsi, j'ai choisi de construire un tel classifieur pour catégoriser mes signaux. (C'est également ce qu'avait fait Samuel Charron en Python.)
 
-            \subsubsection{Construction de l'ensemble de données :}
+            \subsubsection{Construction de l'ensemble de données}
                 Ensuite, s'est poser la question de comment utiliser les données labellisées pour construire un ensemble de données pour l'apprentissage et la validation.\\
                 Sur ce point, j'ai choisi de construire mon ensemble de données selon le modèle du sac de mots (\textit{bag of words}). Dans ce modèle, un texte (une phrase ou un document) est représenté comme un sac (\textit{bag}), un ensemble (au sens mathématique) de ses mots, sans se préoccuper de la grammaire ou de l'ordre des mots, mais en gardant la multiplicité. Ce modèle est communément utilisé en classification de document, quand la fréquence, l’occurrence des mots est utilisé comme caractéristique, attribut. Ce qui est le cas du modèle naïf bayésien. Ainsi, un signal est caractérisé par la liste des occurrences des mots formant son titre et son contenu.
 
@@ -209,7 +209,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
 
                 Enfin, aucun pré-traitement des données n'était mis en place, hors mis le fait de garder les mots dans le sac de mots final apparaissant un minimum de cinq fois. Ceci afin de supprimer les mots rares qui n'apportent pas d'informations lorsqu'on catégorise les signaux de type \textit{JOB} : les noms propres, les mots mal orthographiés ou les mots très spécifiques.
 
-            \subsubsection{Construction du classifieur :}
+            \subsubsection{Construction du classifieur}
                 Une fois le problème de la construction de mon ensemble de données résolu, j'ai construis mon classifieur binaire naïf bayésien. Pour cela, j'ai divisé mon ensemble de données en deux ensemble de données dans les proportions suivantes :
                 \begin{itemize}
                     \item 75\% de l'ensemble de données pour l'ensemble d'apprentissage ;
@@ -217,10 +217,10 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 \end{itemize}
                 À noter que la méthode de la bibliothèque, permettant de diviser l'ensemble de données en deux ensembles, ne garantis pas que la proportion des classes soit conservée dans les deux ensembles résultants. De plus, l'ensemble n'est pas mélangé à chaque nouvelle construction du classifieur, il y donc un risque de sur-apprentissage. Ces deux points, je ne les avais pas pris en compte directement car cela n'était pas explicitement expliqué dans la documentation de la bibliothèque. En effet, il a fallu que je m'aperçoive que les ensembles de données étaient toujours les mêmes en phase d'apprentissage et de test pour corriger ce point. Ainsi, j'ai du lire de plus près le code source de la méthode pour ré-implémenter le bon comportement.
 
-            \subsubsection{Optimisation des hyper-paramètres par validation croisée :}
+            \subsubsection{Optimisation des hyper-paramètres par validation croisée}
                 Pour cette étape, une méthode de la bibliothèque se charge d'optimiser l'hyper-paramètre de mon classifieur naïf bayésien par validation croisée. Mon classifieur ayant été construit sur la base de l'ensemble d'apprentissage. Je l'ai donc utilisé sans aller plus loin dans les détails car la documentation n'en disait pas plus sur celui-ci et les performances en étaient bonifiées.
 
-            \subsubsection{Évaluation de la qualité du classifieur :}
+            \subsubsection{Évaluation de la qualité du classifieur}
                 Enfin pour évaluer l'erreur de généralisation de mon classifieur, je les testais sur un ensemble de test, que le classifieur n'avait pas \og vu \fg jusque ici. J'ai calculé la précision et le rappel obtenu par la classe \textit{JOB} et par la classe \textit{USELESS} représentant le reste n'appartenant pas à \textit{JOB}. Ceux-ci sont visible en table \ref{tab:classif_perf}.
                 \begin{table}[h]
                     \centering
@@ -241,7 +241,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
 
                 En effet, la précision mesure le nombre de fois où on a bien classifié un document. Alors que le rappel mesure le fait qu'on ait bien trouvé tout les documents d'une classe. Ainsi, on préfère se tromper très rarement dans notre classification (précision élevée) quitte à rater des signaux que l'on jugerait inutile alors que ça n'était pas le cas (rappel moyen). Ce qui est logique : on préfère qu'un utilisateur voit moins de signaux correctement classifié plutôt qu'il voit beaucoup de signaux plus ou moins correctement classifié.
 
-            \subsubsection{Premier bilan :}
+            \subsubsection{Premier bilan}
                 Le classifieur construit est prometteur mais il ne s'agit que d'un classifieur binaire. La généralisation à plusieurs classes, va amener à faire de nouveau choix : Faut-il adopter une stratégie de type :
                 \begin{itemize}
                     \item One versus all ;
@@ -253,7 +253,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 Un prétraitement spécifique à chaque classe n'est-il pas nécessaire ?\\
 
         \subsection{Amélioration de ma première application et prétraitement}
-            \subsubsection{Agrandissement de mon ensemble de signaux validés :}
+            \subsubsection{Agrandissement de mon ensemble de signaux validés}
                 Avant de pouvoir passer à un classifieur multi-classe, il fallait que mon ensemble de signaux validés grandissent. En effet, celui-ci souffre d'un fort déséquilibre entre les classes : il y a beaucoup plus de signaux inintéressants qu'intéressants. Je n'avais donc pas assez d'exemples de signaux intéressants pour pouvoir considérer les éventuelles prédictions d'un classifieur construit sur la base de ces données comme correctes. Il a donc été nécessaire d'en valider d'autres manuellement.
 
                 \paragraph{Le QA ou Quality Assessment :}
@@ -275,7 +275,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                         \item 3004 validés mais considérés comme inintéressant soit 75\%
                     \end{itemize}
 
-            \subsubsection{Le passage au multi-classe :}
+            \subsubsection{Le passage au multi-classe}
                 Pour le passage au multi-classe, la bibliothèque de Stanford ne propose pas de stratégie \textit{One vs All} ou \textit{One vs One}. Je ne sais donc pas laquelle des deux est choisie. En ce qui est du modèle de classifieur, deux options s'offraient à moi :
                 \begin{itemize}
                     \item Un modèle génératif et notamment un classifieur naïf bayésien ;
@@ -321,17 +321,21 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     Les modèles \textit{maximum entropy} sont aussi connu sous le noms de \textit{softmax classifiers} et sont équivalent aux modèles de régression logistique multi-classe (avec des paramètres différents). Il s'agit de la généralisation de la régression logistique au cas multinomial. Dans ce cas, maximiser la vraisemblance revient à maximiser l'entropie. Il s'agit ni plus ni moins que du passage du cas binaire au cas N classes.\\
                     Ce type de modèle est avantageux dans le cas où les données sont \textit{sparse}. Ce qui est mon, c'est pourquoi les résultats sont meilleurs qu'avec le modèle bayésien.
 
-            \subsubsection{Les cours de l'université de Stanford :}
+            \subsubsection{Les cours de l'université de Stanford}
                 Les cours de l’université de Stanford concernant le \textit{Natural Language Processing}, accessibles librement sur Internet, m'ont permis de découvrir de nombreux concepts dans ce domaine (notamment le modèle \textit{maximum entropy}). Ces cours proviennent du livre \textit{Introduction to Information Retrieval}\autocite{ir_web}.\\
 
                 En parallèle, j'ai visionné sur coursera les vidéos que cette même université avait diffusé suite à un MOOC sur le \textit{Natural Language Processing}. Grâce à ces cours, j'ai pris conscience de toute l'importance de bien choisir son modèle de classifieur. De plus, j'ai également compris tout l'intérêt du travail de prétraitement, permettant de normaliser et formater les données textuelles afin d'augmenter les performances et la capacité de généralisation du classifieur.\\
 
                 Durant ma formation au \textit{Natural Language Processing}, j'ai également lu les livres \textit{Natural Language Processing with Python}\autocite{nlp_p} et \textit{Python 3 Text Processing with NLTK 3 Cookbook}\autocite{nltk} , ainsi que les pages internets \textit{Introduction to Information Retrieval}\autocite{ir_web}.
 
-            \subsubsection{Les travaux de prétraitement global :}
-                \paragraph{La tokenisation :}
-                    La tokenisation intervient en amont dans la construction de l'ensemble de données, selon le modèle du sac de mot. Celle-ci consiste à découper une phrase en token, dans l'idéal représentant des mots. Une des difficultés de cette tâche est d'être spécifique à chaque langue. Les difficultés principales sont surtout liées aux contractions. Il est nécessaire de s'attarder sur cette phase de la normalisation pour minimiser la perte sémantique, car beaucoup de traitement s'appuie sur la tokenisation.\\
-                    \textbf{Exemple :}\\
+            \subsubsection{Les travaux de prétraitement global}
+            \label{ssubsec:travaux_globaux}
+                Les traitements expliqués ci-après sont réalisés dans la construction de l'application, en amont de la construction de l'ensemble de donnée selon le modèle du sac de mot.
+
+                \paragraph{La segmentation ou tokenisation :}
+                    La tokenisation consiste à découper une phrase en token, dans l'idéal représentant des mots. Une des difficultés de cette tâche est d'être spécifique à chaque langue. Les difficultés principales sont surtout liées aux contractions. Il est nécessaire de s'attarder sur cette phase de la normalisation pour minimiser la perte sémantique, car beaucoup de traitement s'appuie sur la tokenisation. Dans mon application, j'ai utilisé le \textit{PTB Tokenizer} disponible dans la bibliothèque de Stanford.
+
+                    \paragraph{Exemple :}
                     Entrée : \og Je n'ai pas d'argent. En as-tu ? \fg\\
                     Sorties possibles :
                     \begin{itemize}
@@ -374,9 +378,45 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     Les lemmes de la phrase \og Ils chantent leurs chansons préférées.\fg sont :\\
                      \og Il chanter leur chanson préférer. \fg
 
+                \paragraph{Remarques :}
+                    Étant donné que le stemming nous fait perdre plus d'information sur nos features que la lemmatisation, j'ai choisi d'appliquer cette dernière. De plus, avec le stemming on ne manipule plus des mots mais leur stem.\\
+                    La bibliothèque de Stanford ne propose pas de Lemmatizer pour la langue française. De ce fait, j'ai utilisé une bibliothèque externe de Ahmet Aker\footnote{http://staffwww.dcs.shef.ac.uk/people/A.Aker/activityNLPProjects.html} que j'ai rajouté dans le projet Spring grâce à Maven en ajoutant une dépendance.
+
                 \paragraph{Bilan sur les prétraitements :}
-                    Ceux-ci permettent de normaliser le texte et de réduire le nombre de feature présent dans le sac de mot. Ainsi,
+                    Ceux-ci permettent de normaliser le texte et de réduire le nombre de feature présent dans le sac de mot. Il est important de réduire la disparité des features pour pouvoir calculer leur fréquence par la suite. Un parallèle pourrait être fait avec le fait de compresser des données numériques par ACP avec la lemmatisation par exemple. Il est très important de bien préparer les données afin d'obtenir les meilleures performances possibles par la suite.
 
+            \subsubsection{Les travaux de prétraitement spécifique}
+                En plus, des traitements présentés précédemment, il est possible de traiter nos données plus spécifiquement par classe, afin d'augmenter les performances du classifieur par la suite.\\
+                Pour cette tâche, il faut d'avantage s'attarder sur le fond des données de chaque classe, et essayer de voir si de l'information intéressante aurait pu être détruite par les traitement précédents.
 
+                \paragraph{Les signaux issus de Twitter :}
+                    Les signaux twitter comportent souvent des références \og @pseudo \fg et des mentions comme \og \#job \fg. Les références n'apportent pas d'information dans la majorité des cas. Les supprimer permettrait d’éliminer du bruit dans les features. Quant aux mentions comme \og \#job \fg, celles-ci portent de l'information et dans un processus de normalisation, il serait bien de garder le mot suivant le dièse (\#).
 
-            \subsubsection{Les travaux de prétraitement spécifique à chaque classe :}
+                \paragraph{Les emails et les URLs}
+                    À l'image des pseudonymes Twitter, les emails et les URLs (présent dans certain signaux) ne portent aucune information et ne sont pas bien tokenisés à cause de leur formes. Ainsi, il serait bien de les supprimer en amont de la tokenisation.
+
+                \paragraph{Les signaux de la classe \textit {JOB} :}
+                    Souvent dans les offres d'emploi ou de stage, la mention \og H/F \fg signifiant \og homme ou femme \fg est présente. Cependant, lors de la tokenisation, ce genre de feature est détruit du fait qu'il contient le caractère de ponctuation slash (/). Ainsi, il serait intéressant de pouvoir les détecter avant la tokenisation et de les remplacer par une chaîne de caractère qui ne serait pas détruit par la tokenisation comme le terme \og hommeoufemme \fg.
+
+                \paragraph{Les signaux de la classe \textit{MONEY}}
+                    Une caractéristique des signaux de cette classe est que, souvent lorsque ces signaux parlent d'une levée de fonds, une somme est annoncée avec une devise. Exemple : \og L'INSA a levée 5 k€ pour construire un amphithéâtre \fg.\\
+                    Il serait donc intéressant de conserver l'unité et le symbole de la devise suivant le montant qui est caractéristique de ce type de signal (k€, m€, etc).
+
+                \paragraph{Mise en place de ces traitements et bilan :}
+                    J'ai implémenté ces traitements assez facilement à l'aide d'expressions rationnelles. Ce travail d'inspection du contenu des signaux est important car c'est là que l'on détecte des informations caractéristiques.
+
+            \subsubsection{Performances obtenues par mon application avec les prétraitements}
+                Grâce à tout ces prétraitements, mon classifieur a obtenu de meilleures performances, jugées suffisantes par mon maître de stage Samuel Charron pour que je puisse passer à l'implémentation en Python. Les performances finales sont visibles en table \ref{}.
+                \begin{table}[h]
+                    \centering
+                    \begin{tabular}{| c | c | c | c | c | c |}
+                        \hline
+                         & \textit{JOB} & \textit{EVENT} & \textit{PEOPLE} & \textit{MONEY} \\
+                        \hline
+                        Précision & 0,96 & 0,82 & 0,94 & 0,81 \\
+                        Rappel & 0,81 & 0,63 & 0,60 & 0,60 \\
+                        \hline
+                    \end{tabular}
+                    \caption{Performances du classifieur maximisant l'entropie.}
+                    \label{tab:classif_perf3}
+                \end{table}
