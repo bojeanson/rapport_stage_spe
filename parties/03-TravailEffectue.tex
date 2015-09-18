@@ -324,10 +324,59 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
             \subsubsection{Les cours de l'université de Stanford :}
                 Les cours de l’université de Stanford concernant le \textit{Natural Language Processing}, accessibles librement sur Internet, m'ont permis de découvrir de nombreux concepts dans ce domaine (notamment le modèle \textit{maximum entropy}). Ces cours proviennent du livre \textit{Introduction to Information Retrieval}\autocite{ir_web}.\\
 
-                En parallèle, j'ai visionné sur coursera les vidéos que cette même université avait diffusé suite à un MOOC sur le \textit{Natural Language Processing}. Grâce à ces cours, j'ai pris conscience de toute l'importance de bien choisir son modèle de classifieur. De plus, j'ai également compris tout l'intérêt du travail de prétraitement, permettant de normaliser et formater les données textuelles afin d'augmenter les performances et la généralisation.\\
+                En parallèle, j'ai visionné sur coursera les vidéos que cette même université avait diffusé suite à un MOOC sur le \textit{Natural Language Processing}. Grâce à ces cours, j'ai pris conscience de toute l'importance de bien choisir son modèle de classifieur. De plus, j'ai également compris tout l'intérêt du travail de prétraitement, permettant de normaliser et formater les données textuelles afin d'augmenter les performances et la capacité de généralisation du classifieur.\\
 
                 Durant ma formation au \textit{Natural Language Processing}, j'ai également lu les livres \textit{Natural Language Processing with Python}\autocite{nlp_p} et \textit{Python 3 Text Processing with NLTK 3 Cookbook}\autocite{nltk} , ainsi que les pages internets \textit{Introduction to Information Retrieval}\autocite{ir_web}.
 
-            \subsubsection{Les travaux de prétraitement :}
+            \subsubsection{Les travaux de prétraitement global :}
+                \paragraph{La tokenisation :}
+                    La tokenisation intervient en amont dans la construction de l'ensemble de données, selon le modèle du sac de mot. Celle-ci consiste à découper une phrase en token, dans l'idéal représentant des mots. Une des difficultés de cette tâche est d'être spécifique à chaque langue. Les difficultés principales sont surtout liées aux contractions. Il est nécessaire de s'attarder sur cette phase de la normalisation pour minimiser la perte sémantique, car beaucoup de traitement s'appuie sur la tokenisation.\\
+                    \textbf{Exemple :}\\
+                    Entrée : \og Je n'ai pas d'argent. En as-tu ? \fg\\
+                    Sorties possibles :
+                    \begin{itemize}
+                        \item ["Je", "n", "ai", "pas", "d", "argent", ".", "En", "as", "-", "tu", "?"]
+                        \item ["Je", "n", "'", "ai", "pas", "d", "'", "argent", ".", "En", "as", "-", "tu", "?"]
+                        \item ["Je", "n'", "ai", "pas", "d'", "argent", ".", "En", "as", "-", "tu", "?"]
+                    \end{itemize}
+
+                \paragraph{La casse, l'accentuation et la ponctuation :}
+                    Pour normaliser les mots, une manière simple consiste à réduire la casse de tout les mots. Ainsi, on réduit notre ensemble de mot et dans une norme de casse. Cela est très facile à effectuer mais cela a quand même quelques défauts :
+                    \begin{itemize}
+                        \item Les noms propres perdent leur différences par rapport aux noms communs ;
+                        \item Les noms d'organisation (comme l'OTAN) perdent leur sens en minuscule.
+                    \end{itemize}
+                    Une manière supplémentaire de normaliser est de supprimer les inflexions (accents). Cela n'est pas compliqué à mettre en place mais fait perdre encore une fois de l'information au texte.\\
+                    Enfin, supprimer la ponctuation est aussi une manière de normaliser car celle-ci apporte très peu d'information (pour ne pas dire pas). Encore une fois, c'est simple à réaliser mais certain mot perde leur sens.
+                    \begin{itemize}
+                        \item Les mots composés comportant des tirets perdent leur sens (exemple : \og après-midi \fg);
+                        \item Les mots composés comportant des apostrophes perdent leur sens (exemple : \og aujourd'hui \fg) ;
+                        \item Les acronymes comportant des points de séparation perdent leur sens (exemple : \og U.S.A. \fg)
+                    \end{itemize}
+
+                \paragraph{Les stopwords :}
+                    Les stopwords sont les mots d'une phrase inutiles à la compréhension de celle-ci. Ils ne portent pas d'information et sont présents dans n'importe quels documents textuels. Les supprimer permet donc de réduire le nombre de feature à notre ensemble de mot (le sac de mot). Une liste de stopwords contient majoritairement des pronoms, des prépositions et des déterminants comme : \og a \fg, \og au \fg, \og ce \fg, \og de \fg, \og le \fg, \og mon \fg, etc.
+
+                \paragraph{La recherche morphologique :}
+                    Enfin, les deux derniers moyens permettant de normaliser du texte sont la lemmatisation et le stemming. Ces deux traitements ont pour objectif de faire baisser le nombre de forme infléchie. Une forme infléchie est appelé un lexème en morphologie. Il faut savoir qu'un lexème est composé de différentes types de morphèmes : les stems et les affixes. Voici leur définition à l'aide d'un exemple :\\
+                    Le lexème \og chanteurs \fg est composé de trois morphèmes : \og chant \fg, \og eur \fg et \og s \fg. Parmi ces trois morphèmes, un est un stem \og chant \fg et les deux autres des affixes \og eur \fg et \og s \fg.
 
 
+                \paragraph{Le stemming :}
+                    L'objectif du stemming est de diminuer les lexèmes en les réduisant à leur stems : \og chanteurs \fg, \og chanteuse \fg transformés en \og chant \fg.\\
+                    Un des désavantage du stemming est que les stems ne sont pas toujours des lemmes, c'est à dire la forme canonique d'un lexème (son entrée dans le dictionnaire), et donc pas un mot.\\
+                    Exemple : le stem de \og chercheur \fg est \og cherch \fg (n'est pas un mot).
+
+                \paragraph{La lemmatisation :}
+                    L'objectif de la lemmatisation est le même que celui du stemming à savoir diminuer le nombre de formes infléchies, de lexèmes. Pour cela, la lemmatisation consiste à réduire un lexème en lemme, la forme canonique de ce lexème. Le lemme d'un verbe correspond au verbe à l'infinitif, le lemme d'un nom commun est ce nom commun au masculin singulier, etc. Les lemmes correspondent aux entrées dans le dictionnaires de tout les lexèmes.\\
+
+                \paragraph{Exemple :}
+                    Les lemmes de la phrase \og Ils chantent leurs chansons préférées.\fg sont :\\
+                     \og Il chanter leur chanson préférer. \fg
+
+                \paragraph{Bilan sur les prétraitements :}
+                    Ceux-ci permettent de normaliser le texte et de réduire le nombre de feature présent dans le sac de mot. Ainsi,
+
+
+
+            \subsubsection{Les travaux de prétraitement spécifique à chaque classe :}
