@@ -117,7 +117,7 @@ K$\highlight[magenta]{François}$W K$\highlight[magenta]{Bancilhon}$W is the CEO
                 Les mots surlignés en magenta comme $\highlight[magenta]{François}$ $\highlight[magenta]{Bancilhon}$ sont potentiellement des noms de personnes (\textit{$\highlight[magenta]{PERSON}$}). Ceux surlignés en orange comme $\highlight[orange]{Data}$ $\highlight[orange]{Publica}$ sont potentiellement des noms d'organisations (\textit{$\highlight[orange]{ORGANIZATION}$}). Enfin, les mots surlignés en violet comme $\highlight[violet]{Paris}$ sont potentiellement des noms de lieux (\textit{$\highlight[violet]{LOCATION}$}).
 
             \subsubsection{Stanford Classifier :}
-                Le \textit{Classifier} permet de construire un classifieur automatique pour la catégorisation de texte. Un classifier est un outils d'apprentissage automatique qui prend des données et les classifie dans k classes. L’implémentation Java de Stanford est un classifieur \textit{maximum entropy} et un classifieur naïf bayésien. Cet outils propose une classe (\textit{ColumnDataClassifier}) qui permet de construire un classifieur en lui fournissant un fichier de configurations, et des données d'apprentissage et de test. Le soucis de cette classe est que les données doivent se conformer à un format bien précis. De plus, une fois le classifieur construit, la classe ne propose pas de méthode permettant de classifier de nouvelle données (pas encore vu par le classifieur) sans label.
+                Le \textit{Classifier} permet de construire un classifieur automatique pour la catégorisation de texte. L’implémentation Java de Stanford est un classifieur \textit{maximum entropy} et un classifieur naïf bayésien. Cet outils propose une classe (\textit{ColumnDataClassifier}) qui permet de construire n'importe quel type de classifieur, simplement en lui fournissant un fichier de configurations, et des données d'apprentissage et de test. Le soucis de cette classe est que les données doivent se conformer à un format bien précis. De plus, une fois le classifieur construit, la classe ne propose pas de méthode permettant de classifier de nouvelle données (pas encore vu par le classifieur) sans label.
 
             \subsubsection{Stanford CoreNLP :}
                 Le \textit{CoreNLP} permet de construire une suite de traitements automatiques (les traitements précédents) sur de l'anglais, du chinois, de l'espagnol. Un exemple de chaîne de traitement est visible en figure \ref{fig:coreNLP}. La particularité de cet outils par rapport aux précédents, est qu'il permet de réutiliser les traitements précédents les uns à la suite des autres (sauf le \textit{Stanford Classifier}). De plus, il permet aussi d'appliquer des traitements supplémentaires à ceux énoncés jusque là. En effet, celui-ci réutilise certain des traitements précédents pour faire de la recherche morphologique telle que la lemmatisation ou du stemming. Le \textit{POS Tagger} et le \textit{Tokenizer} sont notamment réutilisés.
@@ -155,11 +155,12 @@ K$\overbrace{Les}^{le}\ \overbrace{chevaliers}^{cheva}\ \overbrace{chevauchent}^
             \end{figure}
 
             \subsubsection{Premier bilan sur la bibliothèque}
-                Ces traitements n'ont pas tous un intérêt pour moi dans la construction de mon classifieur. En effet, dans un premier temps, mon objectif est seulement de réutiliser la partie \textit{Stanford Classifier} de la bibliothèque pour créer un classifieur binaire permettant de classifier les signaux relatifs aux offres d'emploi et de stage (soit le tag \textit{JOB}).\\
+                Ces traitements n'ont pas tous un intérêt pour moi dans la construction de mon classifieur. En effet, dans un premier temps, mon objectif est seulement de réutiliser la partie \textit{Stanford Classifier} de la bibliothèque pour créer un classifieur binaire permettant de classifier les signaux relatifs aux offres d'emploi et de stage (soit le tag \textit{JOB}). La classe \textit{ColumnDataClassifier} pourrait mettre d'une grande aide, mais elle exige des données dans un certain format. De plus, elle ne les gère pas certain prétraitement.\\
 
-                Cependant, il est certain que des traitement comme la lemmatisation ou le stemming me seront utiles par la suite, lorsqu'il faudra normaliser mes données.
+                Enfin, il est certain que des traitements comme la lemmatisation ou le stemming me seront utiles par la suite, lorsqu'il faudra normaliser mes données. Pouvoir utiliser le \textit{StanfordCoreNLP} en amont du \textit{Stanford Classifier} pour normaliser mes données et sélectionner les features serait l'idéal, avant de les fournir au classifieur pour construire un modèle.
 
         \subsection{Première mise en pratique de la bibliothèque de Stanford}
+        \label{ssec:premiere_mise_en_appli}
             \subsubsection{Première application Spring}
                 J'ai construis une application réalisant les actions suivantes (visible en figure \ref{fig:classif_building} et expliquée ci-après) :
             \begin{itemize}
@@ -218,7 +219,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 À noter que la méthode de la bibliothèque, permettant de diviser l'ensemble de données en deux ensembles, ne garantis pas que la proportion des classes soit conservée dans les deux ensembles résultants. De plus, l'ensemble n'est pas mélangé à chaque nouvelle construction du classifieur, il y donc un risque de sur-apprentissage. Ces deux points, je ne les avais pas pris en compte directement car cela n'était pas explicitement expliqué dans la documentation de la bibliothèque. En effet, il a fallu que je m'aperçoive que les ensembles de données étaient toujours les mêmes en phase d'apprentissage et de test pour corriger ce point. Ainsi, j'ai du lire de plus près le code source de la méthode pour ré-implémenter le bon comportement.
 
             \subsubsection{Optimisation des hyper-paramètres par validation croisée}
-                Pour cette étape, une méthode de la bibliothèque se charge d'optimiser l'hyper-paramètre de mon classifieur naïf bayésien par validation croisée. Mon classifieur ayant été construit sur la base de l'ensemble d'apprentissage. Je l'ai donc utilisé sans aller plus loin dans les détails car la documentation n'en disait pas plus sur celui-ci et les performances en étaient bonifiées. Par la suite, j'ai repris la classe principale \textit{ColumnDataClassifier} de la bibliothèque \textit{Stanford Classifier} que j'ai refactoré
+                Pour cette étape, une méthode de la bibliothèque se charge d'optimiser l'hyper-paramètre de mon classifieur naïf bayésien par validation croisée. Mon classifieur ayant été construit sur la base de l'ensemble d'apprentissage. Je l'ai donc utilisé sans aller plus loin dans les détails car la documentation n'en disait pas plus sur celui-ci et les performances en étaient bonifiées. Par la suite, j'ai repris la classe principale \textit{ColumnDataClassifier} de la bibliothèque \textit{Stanford Classifier} que j'ai refactoré. Ceci pour plusieurs raisons, et notamment pour réaliser dix plis de validation croisée lors de l'apprentissage afin d'avoir une idée de la capacité de généralisation de mon classifieur.
 
             \subsubsection{Évaluation de la qualité du classifieur}
                 Enfin pour évaluer l'erreur de généralisation de mon classifieur, je les testais sur un ensemble de test, que le classifieur n'avait pas \og vu \fg jusque ici. J'ai calculé la précision et le rappel obtenu par la classe \textit{JOB} et par la classe \textit{USELESS} représentant le reste n'appartenant pas à \textit{JOB}. Ceux-ci sont visible en table \ref{tab:classif_perf}.
@@ -242,17 +243,19 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 En effet, la précision mesure le nombre de fois où on a bien classifié un document. Alors que le rappel mesure le fait qu'on ait bien trouvé tout les documents d'une classe. Ainsi, on préfère se tromper très rarement dans notre classification (précision élevée) quitte à rater des signaux que l'on jugerait inutile alors que ça n'était pas le cas (rappel moyen). Ce qui est logique : on préfère qu'un utilisateur voit moins de signaux correctement classifié plutôt qu'il voit beaucoup de signaux plus ou moins correctement classifié.
 
             \subsubsection{Premier bilan}
-                Le classifieur construit est prometteur mais il ne s'agit que d'un classifieur binaire. La généralisation à plusieurs classes, va amener à faire de nouveau choix : Faut-il adopter une stratégie de type :
+                Le classifieur construit est prometteur mais il ne s'agit que d'un classifieur binaire. La généralisation à plusieurs classes, va amener à faire de nouveau choix :\\
+                Faut-il adopter une stratégie de type :
                 \begin{itemize}
                     \item One versus all ;
                     \item One versus One.
                 \end{itemize}
-                D'autres questions peuvent être soulever comme :\\
+                D'autres questions peuvent être soulevées comme :\\
                 Est-ce que le modèle naïf bayésien va bien se généraliser en multi-classe ?\\
                 Un prétraitement global n'est-il pas nécessaire ?\\
                 Un prétraitement spécifique à chaque classe n'est-il pas nécessaire ?\\
 
         \subsection{Amélioration de ma première application et prétraitement}
+            La démarche de construction du classifieur présentée dans la partie précédente (\ref{ssec:premiere_mise_en_appli}) reste la même. J'ai réutilisé (refactor) la classe \textit{ColumnDataClassifier}, afin qu'elle puisse prendre en entrée mes données provenant de Mongo et qu'elle puisse réaliser des prétraitements dessus avant de construire l'ensemble de données à partir duquel le classifieur est construit. Dans l'idéal, j'aurais aimé pouvoir réaliser les prétraitements avec le \textit{Stanford CoreNLP} mais il ne gère pas bien le français et il est très gourmand en mémoire.
             \subsubsection{Agrandissement de mon ensemble de signaux validés}
                 Avant de pouvoir passer à un classifieur multi-classe, il fallait que mon ensemble de signaux validés grandissent. En effet, celui-ci souffre d'un fort déséquilibre entre les classes : il y a beaucoup plus de signaux inintéressants qu'intéressants. Je n'avais donc pas assez d'exemples de signaux intéressants pour pouvoir considérer les éventuelles prédictions d'un classifieur construit sur la base de ces données comme correctes. Il a donc été nécessaire d'en valider d'autres manuellement.
 
@@ -333,16 +336,17 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 Les traitements expliqués ci-après sont réalisés dans la construction de l'application, en amont de la construction de l'ensemble de donnée selon le modèle du sac de mot.
 
                 \paragraph{La segmentation ou tokenisation :}
-                    La tokenisation consiste à découper une phrase en token, dans l'idéal représentant des mots. Une des difficultés de cette tâche est d'être spécifique à chaque langue. Les difficultés principales sont surtout liées aux contractions. Il est nécessaire de s'attarder sur cette phase de la normalisation pour minimiser la perte sémantique, car beaucoup de traitement s'appuie sur la tokenisation. Dans mon application, j'ai utilisé le \textit{PTB Tokenizer} disponible dans la bibliothèque de Stanford.
+                    La tokenisation consiste à découper une phrase en token, dans l'idéal représentant des mots. Une des difficultés de cette tâche est d'être spécifique à chaque langue. Les difficultés principales sont surtout liées aux contractions. Il est nécessaire de s'attarder sur cette phase de la normalisation pour minimiser la perte sémantique, car beaucoup de traitement s'appuie sur la tokenisation. Dans mon application, j'ai utilisé le \textit{PTB Tokenizer} disponible dans \textit{Stanford Classifier}.
 
                     \paragraph{Exemple :}
                     Entrée : \og Je n'ai pas d'argent. En as-tu ? \fg\\
                     Sorties possibles :
                     \begin{itemize}
-                        \item ["Je", "n", "ai", "pas", "d", "argent", ".", "En", "as", "-", "tu", "?"]
+                        \item ["Je", "n", "ai", "pas", "d", "argent", "En", "as", "tu"]
                         \item ["Je", "n", "'", "ai", "pas", "d", "'", "argent", ".", "En", "as", "-", "tu", "?"]
                         \item ["Je", "n'", "ai", "pas", "d'", "argent", ".", "En", "as", "-", "tu", "?"]
                     \end{itemize}
+                    Le résultat du \textit{PTB Tokenizer} dans l'exemple précédant est le premier.
 
                 \paragraph{La casse, l'accentuation et la ponctuation :}
                     Pour normaliser les mots, une manière simple consiste à réduire la casse de tout les mots. Ainsi, on réduit notre ensemble de mot et dans une norme de casse. Cela est très facile à effectuer mais cela a quand même quelques défauts :
@@ -406,17 +410,52 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     J'ai implémenté ces traitements assez facilement à l'aide d'expressions rationnelles. Ce travail d'inspection du contenu des signaux est important car c'est là que l'on détecte des informations caractéristiques.
 
             \subsubsection{Performances obtenues par mon application avec les prétraitements}
-                Grâce à tout ces prétraitements, mon classifieur a obtenu de meilleures performances, jugées suffisantes par mon maître de stage Samuel Charron pour que je puisse passer à l'implémentation en Python. Les performances finales sont visibles en table \ref{tab:classif_perf4}.
-                \begin{table}[t]
-                    \centering
-                    \begin{tabular}{| c | c | c | c | c | c |}
-                        \hline
-                         & \textit{JOB} & \textit{EVENT} & \textit{PEOPLE} & \textit{MONEY} \\
-                        \hline
-                        Précision & 0,96 & 0,82 & 0,94 & 0,81 \\
-                        Rappel & 0,81 & 0,63 & 0,60 & 0,60 \\
-                        \hline
-                    \end{tabular}
-                    \caption{Performances du classifieur maximisant l'entropie.}
-                    \label{tab:classif_perf4}
-                \end{table}
+                \paragraph{Le problème des FP (faux positifs) :}
+                    Les signaux qui peuvent avoir potentiellement plusieurs labels engendrent une quantité non négligeable de faux positifs, comme par exemple :
+                    \begin{itemize}
+                        \item Signal : "Venez découvrir nos nouveautés produits du 20 au 22 Mai 2014 au salon SEPEM, Hall 4 - Stand F13 http://t.co/vS7gT2x4yp \#marquagepermanent" Label : PRODUCT ou EVENT
+                        \item Signal : "Nous embauchons! Étudiants de HEC Paris, nous sommes aujourd'hui au \#CarrefoursHEC. Venez découvrir nos offres d'emploi dans les domaines du \#digital \#data \#marketing" Label : JOB ou EVENT
+                    \end{itemize}
+                    Une solution potentielle serait d'autoriser le classifieur à attribuer plusieurs label. C'est ce qu'avait fait Samuel Charron en Python mais les résultats n'étaient pas suffisant.
+
+                \paragraph{Le problème des FN (faux négatifs) :}
+                    Les signaux ne sont pas toujours très succins et précis. De ce fait, parfois en plus d'un contenu intéressant le signal peut contenir du bruit, ce qui engendre une quantité non négligeable de faux négatifs. Ce qui baisse les rappels. Exemple :
+                    \begin{itemize}
+                        \item Signal : "Dans le cadre de son développement, EXCELIUM a fait l'acquisition du fonds de commerce de la société lyonnaise SES Vidéo, spécialisée dans l'installation de systèmes vidéo et d'alarme." Label : Aucun alors que c'est MONEY
+                        \item Signal : "A l'occasion de la fête de la gastronomie, nous vous invitons à visiter notre nouveau laboratoire à Téteghem samedi 27 septembre de 10 h à 18h. Visite, dégustation et chèques cadeaux offerts pour toute commande passée sur le site cette semaine !" Label : aucun alors que c'est EVENT
+                    \end{itemize}
+
+                \paragraph{Performances du classifieur sur l'ensemble des 4000 signaux validés :}
+                    Les performances présentés en table \ref{tab:classif_perf4} ont été obtenues en construisant le classifieur en suivant les étapes décrites dans la partie \ref{ssec:premiere_mise_en_appli}.
+                    \begin{table}[t]
+                        \centering
+                        \begin{tabular}{| c | c | c | c | c | c |}
+                            \hline
+                             & \textit{JOB} & \textit{EVENT} & \textit{PEOPLE} & \textit{MONEY} \\
+                            \hline
+                            Précision & 0,96 & 0,82 & 0,94 & 0,81 \\
+                            Rappel & 0,81 & 0,63 & 0,60 & 0,60 \\
+                            \hline
+                        \end{tabular}
+                        \caption{Performances du classifieur maximisant l'entropie.}
+                        \label{tab:classif_perf4}
+                    \end{table}
+
+                \paragraph{Performances du classifieur sur un ensemble de données non vus (obtenus grâce à un QA) :}
+                    341 718 signaux ont été tagué automatiquement par le classifieur entraîné sur 4000 signaux validés.
+                    (Certaines sources de signaux sont blacklistées et leurs signaux émis ne sont donc pas taguées par le classifieur : Les entreprises d'interim, les chasseurs de tête, les e-commerçants, etc). Parmi tout ces signaux, 388 ont été validé manuellement lors d'un QA. Ces signaux validés ont été sélectionnés aléatoirement parmi les 341 718 signaux tagués par le classifieur. Voici les résultats :
+                    \begin{table}[t]
+                        \centering
+                        \begin{tabular}{| c | c | c | c | c | c | c |}
+                            \hline
+                             & \textit{JOB} & \textit{EVENT} & \textit{PEOPLE} & \textit{PRODUCT} & \textit{MONEY} \\
+                            \hline
+                            Précision & 0,98 & 0,70 & 0,83 & 0,56 & 0,51 \\
+                            Rappel & 0,92 & 0,80 & 0,97 & 0,75 & 0,95 \\
+                            \hline
+                        \end{tabular}
+                        \caption{Performances du classifieur sur des données non validées.}
+                        \label{tab:classif_perf4}
+                    \end{table}
+
+                Malgré tout, grâce à tout ces prétraitements, mon classifieur a obtenu de meilleures performances, jugées suffisantes par mon maître de stage Samuel Charron pour que je puisse passer à l'implémentation en Python. Les classes \textit{PRODUCT} et \textit{MONEY} manque d'exemple représentatif, d'où leur mauvais résultat. Un QA supplémentaire sur ces classes leur permettrait de se bonifier.
