@@ -1,22 +1,36 @@
 \section{Travaux réalisés en Python}
 \label{sec:travaux_python}
-    À la suite de ces deux mois de formations au \textit{Text Mining}, au \textit{Naturel Language Processing} et à l'\textit{Information Retrieval}, j'étais à présent capable d'identifier les tâches à réaliser en Python : Construire un module Python permettant de réaliser tout les prétraitements expliqués précédemment, reprendre le plugin Python de Samuel Charron afin d'appliquer ces prétraitement en amont de la construction de l'ensemble de données et enfin changer de modèle de classifieur.
+    À la suite de ces deux mois de formations au \textit{Text Mining}, au \textit{Naturel Language Processing} et à l'\textit{Information Retrieval}, j'étais à présent capable d'identifier les tâches à réaliser en Python :
+    \begin{itemize}
+        \item Construire un module Python permettant de réaliser tout les prétraitements expliqués précédemment ;
+        \item Reprendre le plugin Python de Samuel Charron afin d'appliquer ces prétraitement en amont de la construction de l'ensemble de données ;
+        \item Changer de modèle de classifieur.\\
+    \end{itemize}
 
-    \subsection{Module de prétraitement spécifique aux signaux}
-        Ce module de prétraitement (basé sur des expressions rationnelles) prend en charge la détection des patterns précédents à savoir : les emails, les URLs, les pseudonymes et les références Twitter, les mentions \og H/F \fg, les devises, la ponctuation et les stopwords ; et les traite spécifiquement :
-        \begin{itemize}
-            \item les emails, les URLs, les pseudonymes Twitter, la ponctuation et les stopwords sont supprimés ;
-            \item les références Twitter perdent leur dièses (\#) ;
-            \item les mentions \og H/F \fg  sont remplacés par la chaîne de caractère \og hommeoufemme \fg ;
-            \item les devises (k€, m€) sont remplacés par les chaînes de caractère \og millier d'euros \fg, \og millions d'euros \fg.
-        \end{itemize}
+    Les difficultés majeures rencontrées lors de ce dernier mois de stage, étaient le langage Python, lui-même, que je connaissais peu et le besoin de pallier l'inexistence de lemmatizer pour le français en Python.\\
+    Concernant le langage Python, j'ai assez facilement surmonté cette difficulté grâce à mes connaissances en Java, en algorithmique ainsi que mes bases en Scala.\\
+    Le problème du lemmatiser a été plus difficile mais très intéressant et stimulant.\\
+    Les livres \textit{Natural Language Processing with Python}\autocite{nlp_p} et \textit{Python 3 Text Processing with NLTK 3 Cookbook}\autocite{nltk} m'ont énormément aidé.
 
-    \subsection{Module de lemmatisation}
-        En Python 3, il n'existe pas de module permettant de faire de la lemmatisation de la langue française. Je me suis alors demandé comment le lemmatizer, que j'avais utilisé en Java, fonctionnait. Celui-ci couplait le \textit{POS Tagging} des mots à un autre outils, le HFST (\textit{Helsinki Finite State Transducer}), permettant de trouver les différents lemmes possibles d'un mot.\\
+    \subsection{Modules implémentés}
+        \subsubsection{Module de prétraitement spécifique aux signaux}
+            Ce module de prétraitement (basé sur des expressions rationnelles) prend en charge la détection des patterns précédents à savoir : les emails, les URLs, les pseudonymes et les références Twitter, les mentions \og H/F \fg, les devises, la ponctuation et les stopwords ; et les traite spécifiquement :
+            \begin{itemize}
+                \item les emails, les URLs, les pseudonymes Twitter, la ponctuation et les stopwords sont supprimés ;
+                \item les références Twitter perdent leur dièses (\#) ;
+                \item les mentions \og H/F \fg  sont remplacés par la chaîne de caractère \og hommeoufemme \fg ;
+                \item les devises (k€, m€) sont remplacés par les chaînes de caractère \og millier d'euros \fg, \og millions d'euros \fg.
+            \end{itemize}
 
-        \paragraph{Exemple d'utilisation du HFST:}
-            Entrée : \og suis \fg\\
-            Sortie :
+        \subsubsection{Module de tokenisation}
+            Pour ce module, j'ai réutilisé le module \href{http://www.nltk.org/}{NLTK} (\textit{Natural Language Toolkit}) en Python qui propose un tokenizer de texte en phrase pour le français. Pour la tokenisation des phrases en mots, il n'y a pas de tokenizer spécifique pour le français. J'ai donc repris un tokenizer \textit{TreebankWordTokenizer} auquel j'ai apporté quelques règles pour gérer les apostrophes et les tirets.
+
+        \subsubsection{Module de lemmatisation}
+            En Python 3, il n'existe pas de module permettant de faire de la lemmatisation de la langue française. J'ai réutilisé le \textit{SnowballStemmer} disponible dans la bibliothèque NLTK. Voyant que les résultats n'étaient pas terrible, je me suis alors demandé comment le lemmatizer utilisé en Java fonctionnait. Celui-ci couplait le \textit{POS Tagging} des mots à un autre outils, le HFST (\textit{Helsinki Finite State Transducer}), permettant de trouver les différents lemmes possibles d'un mot.\\
+
+            \paragraph{Exemple d'utilisation du HFST:}
+                Entrée : \og suis \fg\\
+                Sortie :
 \begin{lstlisting}
 K$être+verb+singular+indicative+present+firstPerson$W
 K$suivre+verb+singular+imperative+present+secondPerson$W
@@ -24,29 +38,39 @@ K$suivre+verb+singular+indicative+present+firstPerson$W
 K$suivre+verb+singular+indicative+present+secondPerson$W
 \end{lstlisting}
 
-        \paragraph{Idée du lemmatizer Java:}
-            \begin{enumerate}
-                \item Pour chaque phrase, calculer le \textit{POS Tagging} de chaque mot via un POS Tagger ;
-                \item Pour chaque mot de chaque phrase, trouver tous ses potentiels lemmes via le HFST ;
-                \item Choisir le bon lemme grâce à l'information apporter par son \textit{POS Tagging}.
-            \end{enumerate}
+            \paragraph{Idée du lemmatizer Java:}
+                J'ai donc reproduis l'idée du lemmatizer Java pour l'implémenter en Python. Voici, l'idée :
+                \begin{enumerate}
+                    \item Pour chaque phrase, calculer le \textit{POS Tagging} de chaque mot via un POS Tagger ;
+                    \item Pour chaque mot de chaque phrase, trouver tous ses potentiels lemmes via le HFST ;
+                    \item Choisir le bon lemme grâce à l'information apporter par son \textit{POS Tagging}.
+                \end{enumerate}
 
         \subsubsection{Helsinki Finite-State Transducer Technology (HFST)}
             Le \textit{Helsinki Finite-State Transducer software} est une implémentation de plusieurs outils d'analyse morphologique et d'autres outils basés sur les transducteurs (éventuellement pondérés) à état fini. Il s'agit d'un \href{http://www.ling.helsinki.fi/kieliteknologia/tutkimus/hfst/}{grand projet} portant sur les transducteurs littéralement en anglais \og transform reducer \fg.\\
             Le HFST propose un module Python permettant de trouver tout les lemmes d'un mot grâce notamment à un modèle de transducteur du français.
 
-        \subsubsection{Stanford POST Tagger}
-            Pour le POS Tagging, il existe un wrapper Python du \textit{Stanford POS Tagger}. Cet outils fournit également un modèle français pour taguer des phrases en français.\\
+        \subsubsection{Stanford POS Tagger}
+            Pour le POS Tagging, il existe un wraper Python du \textit{Stanford POS Tagger}. Cet outils fournit également un modèle français pour taguer des phrases en français.
 
             \paragraph{Qualité du POS Tagger :}
-                Pour vérifier la qualité de celui-ci, j'ai utilisé des corpus de texte français. Ceux-ci présentent un texte dans un format XML, sous forme de liste de paires mot/fonction grammaticale. J'ai du transformé le corpus en un texte composé de phrases afin de pouvoir le passer à mon \textit{POS Tagger} Python. J'ai également du transformé le corpus car les caractères de ponctuation étaient utilisé comme séparateur. Ceci créait un décalage entre la sortie de mon POS Tagging et cette liste de paires.\\
-                Une fois les problèmes de formatage résolus pour un texte du corpus, j'ai testé le \textit{POS Tagger} dessus et celui-ci a obtenu un taux d'erreur jugé suffisant.
+                Pour vérifier la qualité de celui-ci, j'ai utilisé des corpus de texte français. Ceux-ci présentent un texte dans un format XML, sous forme de liste de paires mot/fonction grammaticale. J'ai du transformé le corpus en un texte composé de phrases afin de pouvoir le passer à mon \textit{POS Tagger} Python. J'ai également du transformé le corpus car les séparateurs utilisés créaient un décalage entre la sortie de mon POS Tagging et cette liste de paires.\\
+                Une fois les problèmes de formatage résolus pour un texte du corpus, j'ai testé le \textit{POS Tagger} dessus et celui-ci a obtenu un taux d'erreur jugé suffisant (inférieur à 10\%).
 
         \subsubsection{Lemmatiser Python :}
-            J'ai donc mis au point Lemmatiser Python 3. Avec Clément Chastagnol, on a pu le déployé, mais un problème inattendu est survenu. En effet, à chaque appelle de la méthode de POS Tagging, derrière le wrapper Python lance la bibliothèque de Stanford dans une nouvelle JVM. Ceci ralenti énormément (facteur 100) le processus de traitement des signaux malgré une parallélisation des tâches (multithread).
+            J'ai donc combiné ces deux outils pour mettre au point un lemmatiser en Python 3. Avec Clément Chastagnol, on a pu le déployé, mais un problème inattendu est survenu. En effet, il arrivait que le Tagger (jar appelé par NLTK) freeze. Dans ce cas, le programme s'arrêtait, car Python ne reprenait pas la main (100\% du CPU sur le processus Java lancé). Le problème a été résolu temporairement en modifiant directement NLTK dans l'environnement virtuel Python \textit{virtualenv} en intégration. On a rajouté un timeout sur le subprocess lançant la commande Java.\\
+
+            En plus de ce problème, on sait aperçu que la lemmatisation était extrêmement lente (facteur 100 sur la durée de traitement d'un signal) malgré une parallélisation des tâches (multithread), car à chaque appelle de la méthode de POS Tagging, le processus lancé par le wrapper Python relançait une nouvelle JVM.\\
+
+            La lemmatisation permettait d'améliorer les performances du classifieur de 2\% environ. Comme ce progrès était infime, on a retiré la lemmatisation pour la remplacer pour le stemming.
+
 
     \subsection{Plugin de classification}
-        Le plugin de classification permet de créer un modèle \textit{maximun entropy}, une régression logistique multinomiale, \textit{One vs All} à partir des 4000 signaux. Une fois le modèle créé, ce plugin est déployable et permet de taguer de nouveaux signaux. Celui-ci utilise les modules Python 3 scikit-learn et numpy.\\
-        Numpy est un module pour la gestion de tableau (matrice).\\
-        Scikit-learn est un module de machine learning construit au dessus de numpy pour faciliter la gestion des matrices.\\
+        Le plugin de classification permet de récupérer les 4000 signaux depuis un point d'API, de les normaliser et de construire un ensemble de données avec, selon le modèle du \textit{bag of words}, et enfin de créer un classifieur \textit{maximun entropy}, une régression logistique multinomiale, \textit{One vs All} à partir de l'ensemble de données construit.\\
+
+        Sa qualité est évalué par une validation croisée sur 10 plis. Il se révèle aussi performant que le modèle créé en Java à peu de choses près.\\
+
+        Une fois le classifieur créé, ce plugin est déployable et permet de taguer de nouveaux signaux.\\
+
+        Ce plugin utilise les modules Python 3 scikit-learn et numpy. Numpy est un module pour la gestion de tableau (matrice). Scikit-learn est un module de machine learning construit au dessus de numpy.\\
         L'utilisation de scikit-learn est relativement facile car la documentation est très bien faite mêlant explications aux exemples d'utilisation.

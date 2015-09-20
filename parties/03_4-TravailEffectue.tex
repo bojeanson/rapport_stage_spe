@@ -5,12 +5,12 @@
     \begin{itemize}
         \item Introduire un outils permettant de détecter la langue du signal (comme \href{https://tika.apache.org/}{Tika}) afin d'adapter les traitements en aval ;
         \item Utiliser un détecteur d'entités nommées \textit{Named Entity Recognizer} afin de gérer autrement les noms d'entreprises, de personnes qui sont généralement caractéristiques des signaux \textit{MONEY} (exemple : \og Data Publica a levée 10 m€ en janvier auprès du fond d'investissement français constitué du groupe Lagardère...\fg). Pour le moment ces noms propres sont rejeté comme feature car tous sont isolés n'étant pas les mêmes.
-        \item Redéfinir la classe \textit{MONEY} en deux classes, comme suit, pour voir si le classifieur s'améliore :
+        \item Éventuellement, redéfinir la classe \textit{MONEY} en deux classes, comme suit, pour voir si le classifieur s'améliore :
         \begin{itemize}
             \item \textit{MONEY} : Déclarations de résultats financiers, de CA (chiffre d'affaire), de levée de fond ;
             \item \textit{BUSINESS} : Déclaration de Partenariat, de rachat ou d'aquisition d'entreprises, de \og contrat gagné\fg, etc.
         \end{itemize}
-        \item Se tourner vers des outils statistiques comme le traducteur de Google pour exécuter la lemmatisation.
+        \item Se tourner vers des outils statistiques comme le traducteur de Google pour exécuter la lemmatisation.\\
     \end{itemize}
 
-    Les difficultés majeures rencontrés sont le manque d'outils de \textit{Naturel Language Processing} pour la langue française. En effet, pour l'anglais les outils sont très bien aboutis et disponible mais pour le français il est difficile de trouver de bon outils. Je pense notamment au Lemmatiser qui n'existe pas pour le français en Python 3. J'ai vu qu'il y avait des outils tel que clips disponibles mais j'avais une contrainte sur la version du Python utilisé. En effet, il existe de grande différence entre Python 3 et Python 2. Il existe des wrapers permettant de faire le pond entre les deux mais d'un point de vu développement c'est moyen.
+    Les difficultés majeures rencontrés sont le manque d'outils de \textit{Naturel Language Processing} pour la langue française. En effet, pour l'anglais les outils sont très bien aboutis et disponible mais pour le français il est difficile de trouver de bon outils. Je pense notamment au Lemmatiser qui n'existe pas pour le français en Python 3. D'autres outils tel que clips existe en Python 2, mais j'avais une contrainte sur la version du Python utilisé. (En effet, il existe de grandes différences entre Python 2 et Python 3. Parfois, des wrapers permettant de faire le pond entre les deux existent mais ça n'est pas la meilleure chose à faire.)
