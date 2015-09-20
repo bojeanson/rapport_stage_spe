@@ -66,9 +66,9 @@ K$suivre+verb+singular+indicative+present+secondPerson$W
 
 
     \subsection{Plugin de classification}
-        Le plugin de classification permet de récupérer les 4000 signaux depuis un point d'API, de les normaliser et de construire un ensemble de données avec, selon le modèle du \textit{bag of words}, et enfin de créer un classifieur \textit{maximun entropy}, une régression logistique multinomiale, \textit{One vs All} à partir de l'ensemble de données construit.\\
+        Le plugin de classification permet de récupérer les 4000 signaux depuis un point d'API, de les normaliser et de construire un ensemble de données avec, selon le modèle du \textit{bag of words}, et enfin de créer un classifieur \textit{maximun entropy}, une régression logistique multinomiale, \textit{One vs All} à partir de l'ensemble de données construit. Celui-ci est d'une bonne qualité puisque ses performances sont bonnes, mais aussi, car son modèle se construit en quelque seconde (30 secondes environs) et qu'il est rapidement déployable.\\
 
-        Sa qualité est évalué par une validation croisée sur 10 plis. Il se révèle aussi performant que le modèle créé en Java à peu de choses près.\\
+        Sa qualité est évalué par une validation croisée sur 10 plis. Il se révèle aussi performant que le modèle créé en Java à peu de choses près (2\% d'écart selon les classes maximum).\\
 
         Une fois le classifieur créé, ce plugin est déployable et permet de taguer de nouveaux signaux.\\
 
