@@ -1,2 +1,37 @@
-\section{Titre de l'annexe}
-\label{annexe:cetteAnnexe}
+\section{Les métriques de mesure de la qualité d'une classification}
+    \subsection{La précision}
+    \label{annexe:precision}
+        La précision mesure le nombre de fois où on a bien classifié un document.
+
+    \subsection{Le rappel}
+    \label{annexe:rappel}
+        Le rappel mesure le fait qu'on ait trouvé tout les documents d'une classe.
+
+    \subsection{La norme F1}
+
+\section{Le QA ou Quality Assessment}
+\label{annexe:qa}
+    L'objectif du QA est de demander la contribution d'un maximum de personnes sur une tâche de validation manuelle pénible.\\
+
+\section{Modèle de classifieur}
+    \subsection{Le modèle génératif}
+    \label{annexe:generatif}
+        Le modèle génératif maximise la vraisemblance de la probabilité jointe $P(classe, donnée)$.
+
+    \subsection{La régression logistique binomiale}
+    \label{annexe:reglog}
+        Elle consiste à prédire une valeur parmi deux valeurs possibles (vrai ou faux), telle que :\\
+        $logit(\ p(x=vrai)\ )\ =\ une\ combinaison\ linéaire\ d'un\ vecteur\ de\ poids\ et\ d'un\ vecteur\ de\ traits$ ;\\
+        Cela correspond à une classification binaire qui maximise le log de vraisemblance.
+
+    \subsection{Le modèle discriminatif}
+    \label{annexe:discriminatif}
+        Le modèle discriminatif maximise la vraisemblance de la probabilité conditionnelle $P(classe | donnée)$.
+
+\section{Les transducteurs}
+\label{annexe:transducteurs}
+    Définition\autocite{} tirée de Wikipedia.\\%\href{https://fr.wikipedia.org/wiki/Transducteur_fini}
+
+    En informatique théorique, en linguistique, et en particulier en théorie des automates, un transducteur fini (appelé aussi transducteur à états finis par une traduction maladroite de l'anglais finite state transducer) est un automate fini avec sorties. C'est une extension des automates finis. Ils opèrent en effet sur les mots sur un alphabet d'entrée et, au lieu de simplement accepter ou refuser le mot, ils le transforment, de manière parfois non déterministe, en un ou plusieurs mots sur un alphabet de sortie. Ceci permet des transformations de langages, et aussi des utilisations variées telles que notamment l'analyse syntaxique des langages de programmation, et l'analyse morphologique ou l'analyse phonologique en linguistique.\\
+
+    Des explications détaillées sont disponibles \href{http://sixty-north.com/blog/deriving-transducers-from-first-pr}{ici}.

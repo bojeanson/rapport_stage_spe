@@ -7,21 +7,19 @@ Des travaux initiaux avaient été réalisés en Python par Samuel Charron. Il a
         Les connaissances générales que j'avais en \textit{Data Science}, avant le début du stage, concernaient le \textit{Data Mining} en contexte \textbf{numérique} et étaient les suivantes :
         \begin{itemize}
             \item Concepts en analyse et normalisation de données : Analyse en Composantes Principales (ACP), centrage et réduction de données numériques ;
-            \item Concepts d'apprentissage non-supervisé : méthodes de regroupement des données (Clustering : Classification Hiérarchique Ascendante, Algorithme des K-Means, Modèles de mélanges et Algorithmes EM) ;
-            \item Base de l'optimisation : méthodes du gradient et de Newton, introduction aux outils mathématiques pour l'optimisation sous contraintes convexe ;
+            \item Concepts d'apprentissage non-supervisé : méthodes de regroupement des données (Clustering : Classification Hiérarchique Ascendante, algorithmes des K-Means et EM) ;
+            \item Base de l'optimisation : méthodes du gradient et de Newton, introduction à l'optimisation sous contraintes convexe ;
             \item Concepts d'apprentissage supervisé : méthodes pour la discrimination de données (Décision Bayésienne, Régression logistique, SVM linéaire) et notions de validation croisée.\\
         \end{itemize}
 
         Ce projet ne permet pas de mettre mes connaissances en apprentissage non-supervisé en avant. Cependant, mes notions d'apprentissage supervisé telles que : la démarche à suivre pour construire un classifieur, les concepts liées à la validation des performances (validation croisée) et la notion de sur-apprentissage ; ont été fort utiles.\\
 
-        D'une manière générale, mes connaissances en \textit{Text Mining} n'étaient pas suffisamment étoffées pour pouvoir dire tel classifieur est plus performant qu'un autre dans tel contexte (binaire ou multi-classe). En effet, ma formation (à l'INSA) est axée manipulation et traitement de données en contexte \textbf{numérique}. De ce fait, la manipulation et le traitement de données textuelles m'étaient inconnus.\\
-
-        Une formation en \textit{Text Mining} m'a donc été indispensable avant de pouvoir commencer le développement d'une application.
+        Mes connaissances en \textit{Text Mining} n'étaient pas suffisamment étoffées pour pouvoir dire tel classifieur est plus performant qu'un autre dans tel contexte (binaire ou multi-classe). En effet, ma formation (à l'INSA) est axée manipulation et traitement de données \textbf{numérique}. De ce fait, une formation en \textit{Text Mining} m'était donc indispensable avant de pouvoir commencer le développement d'une application.
 
     \subsection{Déroulement du stage}
         Ainsi, durant les deux premiers mois, j'ai exploré le domaine du \textit{Text Mining} et du \textit{Natural Language Processing} au travers de la bibliothèque de Stanford implémentée en Java (\textit{Stanford Natural Language Processing}). Conjointement, j'ai étudié les cours associés, et construit une première application Spring répondant aux contraintes évoquées en partie \ref{sec:ma_mission_chez_data_publica} (sauf le critère du langage). Le travail en ressortant est décrit en partie \ref{sec:travaux_realises_en_java}.\\
 
-        Ensuite, lors du dernier mois, j’ai implémenté le comportement général de cette application sous la forme d’un plugin Python, visible en partie \ref{}. Certain composants n'existaient pas en Python, je les ai donc ré-implémenté.
+        Ensuite, lors du dernier mois, j’ai implémenté le comportement général de cette application sous la forme d’un plugin Python, visible en partie \ref{sec:travaux_python}. Certain composants n'existaient pas en Python, je les ai donc ré-implémenté.
 
 \section{Travaux réalisés en Java, le \textit{Text Mining} et le \textit{Natural Language Processing} avec la bibliothèque de Stanford}
 \label{sec:travaux_realises_en_java}
@@ -76,7 +74,7 @@ Des travaux initiaux avaient été réalisés en Python par Samuel Charron. Il a
         Dès que j'ai été capable de faire ce type de requêtes auprès de ma base de données, il fallait à présent me concentrer sur le traitement des signaux, et donc la construction du classifieur. C'est à ce moment que je me suis intéressé à la bibliothèque de Stanford.
 
         \subsection{La bibliothèque : Stanford Natural Language Processing}
-            Samuel Charron avait connaissance de l'existence de cette bibliothèque. De ce fait, il m'a conseillé de me former en \textit{Text Mining} et en \textit{Natural Language Processing} au travers de celle-ci puisqu'elle est implémentée en Java. Je me suis donc plongé dedans afin de découvrir les diverses fonctionnalités qu'elle propose. Celle-ci propose un ensemble d'outils pour le traitement automatique du langage naturel de la langue anglaise, chinoise et espagnole. Voici ces différents outils.
+            Samuel Charron m'a conseillé de me former en \textit{Text Mining} et en \textit{Natural Language Processing} au travers de cette bibliothèque implémentée en Java. Celle-ci propose un ensemble d'outils pour le traitement automatique du langage naturel de la langue anglaise, chinoise et espagnole.
 
             \subsubsection{Stanford POS Tagger (Part-Of-Speech) :}
                 Le \textit{POS Tagger} permet de savoir la fonction grammaticale de chaque mot d'une phrase. Celui-ci fonctionne aussi pour le français.
@@ -90,7 +88,7 @@ K$\overbrace{Gustave}^{\highlight[cyan]{NNP}} \overbrace{is}^{\highlight[green]{
                 \textit{$\highlight[cyan]{NNP}$} signifie qu'il s'agit d'un nom propre singulier (\textit{noun, proper, singular}), \textit{$\highlight[green]{VBZ}$} signifie qu'il s'agit d'un verbe à la 3ème personne du singulier au présent (\textit{verb, present tense, 3rd person singular}), \textit{$\highlight[magenta]{DT}$} signifie qu'il s'agit d'un déterminant (\textit{determiner}), \textit{$\highlight[cyan]{NN}$} signifie qu'il s'agit d'un nom commun singulier (\textit{noun, common, singular}), \textit{$\highlight[orange]{IN}$} signifie qu'il s'agit d'une préposition ou d'une conjonction de subordination (\textit{preposition or conjunction, subordinating}), \textit{$\highlight[yellow]{RB}$} signifie qu'il s'agit d'un adverbe (\textit{adverb}) et \textit{$\highlight[yellow]{JJ}$} signifie qu'il s'agit d'un adjectif (\textit{adjective}).
 
             \subsubsection{Stanford Parser :}
-                Le \textit{Parser} permet de connaître la structure grammaticale d'une phrase, à savoir quel(s) groupe(s) de mots forme(nt) le sujet, quel(s) groupe(s) de mots forme(nt) le verbe et quel(s) groupe(s) de mots forme(nt) le complément. Cet outils est une sur-couche du \textit{POS Tagger}. En effet, il réutilise, entre autres, son résultat pour en déduire la structure grammaticale d'une phrase.
+                Le \textit{Parser} permet de connaître la structure grammaticale d'une phrase, à savoir quel(s) groupe(s) de mots forme(nt) le sujet, le verbe et le complément. Cet outils est une sur-couche du \textit{POS Tagger} puisqu'il réutilise son résultat afin d'identifier les groupes de mots et leurs dépendances à d'autres groupes de mots.
 
                 \paragraph{Exemple :}
                 Entrée \og My internship was a rewarding experience.\fg\\
@@ -103,7 +101,6 @@ K(\textcolor{blue}{ROOT}W
       K(\textcolor{cyan}{NP} (\textcolor{magenta}{DT} a) (\textcolor{yellow}{JJ} rewarding) (\textcolor{cyan}{NN} experience))W
     K(\textcolor{gray}{.} .)))W
 \end{lstlisting}
-                Cet outils a pour vocation d'identifier les groupes de mots, ainsi que leurs dépendances à d'autres groupes de mots.
 
             \subsubsection{Stanford Named Entity Recognizer :}
                 Le \textit{Named Entity Recognizer} permet d'identifier les groupes de mots qui sont des noms de personne, d'entreprises, de gènes, etc.
@@ -462,4 +459,33 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 Malgré tout, grâce à tout ces prétraitements, mon classifieur a obtenu de meilleures performances, jugées suffisantes par mon maître de stage Samuel Charron pour que je puisse passer à l'implémentation en Python. Les classes \textit{PRODUCT} et \textit{MONEY} manque d'exemple représentatif, d'où leur mauvais résultat. Un QA supplémentaire sur ces classes leur permettrait de se bonifier.
 
 \section{Travaux réalisés en Python}
-    Grâce à ces deux mois de formations au \textit{Text Mining}, au \textit{Naturel Language Processing} et à l'\textit{Information Retrieval}, les travaux à réaliser en Python étaient tout identifiés : Construire un module Python permettant de réaliser tout les prétraitements expliqué précédemment, reprendre le plugin Python de Samuel Charron afin d'appliquer ces prétraitement en amont de la construction de l'ensemble de données et enfin changer de modèle de classifieur.
+\label{sec:travaux_python}
+    À la suite de ces deux mois de formations au \textit{Text Mining}, au \textit{Naturel Language Processing} et à l'\textit{Information Retrieval}, j'étais à présent capable d'identifier les tâches à réaliser en Python : Construire un module Python permettant de réaliser tout les prétraitements expliqués précédemment, reprendre le plugin Python de Samuel Charron afin d'appliquer ces prétraitement en amont de la construction de l'ensemble de données et enfin changer de modèle de classifieur.
+
+    \subsection{Module de prétraitement spécifique aux signaux}
+        Ce module de prétraitement (basé sur des expressions rationnelles) prend en charge la détection des patterns précédents à savoir : les emails, les URLs, les pseudonymes et les références Twitter, les mentions \og H/F \fg, les devises, la ponctuation et les stopwords ; et les traite spécifiquement :
+        \begin{itemize}
+            \item les emails, les URLs, les pseudonymes Twitter, la ponctuation et les stopwords sont supprimés ;
+            \item les références Twitter perdent leur dièses (\#) ;
+            \item les mentions \og H/F \fg  sont remplacés par la chaîne de caractère \og hommeoufemme \fg ;
+            \item les devises (k€, m€) sont remplacés par les chaînes de caractère \og millier d'euros \fg, \og millions d'euros \fg.
+        \end{itemize}
+
+    \subsection{Module de lemmatisation}
+        En Python, il n'existe pas de module permettant de faire de la lemmatisation de la langue française. De ce fait, j'ai eu pour idée de coupler le \textit{POS Tagging} des mots à un autre outils permettant de trouver les différents lemmes possibles d'un mot.\\
+        Pour le POS Tagging, il existe un wrapper Python du \textit{Stanford POS Tagger}
+
+\section{Bilan sur mes travaux}
+    J'ai réussi à mettre au point un plugin Python capable de classifier les signaux captés par C-Radar.\\
+
+    Les pistes d'amélioration possibles sont les suivantes :
+    \begin{itemize}
+        \item Introduire un outils permettant de détecter la langue du signal (comme \href{https://tika.apache.org/}{Tika}) afin d'adapter les traitements en aval ;
+        \item Utiliser un détecteur d'entités nommées \textit{Named Entity Recognizer} afin de gérer autrement les noms d'entreprises, de personnes qui sont généralement caractéristiques des signaux \textit{MONEY} (exemple : \og Data Publica a levée 10 m€ en janvier auprès du fond d'investissement français constitué du groupe Lagardère...\fg). Pour le moment ces noms propres sont rejeté comme feature car tous sont isolés n'étant pas les mêmes.
+        \item Redéfinir la classe \textit{MONEY} en deux classes, comme suit, pour voir si le classifieur s'améliore :
+        \begin{itemize}
+            \item \textit{MONEY} : Déclarations de résultats financiers, de CA (chiffre d'affaire), de levée de fond ;
+            \item \textit{BUSINESS} : Déclaration de Partenariat, de rachat ou d'aquisition d'entreprises, de \og contrat gagné\fg, etc.
+        \end{itemize}
+        \item Se tourner vers des outils statistiques comme le traducteur de Google pour exécuter la lemmatisation.
+    \end{itemize}
