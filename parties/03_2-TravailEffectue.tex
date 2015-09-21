@@ -271,7 +271,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 Pour le passage au multi-classe, la bibliothèque de Stanford impose une stratégie \textit{One vs All}. Concernant le modèle de classifieur, deux options s'offraient à moi :
                 \begin{itemize}
                     \item Un modèle génératif\footnote{Définition en annexe \ref{annexe:generatif}} et notamment un classifieur naïf bayésien ;
-                    \item Un modèle discriminatif\footnote{Définition en annexe \ref{annexe:discriminatif}} et notamment un classifieur qui maximise l'entropie.
+                    \item Un modèle discriminant\footnote{Définition en annexe \ref{annexe:discriminatif}} et notamment un classifieur qui maximise l'entropie.
                 \end{itemize}
                 Jusque là, j'avais opté pour le modèle bayésien car c'est ce qui ressortait le plus souvent dans la littérature. J'ai donc repris mon application précédente et j'ai construit un classifieur naïf bayésien multinomial avec les 4000 signaux taggés de la même manière que précédemment. Les performances obtenues (visibles en table \ref{tab:classif_perf2}) avaient grandement baissées (la classe \textit{PRODUCT} n'y figure pas car elle n'était pas suffisament représentée).
                 \begin{table}[h]
@@ -288,7 +288,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     \label{tab:classif_perf2}
                 \end{table}
 
-            \subsubsection{Le modèle discriminatif maximisant l'entropie}
+            \subsubsection{Le modèle discriminant maximisant l'entropie}
                 Par curiosité, j'ai changé le modèle pour le modèle maximisant l'entropie. À ma grande surprise, ce modèle obtint de bien meilleures performances que le modèle bayésien dans les mêmes conditions (construction de l'ensemble de données identique, prétraitements identiques, etc). Les performances sont visibles en table \ref{tab:classif_perf3}.
                 \begin{table}[h]
                     \centering
@@ -305,7 +305,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 \end{table}
 
                 \paragraph{Le \textit{MaxEnt} ou \textit{Maximum Entropy} :}
-                    Les modèles \textit{maximum entropy} sont aussi connu sous le noms de \textit{softmax classifiers} et sont équivalent aux modèles de régression logistique\footnote{Rappel en annexe \ref{annexe:reglog}} multi-classe (avec des paramètres différents). Il s'agit de la généralisation de la régression logistique au cas multinomial. Dans ce cas, maximiser la vraisemblance revient à maximiser l'entropie. Il s'agit ni plus ni moins que du passage du cas binaire au cas N classes.\\
+                    Les modèles \textit{maximum entropy} sont aussi connu sous le noms de \textit{softmax classifiers} et sont équivalent aux modèles de régression logistique multi-classe (avec des paramètres différents). Il s'agit de la généralisation de la régression logistique au cas multinomial. Dans ce cas, maximiser la vraisemblance revient à maximiser l'entropie. Il s'agit ni plus ni moins que du passage du cas binaire au cas N classes.\\
                     Ce type de modèle est avantageux dans le cas où les données sont \textit{sparse}. Ce qui est le cas, d'où des résultats meilleurs qu'avec le modèle bayésien.
 
             \subsubsection{Les travaux de prétraitement global}
