@@ -93,7 +93,7 @@ K(\textcolor{blue}{ROOT}W
 \end{lstlisting}
 
             \subsubsection{Stanford Named Entity Recognizer :}
-                Le \textit{Named Entity Recognizer} permet d'identifier les groupes de mots qui sont des noms de personne, d'entreprise, de gène, etc.
+                Le \textit{Named Entity Recognizer} permet d'identifier les groupes de mots qui sont des noms de personnes, d'entreprises, de gènes, etc.
 
                 \paragraph{Exemple :}
                 Entrée \og François Bancilhon is the CEO of Data Publica, a Startup located in Paris.\fg\\
@@ -107,7 +107,7 @@ K$\highlight[magenta]{François}$W K$\highlight[magenta]{Bancilhon}$W is the CEO
                 Le \textit{Classifier} permet de construire un classifieur automatique pour la catégorisation de texte. Un classifieur \textit{maximum entropy} et un naïf bayésien sont disponibles. Cet outils propose une classe (\textit{ColumnDataClassifier}) qui permet de construire n'importe quel type de classifieur, simplement en lui fournissant un fichier de configurations, et des données d'apprentissage et de test. Le soucis de cette classe est que les données doivent se conformer à un format bien précis.
 
             \subsubsection{Stanford CoreNLP :}
-                Le \textit{CoreNLP} permet de construire une suite de traitements automatiques (les traitements précédents) sur de l'anglais, du chinois, de l'espagnol. Un exemple de chaîne de traitement est visible en figure \ref{fig:coreNLP}. La particularité de cet outils, est qu'il permet de réutiliser les traitements précédents les uns à la suite des autres (sauf le \textit{Stanford Classifier}). De plus, il permet aussi d'appliquer des traitements supplémentaires à ceux énoncés jusque là. En effet, celui-ci permet de faire de la recherche morphologique telle que lemmatisation ou stemming. Le \textit{POS Tagger} et le \textit{Tokenizer} sont réutilisés pour ces traitements.
+                Le \textit{CoreNLP} permet de construire une suite de traitements automatiques sur de l'anglais, du chinois, de l'espagnol. Un exemple de chaîne de traitement est visible en figure \ref{fig:coreNLP}. La particularité de cet outils, est qu'il permet de réutiliser les traitements précédents les uns à la suite des autres (sauf le \textit{Stanford Classifier}). De plus, il permet aussi d'appliquer des traitements supplémentaires à ceux énoncés jusque là. En effet, celui-ci permet de faire de la recherche morphologique telle que lemmatisation ou stemming. Le \textit{POS Tagger} et le \textit{Tokenizer} sont réutilisés pour ces traitements.
 
             \subsubsection{Lemmatisation et stemming :}
                 La lemmatisation consiste à trouver les lemmes de chaque mot d'une phrase. Ce traitement est détaillé en partie \ref{ssubsec:travaux_globaux}. Ce traitement nécessite que la phrase soit préalablement découpée en token (les mots de la phrase) par un \textit{Tokenizer} et que chacun d'entre eux soit tagué par le \textit{POS Tagger}. Ainsi, en couplant la fonction grammaticale d'un mot avec un dictionnaire, il est possible de retrouver le lemme du mot.
@@ -137,9 +137,9 @@ K$\overbrace{Les}^{le}\ \overbrace{chevaliers}^{cheva}\ \overbrace{chevauchent}^
             \end{figure}
 
             \subsubsection{Premier bilan sur la bibliothèque}
-                Dans un premier temps, mon objectif est seulement de réutiliser la partie \textit{Stanford Classifier} de la bibliothèque pour créer un classifieur binaire. Celui-ci doit être capable de classifier les signaux relatifs aux offres d'emploi et de stage (soit le tag \textit{JOB}). La classe \textit{ColumnDataClassifier} va mettre d'une grande aide, même si elle exige des données dans un format particulier et qu'elle ne gère pas certain prétraitements.\\
+                Dans un premier temps, mon objectif est seulement de réutiliser la partie \textit{Stanford Classifier} de la bibliothèque pour créer un classifieur binaire. Celui-ci doit être capable de classifier les signaux relatifs aux offres d'emploi et de stage (soit le tag \textit{JOB}). La classe \textit{ColumnDataClassifier} va mettre d'une grande aide, même si elle exige des données dans un format particulier et qu'elle ne gère pas certains prétraitements.\\
 
-                Des traitements comme la lemmatisation ou le stemming seront utile, lors de la normalisation des données. Pouvoir utiliser le \textit{StanfordCoreNLP} pour normaliser et sélectionner les features utiles serait l'idéal, avant de les fournir au classifieur pour construire un modèle.
+                Des traitements comme la lemmatisation ou le stemming seront utiles, lors de la normalisation des données. Pouvoir utiliser le \textit{StanfordCoreNLP} pour normaliser et sélectionner les features utiles serait l'idéal, avant de les fournir au classifieur pour construire un modèle.
 
         \subsection{Première mise en pratique de la bibliothèque de Stanford}
         \label{ssec:premiere_mise_en_appli}
@@ -150,8 +150,8 @@ K$\overbrace{Les}^{le}\ \overbrace{chevaliers}^{cheva}\ \overbrace{chevauchent}^
                 \item Créer un ensemble de données à partir des signaux validés manuellement ;
                 \item Diviser aléatoirement cet ensemble de données en deux ensembles (un pour entraîner le classifieur et un pour le tester) tout en gardant la proportion de chaque classe dans les deux ensembles ;
                 \item Entraîner un classifieur binaire naïf bayésien ;
-                \item Fixer les hyper-paramètres du classifier par validation croisée pendant la phase d'apprentissage ;
-                \item Évaluer la qualité du classifieur construit (l'erreur de généralisation) en calculant sa précision et son rappel sur un ensemble de données de test (qui n'ont pas \og été vu \fg jusqu'à ici par le classifieur).
+                \item Fixer les hyper-paramètres du classifieur par validation croisée pendant la phase d'apprentissage ;
+                \item Évaluer la qualité du classifieur construit (l'erreur de généralisation) en calculant sa précision et son rappel sur un ensemble de données de test (qui n'ont pas \og été vues \fg jusqu'ici par le classifieur).
             \end{itemize}
 
             \begin{figure}[h!]
@@ -191,7 +191,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
 \end{lstlisting}
                 Chaque ième composante du vecteur représente le nombre de fois que le ième mot de la liste est présent dans le signal. Par exemple, dans le premier vecteur (représente le premier signal), les deux premières composantes sont \og 1, 2 \fg. La première composante correspond au mot \og Offre \fg qui est le premier mot de la liste, et sa valeur est \og 1 \fg car \og Offre \fg est présent une fois dans le premier signal. De la même façon, la deuxième composante correspond au mot \og d' \fg, le deuxième mot de la liste et sa valeur est \og 2 \fg car il est présent deux fois dans le signal.\\
 
-                Quelque soit le classifieur que j'ai construis par la suite, l'ensemble de données est toujours construit suivant ce modèle. Pour mon premier classifieur binaire, les 123 signaux validés \textit{JOB} de l'ensemble des 1426 signaux validés (présentés dans le dernier paragraphe de la partie \ref{sec:etat_bd}), forment la classe \textit{JOB} contre le reste.\\
+                Quelque soit le classifieur que j'ai construis par la suite, l'ensemble de données est toujours construit suivant ce modèle. Pour mon premier classifieur binaire, les 123 signaux validés \textit{JOB} de l'ensemble des 1426 signaux validés (présentés dans le dernier paragraphe de la partie \ref{sec:etat_bd}), forment la classe \textit{JOB} contre le reste. J'ai utilisé le \textit{PTB Tokenizer} de \textit{Stanford Classifier} (détails au paragraphe \textbf{La segmentation ou tokenisation} de la partie \ref{ssubsec:travaux_globaux}) pour découper les phrases en mots.\\
 
                 Enfin, le seul pré-traitement des données mis en place est le fait de garder les éléments du \textit{bag of words} apparaissant au moins cinq fois. Ceci afin de supprimer les mots rares qui n'apportent pas d'informations, quand on fait de la classification textuelle (les mots mal orthographiés, les mots très spécifiques, les noms propres, etc).
 
@@ -201,13 +201,13 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     \item 75\% de l'ensemble de données pour l'ensemble d'apprentissage ;
                     \item 25\% de l'ensemble de données pour l'ensemble de test.\\
                 \end{itemize}
-                À noter que la méthode de la bibliothèque, permettant de diviser l'ensemble de données en deux ensembles, ne garantis pas que la proportion des classes soit conservée dans les deux ensembles résultant. De plus, l'ensemble n'est pas mélangé à chaque nouvelle construction du classifieur, il y donc un risque de sur-apprentissage. Christian Frisch me l'a fait remarqué, lors d'une réunion de suivi. J'ai donc repris le code source de la méthode pour ré-implémenter le bon comportement.
+                À noter que la méthode de la bibliothèque, permettant de diviser l'ensemble de données en deux ensembles, ne garantit pas que la proportion des classes soit conservée dans les deux ensembles résultant. De plus, l'ensemble n'est pas mélangé à chaque nouvelle construction du classifieur, il y donc un risque de sur-apprentissage. Christian Frisch me l'a fait remarqué, lors d'une réunion de suivi. J'ai donc repris le code source de la méthode pour ré-implémenter le bon comportement.
 
             \subsubsection{Optimisation des hyper-paramètres par validation croisée}
                 Une méthode de la bibliothèque se charge d'optimiser l'hyper-paramètre du classifieur par validation croisée. Dans un premier temps, j'ai simplement réutilisé cette méthode, car les performances en étaient bonifiées.
 
             \subsubsection{Évaluation de la qualité du classifieur}
-                Enfin pour évaluer la qualité de mon classifieur, je l'ai testé sur un ensemble de test, pas utilisé jusque ici (les 25\% de l'ensemble initial). J'ai calculé la précision et le rappel obtenu par la classe \textit{JOB} et par la classe \textit{USELESS} représentant le reste (pas \textit{JOB}). Ceux-ci sont visible en table \ref{tab:classif_perf}.
+                Enfin pour évaluer la qualité de mon classifieur, je l'ai testé sur un ensemble de test, non utilisé jusqu'ici (les 25\% de l'ensemble initial). J'ai calculé la précision et le rappel obtenus par la classe \textit{JOB} et par la classe \textit{USELESS} représentant le reste (pas \textit{JOB}). Ceux-ci sont visibles en table \ref{tab:classif_perf}.
                 \begin{table}[h]
                     \centering
                     \begin{tabular}{| c | c | c |}
@@ -234,7 +234,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 \end{itemize}
 
         \subsection{Amélioration de ma première application et prétraitement}
-            La démarche de construction du classifieur présentée dans la partie précédente (\ref{ssec:premiere_mise_en_appli}) reste la même. Cependant, j'ai repris la classe principale \textit{ColumnDataClassifier} de la bibliothèque \textit{Stanford Classifier}, car elle intègre, notamment, un vrai processus de validation croisée en k plis. Je l'ai donc refactoré à plusieurs fins :
+            La démarche de construction du classifieur présentée dans la partie précédente (\ref{ssec:premiere_mise_en_appli}) reste la même. Cependant, j'ai repris la classe principale \textit{ColumnDataClassifier} de la bibliothèque \textit{Stanford Classifier}, car elle intègre, notamment, un vrai processus de validation croisée en k plis. Je l'ai donc refactorée à plusieurs fins :
             \begin{itemize}
                 \item Pour qu'elle récupère mes données directement depuis Mongo ;
                 \item Pour qu'elle leur applique des prétraitements avant de construire l'ensemble de données ;
@@ -244,21 +244,21 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
             \subsubsection{Agrandissement de mon ensemble de signaux validés}
                 Avant de pouvoir passer à un classifieur multi-classe, il fallait que mon ensemble de signaux validés grandisse. En effet, celui-ci souffre d'un fort déséquilibre entre les classes : il y a beaucoup plus de signaux inintéressants qu'intéressants. Ainsi, considérer les prédictions d'un classifieur construit avec ces données comme correctes était impossible. Il a donc été nécessaire d'en valider d'autres manuellement.\\
 
-                Durant mon stage, j'ai donc organisé plusieurs QAs\footnote{Définition en annexe \ref{annexe:qa}.} (Quality Assessment) pour approfondir l'ensemble des signaux d’apprentissage et de test.
+                Durant mon stage, j'ai donc organisé plusieurs QAs\footnote{Définition en annexe \ref{annexe:qa}.} (\textit{Quality Assessment}) pour approfondir l'ensemble des signaux d’apprentissage et de test.
 
                 \paragraph{Proportions des signaux :}
                 La proportion des signaux sans intérêt est énorme (plus de 80\% sur environ 300.000).\\
-                Pour les QAs, j'ai donc fais une pré-sélection des signaux à valider. J'ai réutilisé le premier classifieur implémenté en Python de Samuel Charron, construit avec les 1426 signaux. Ce classifieur a classifié des signaux non validés. Ce sont les signaux appartenant potentiellement aux catégories \textit{EVENT}, \textit{JOB} et \textit{PRODUCT} qui ont été sélectionnés pour être validés manuellement. Pour les classes \textit{MONEY} et \textit{PEOPLE}, ils ont été sélectionnés dans Mongo à l'aide d'expressions rationnelles sur des termes comme \og levée de fonds \fg, \og chiffre d'affaire \fg, \og nommer \fg, \og nomination \fg, etc.\\
+                Pour les QAs, j'ai donc fais une pré-sélection des signaux à valider. J'ai réutilisé le premier classifieur implémenté en Python de Samuel Charron, construit avec les 1426 signaux. Celui-ci a classifié des signaux non validés. Ce sont les signaux appartenant potentiellement aux catégories \textit{EVENT}, \textit{JOB} et \textit{PRODUCT} (\og selon le classifieur \fg) qui ont été sélectionnés pour être validés manuellement. Pour les classes \textit{MONEY} et \textit{PEOPLE}, ils ont été sélectionnés dans Mongo à l'aide d'expressions rationnelles sur des termes comme \og levée de fonds \fg, \og chiffre d'affaire \fg, \og nommer \fg, \og nomination \fg, etc.\\
 
                 De cette manière, 2574 nouveaux signaux ont été validés. Ce type de méthode biaise les proportions des classes de signaux intéressantes par rapport à celle sans intérêt, mais autrement il mettait impossible d'obtenir plus d'exemple.\\
 
                 Au 27.07.2015, il y avait donc 4000 signaux validés manuellement :
                 \begin{itemize}
-                    \item 488 catégorisés EVENT soit 12,2\%
-                    \item 258 catégorisés JOB soit 6,4\%
-                    \item 118 catégorisés MONEY soit 3\%
-                    \item 83 catégorisés PRODUCT soit 2,1\%
-                    \item 49 catégorisés PEOPLE soit 1,3\%
+                    \item 488 catégorisés \textit{EVENT} soit 12,2\%
+                    \item 258 catégorisés \textit{JOB} soit 6,4\%
+                    \item 118 catégorisés \textit{MONEY} soit 3\%
+                    \item 83 catégorisés \textit{PRODUCT} soit 2,1\%
+                    \item 49 catégorisés \textit{PEOPLE} soit 1,3\%
                     \item 3004 validés mais considérés comme inintéressant soit 75\%
                 \end{itemize}
 
@@ -268,7 +268,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     \item Un modèle génératif\footnote{Définition en annexe \ref{annexe:generatif}} et notamment un classifieur naïf bayésien ;
                     \item Un modèle discriminant\footnote{Définition en annexe \ref{annexe:discriminatif}} et notamment un classifieur qui maximise l'entropie.
                 \end{itemize}
-                Jusque là, j'avais opté pour le modèle bayésien car c'est ce qui ressortait le plus souvent dans la littérature. J'ai donc repris mon application précédente et j'ai construit un classifieur naïf bayésien multinomial avec les 4000 signaux tagués de la même manière que précédemment. Les performances obtenues (visibles en table \ref{tab:classif_perf2}) avaient grandement baissées (la classe \textit{PRODUCT} n'y figure pas car elle n'était pas suffisament représentée).
+                Jusque là, j'avais opté pour le modèle bayésien car c'est ce qui ressortait le plus souvent dans la littérature. J'ai donc repris mon application précédente et j'ai construit un classifieur naïf bayésien multinomial\footnote{qui suit plusieurs lois binomiales.} avec les 4000 signaux tagués de la même manière que précédemment. Les performances obtenues (visibles en table \ref{tab:classif_perf2}) avaient grandement baissées (la classe \textit{PRODUCT} n'y figure pas car elle n'était pas suffisament représentée).
                 \begin{table}[h]
                     \centering
                     \begin{tabular}{| c | c | c | c | c | c |}
@@ -300,15 +300,15 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 \end{table}
 
                 \paragraph{Le \textit{MaxEnt} ou \textit{Maximum Entropy} :}
-                    Les modèles \textit{maximum entropy} sont aussi connu sous le noms de \textit{softmax classifiers} et sont équivalent aux modèles de régression logistique multi-classe (avec des paramètres différents). Il s'agit de la généralisation de la régression logistique au cas multinomial. Dans ce cas, maximiser la vraisemblance revient à maximiser l'entropie. Il s'agit ni plus ni moins que du passage du cas binaire au cas N classes.\\
-                    Ce type de modèle est avantageux dans le cas où les données sont \textit{sparse}. Ce qui est le cas, d'où des résultats meilleurs qu'avec le modèle bayésien.
+                    Les modèles \textit{maximum entropy} sont aussi connus sous le nom de \textit{softmax classifiers} et sont équivalents aux modèles de régression logistique multi-classe (avec des paramètres différents). Il s'agit de la généralisation de la régression logistique au cas multinomial. Dans ce cas, maximiser la vraisemblance revient à maximiser l'entropie. Il s'agit ni plus ni moins que du passage du cas binaire au cas N classes.\\
+                    Ce type de modèle  (\textit{MaxEnt}) est avantageux dans le cas où les données sont \textit{sparse}\footnote{peu représentative, littéralement \og clairsemé \fg}. Ce qui est le cas, d'où des résultats meilleurs qu'avec le modèle bayésien.
 
             \subsubsection{Les travaux de prétraitement global}
             \label{ssubsec:travaux_globaux}
-                Les traitements expliqués ci-après sont réalisés dans la construction de l'application, en amont de la construction de l'ensemble de donnée selon le modèle du \textit{bag of words}.
+                Les traitements, expliqués ci-après, sont réalisés dans la construction de l'application, en amont de la construction de l'ensemble de donnée selon le modèle du \textit{bag of words}.
 
                 \paragraph{La segmentation ou tokenisation :}
-                    La tokenisation consiste à découper une phrase en token, dans l'idéal représentant des mots. Cette tâche est très spécifique à chaque langue. Les difficultés principales sont surtout liées aux contractions. Il est nécessaire de s'attarder sur cette phase de la normalisation pour minimiser la perte sémantique, car beaucoup de traitement s'appuie sur la tokenisation. Dans mon application, j'ai utilisé le \textit{PTB Tokenizer} disponible dans \textit{Stanford Classifier}.
+                    La tokenisation consiste à découper une phrase en token, dans l'idéal représentant des mots. Cette tâche est très spécifique à chaque langue. Les difficultés principales sont surtout liées aux contractions. Il est nécessaire de s'attarder sur cette phase de la normalisation pour minimiser la perte sémantique, car beaucoup de traitements s'appuient sur la tokenisation. Dans mon application, j'ai utilisé le \textit{PTB Tokenizer} disponible dans \textit{Stanford Classifier}.
 
                     \paragraph{Exemple :}
                     Entrée : \og Je n'ai pas d'argent. En as-tu ? \fg\\
@@ -326,7 +326,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                         \item Les noms propres perdent leur différences par rapport aux noms communs ;
                         \item Les noms d'organisation (comme l'OTAN) perdent leur sens en minuscule.
                     \end{itemize}
-                    De plus, supprimer la ponctuation permet aussi d'épurer les données car celle-ci n'apporte pas d'information. Encore une fois, c'est simple à réaliser mais certain mot perde leur sens.
+                    De plus, supprimer la ponctuation permet aussi d'épurer les données car celle-ci n'apporte pas d'information. Encore une fois, c'est simple à réaliser mais certains mots perdent leur sens.
                     \begin{itemize}
                         \item Les mots composés comportant des tirets perdent leur sens (exemple : \og après-midi \fg);
                         \item Les mots composés comportant des apostrophes perdent leur sens (exemple : \og aujourd'hui \fg) ;
@@ -347,8 +347,8 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     Exemple : le stem de \og chercheur \fg est \og cherch \fg (n'est pas un mot).
 
                 \paragraph{La lemmatisation :}
-                    La lemmatisation réduit les lexèmes en lemmes, la forme canonique d'un lexème. Le lemme d'un verbe correspond au verbe à l'infinitif, le lemme d'un nom commun est ce nom commun au masculin singulier, etc. Les lemmes correspondent aux entrées dans le dictionnaires de tous les lexèmes.\\
-                    Exemple : le lemmes \og préférées\fg est \og préférer \fg.
+                    La lemmatisation réduit les lexèmes en lemmes, la forme canonique d'un lexème. Le lemme d'un verbe correspond au verbe à l'infinitif, le lemme d'un nom commun est ce nom commun au masculin singulier, etc. Les lemmes correspondent aux entrées dans le dictionnaire de tous les lexèmes.\\
+                    Exemple : le lemme de \og préférées\fg est \og préférer \fg.
 
                 \paragraph{Remarques :}
                     Le stemming fait perdre plus d'information à nos features que la lemmatisation, j'ai donc choisi de garder les lemmes des mots.\\
@@ -360,16 +360,16 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 Un parallèle pourrait être fait entre la lemmatisation et la compression de données numériques par ACP (Analyse en Composantes Principales).
 
             \subsubsection{Les travaux de prétraitement spécifique}
-                Il est possible et important de traiter nos données plus spécifiquement, afin d'augmenter les performances du classifieur par la suite. Pour cette tâche, il faut d'avantage s'attarder sur le fond des données de chaque classe, et se demander si des informations (tel que des pattern particuliers) ne seraient pas être détruites par les traitements précédents. Tous les traitements qui suivent sont réalisés en amont de la tokenisation.
+                Il est possible et important de traiter nos données plus spécifiquement, afin d'augmenter les performances du classifieur par la suite. Pour cette tâche, il faut d'avantage s'attarder sur le fond des données de chaque classe, et se demander si des informations (tel que des motifs particuliers) ne seraient pas être détruites par les traitements précédents. Tous les traitements qui suivent sont réalisés en amont de la tokenisation.
 
                 \paragraph{Les signaux issus de Twitter :}
                     Ceux-ci comportent souvent des références \og @pseudo \fg et des mentions comme \og \#job \fg. Les références n'apportent pas d'information dans la majorité des cas. Les supprimer permettrait d’éliminer du bruit. Quant aux mentions comme \og \#job \fg, celles-ci portent de l'information et dans un processus de normalisation, il serait bien de seulement garder le mot suivant le dièse (\#).
 
                 \paragraph{Les emails et les URLs}
-                    À l'image des pseudonymes Twitter, les emails et les URLs (présents dans certain signaux) ne portent aucune information et sont mal tokenisés du fait de leur formes. Ainsi, il serait bien de les supprimer.
+                    À l'image des pseudonymes Twitter, les emails et les URLs (présents dans certains signaux) ne portent aucune information et sont mal tokenisés du fait de leur formes. Ainsi, il serait bien de les supprimer.
 
                 \paragraph{Les signaux de la classe \textit {JOB} :}
-                    Souvent dans les offres d'emploi ou de stage, la mention \og H/F \fg signifiant \og homme ou femme \fg est présente. Cependant, lors de la tokenisation, ce type de pattern est détruit à cause du caractère de ponctuation slash (/). Ainsi, il serait intéressant de pouvoir les détecter et de les remplacer par une chaîne de caractère sans ponctuation comme le terme \og hommeoufemme \fg.
+                    Souvent dans les offres d'emploi ou de stage, la mention \og H/F \fg signifiant \og homme ou femme \fg est présente. Cependant, lors de la tokenisation, ce type de motif est détruit à cause du caractère de ponctuation slash (/). Ainsi, il serait intéressant de pouvoir les détecter et de les remplacer par une chaîne de caractère sans ponctuation comme le terme \og hommeoufemme \fg.
 
                 \paragraph{Les signaux de la classe \textit{MONEY}}
                     Une caractéristique des signaux de cette classe est que, souvent lorsque ces signaux parlent d'une levée de fonds, une somme est annoncée avec une devise. Exemple : \og L'INSA a levée 5 k€ pour construire un amphithéâtre \fg.\\
@@ -379,7 +379,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     J'ai implémenté ces traitements assez facilement à l'aide d'expressions rationnelles. Ce travail d'inspection du contenu des signaux est important car c'est là que l'on détecte des informations caractéristiques.
 
             \subsubsection{Performances obtenues par mon application avec les prétraitements}
-                Les performances présentées en table \ref{tab:classif_perf4} ont été obtenues en ajoutant tous les prétraitements présentés dans cette partie au processus de construction du classifieur.
+                Les performances, présentées en table \ref{tab:classif_perf4}, ont été obtenues en ajoutant tous les prétraitements présentés dans cette partie au processus de construction du classifieur.
                 \begin{table}[t]
                     \centering
                     \begin{tabular}{| c | c | c | c | c | c |}
@@ -398,21 +398,21 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 \paragraph{Le problème des FP (faux positifs) :}
                     Les signaux qui peuvent avoir potentiellement plusieurs labels engendrent une quantité non négligeable de faux positifs, comme par exemple :
                     \begin{itemize}
-                        \item Signal : "Venez découvrir nos nouveautés produits du 20 au 22 Mai 2014 au salon SEPEM, Hall 4 - Stand F13 http://t.co/vS7gT2x4yp \#marquagepermanent" Label : PRODUCT ou EVENT
-                        \item Signal : "Nous embauchons! Étudiants de HEC Paris, nous sommes aujourd'hui au \#CarrefoursHEC. Venez découvrir nos offres d'emploi dans les domaines du \#digital \#data \#marketing" Label : JOB ou EVENT
+                        \item Signal : "Venez découvrir nos nouveautés produits du 20 au 22 Mai 2014 au salon SEPEM, Hall 4 - Stand F13 http://t.co/vS7gT2x4yp \#marquagepermanent" Label : \textit{PRODUCT} ou \textit{EVENT}
+                        \item Signal : "Nous embauchons! Étudiants de HEC Paris, nous sommes aujourd'hui au \#CarrefoursHEC. Venez découvrir nos offres d'emploi dans les domaines du \#digital \#data \#marketing" Label : \textit{JOB} ou \textit{EVENT}
                     \end{itemize}
                     Une solution potentielle serait d'autoriser le classifieur à attribuer plusieurs label. C'est ce qu'avait fait Samuel Charron en Python mais les résultats n'étaient pas bons.
 
                 \paragraph{Le problème des FN (faux négatifs) :}
                     Les signaux ne sont pas toujours très succins et précis. De ce fait, parfois en plus d'un contenu intéressant le signal peut contenir du bruit, ce qui engendre une quantité non négligeable de faux négatifs. Ce qui baisse les rappels. Exemple :
                     \begin{itemize}
-                        \item Signal : "Dans le cadre de son développement, EXCELIUM a fait l'acquisition du fonds de commerce de la société lyonnaise SES Vidéo, spécialisée dans l'installation de systèmes vidéo et d'alarme." Label : Aucun alors que c'est MONEY
-                        \item Signal : "A l'occasion de la fête de la gastronomie, nous vous invitons à visiter notre nouveau laboratoire à Téteghem samedi 27 septembre de 10 h à 18h. Visite, dégustation et chèques cadeaux offerts pour toute commande passée sur le site cette semaine !" Label : aucun alors que c'est EVENT
+                        \item Signal : "Dans le cadre de son développement, EXCELIUM a fait l'acquisition du fonds de commerce de la société lyonnaise SES Vidéo, spécialisée dans l'installation de systèmes vidéo et d'alarme." Label : Aucun alors que c'est \textit{MONEY}
+                        \item Signal : "A l'occasion de la fête de la gastronomie, nous vous invitons à visiter notre nouveau laboratoire à Téteghem samedi 27 septembre de 10 h à 18h. Visite, dégustation et chèques cadeaux offerts pour toute commande passée sur le site cette semaine !" Label : aucun alors que c'est \textit{EVENT}
                     \end{itemize}
 
                 \paragraph{Performances du classifieur sur un ensemble de données non vus (obtenus grâce à un QA) :}
-                    341 718 signaux ont été tagué automatiquement par le classifieur entraîné sur 4000 signaux validés.
-                    (Certaines sources de signaux sont blacklistées et leurs signaux émis ne sont donc pas tagués par le classifieur : Les entreprises d'interim, les chasseurs de tête, les e-commerçants, etc). Parmi tous ces signaux, 388 ont été validé manuellement lors d'un QA. Ces signaux validés ont été sélectionnés aléatoirement parmi les 341 718 signaux tagués. Les performances du classifieur sur ces signaux sont visibles en \ref{tab:classif_perf4}.
+                    341 718 signaux ont été tagués automatiquement par le classifieur entraîné sur 4000 signaux validés.
+                    (Certaines sources de signaux sont blacklistées et leurs signaux émis ne sont donc pas tagués par le classifieur : Les entreprises d'interim, les chasseurs de tête, les e-commerçants, etc). Parmi tous ces signaux, 388 ont été validés manuellement lors d'un QA. Ces signaux validés ont été sélectionnés aléatoirement parmi les 341 718 signaux tagués. Les performances du classifieur sur ces signaux sont visibles en \ref{tab:classif_perf4}.
                     \begin{table}[t]
                         \centering
                         \begin{tabular}{| c | c | c | c | c | c | c |}
