@@ -11,8 +11,8 @@
         \item Utiliser un détecteur d'entités nommées \textit{Named Entity Recognizer} afin de gérer autrement les noms d'entreprises, de personnes qui sont généralement caractéristiques des signaux \textit{MONEY} (exemple : \og Data Publica a levée 10 m€ en janvier auprès du fond d'investissement français constitué du groupe Lagardère...\fg). Pour le moment ces noms propres sont rejeté comme feature car tous sont isolés n'étant pas les mêmes.
         \item Éventuellement, redéfinir la classe \textit{MONEY} en deux classes, comme suit, pour voir si le classifieur s'améliore :
         \begin{itemize}
-            \item \textit{MONEY} : Déclarations de résultats financiers, de CA (chiffre d'affaire), de levée de fond ;
-            \item \textit{BUSINESS} : Déclaration de Partenariat, de rachat ou d'aquisition d'entreprises, de \og contrat gagné\fg, etc.
+            \item \textit{MONEY} : Déclaration de résultats financiers, de CA (chiffre d'affaire), de levée de fonds ;
+            \item \textit{BUSINESS} : Déclaration de partenariat, de rachat ou d'aquisition d'entreprises, de \og contrat gagné\fg, etc.
         \end{itemize}
         \item Se tourner vers des outils statistiques comme le traducteur de Google pour exécuter la lemmatisation.\\
     \end{itemize}

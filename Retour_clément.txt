@@ -1,0 +1,73 @@
+- page 15 : pour pouvoir dire tel classifieur est plus performant qu’un autre dans tel contexte (binaire ou multi-classe) => pour pouvoir choisir le classifieur le plus adapté à un contexte donné (binaire ou multi-classe)
+- page 17 : j’ai visionné sur coursera => Coursera
+- page 18 :
+  - "ainsi que les pages internets Introduction to Information Retrieval." => ainsi que la version web du libre Introduction...
+  - "Le POS Tagger permet de savoir la fonction grammaticale de chaque mot d’une phrase." => le POS Tagger permet d'indiquer la fonction grammaticale
+- page 19 :
+  - "La particularité de cet outils, est qu’il permet de réutiliser" => La particularité de cet outil est qu'il permet de...
+  - définir lemme / stem et expliquer la différence avec un exemple (mieux => bien pour le lemme, boulanger => boulang- par ex. ou sinon mets les différences de traitement sur un même exemple ; celui avec les chevaux est bien)
+- page 20 :
+  - paragraphe "Premier bilan sur la bibliothèque" : concordance des temps avec le reste du rapport
+  - "La classe ColumnDataClassifier va mettre d’une grande aide" => va m'être
+  - "J’ai construis une application réalisant" => "j'ai construit"	
+  - "Fixer les hyper-paramètres du classifieur par validation croisée pendant la phase d’apprentissage" => de quels hyper-paramètres tu parles exactement pour un classifieur naïf bayésien ??
+- page 22 :
+  - "Par exemple, dans le premier vecteur (représente le premier signal)," => (qui représente le contenu du premier signal)
+  - "Quelque soit le classifieur que j’ai construis par la suite, l’ensemble de données est toujours construit suivant ce modèle." => la méthode de construction de l'ensemble de données d'apprentissage est restée la même pour la suite des expérimentations
+  - paragraphe "Optimisation des hyper-paramètres par validation croisée" => tu n'expliques ni ne définis ce que sont les hyper-paramètres et la validation croisée
+- page 23 :
+  - on ne connaît pas le support des classes dans ton évaluation : combien d'exemples par classe ?	 
+  - définition de "stratégie de type One versus All ou One versus One" ?
+  - paragraphe "3.2.4. Amélioration de ma première application et prétraitement" => ça fait de la vraie CV stratifiée du coup ? Ca n'est pas précisé
+- page 24 :
+  - "plus de 80% sur environ 300.000" => estimé avec l'ancien algorithme non ? Le préciser.
+  - Table 3.2 : c'est bien calculé sur le test, comme la table 3.1 hein ? Qu'est-ce qui a provoqué cette chute à ton avis ? Donne des pistes si tu n'est pas certain
+- page 25 :
+  - pas trop d'accord avec la définition de sparse : cela désigne normalement le fait que tu as beaucoup de dimensions pour décrire tes données et que pour un exemple, la plupart des coordonnées sont nulles (ce qui est le cas pour les données textuelles avec un modèle de type bag-of-words parce que un texte utilise une faible proportion du vocabulaire existant)	
+  - "la construction de l’ensemble de donnée" => l'ensemble de données
+  - "consiste à découper une phrase en token" => en tokens
+  - "dans n’importe quels documents textuels" => dans tous les documents textuels
+  - "Il est bien de les supprimer pour réduire le bruit" => Il est avantageux de les supprimer pour réduire le bruit et la taille du vocabulaire	
+- page 26 :
+  - OK pour les définitions de lemmatisation / stemming ; mets un renvoi vers cette page lorsque tu parles pour la première fois de ces concepts
+  - "une bibliothèque externe de Ahmet Aker, que j’ai rajouté" => que j'ai rajoutée	
+  - "de réduire le nombre de feature présent dans le sac de mot" => de réduire la taille du vocabulaire, ce qui facilite la tâche du classifieur
+  - "Un parallèle pourrait être fait entre la lemmatisation et la compression de données numériques par ACP (Analyse en Composantes Principales)" => Wut ??? Tu le fais comment ton parallèle ? En général on n'utilise que les premières composantes de l'ACP, là c'est pas le cas. A la limite tu peux parler de clustering, mais même ça c'est un poil tiré par les cheveux. Je serais toi, j'aurais pas trop envie qu'on me demande d'expliciter ce point...
+  - "Les travaux de prétraitement spécifique" => spécifiques ; tu peux aussi appeler ça "Feature engineering"
+  - il manque un tableau /graphe montrant l'évolution des scores avec différentes combinaisons de traitement. Là pour comparer on est obliger de feuilleter le rapport
+- page 28 :
+  - "très succins" => succincts, mais c'est pas très joliment dit, essaie de trouver autre chose
+  - "Les classes PRODUCT et MONEY manque d’exemple représentatif, d’où leur mauvais résultat" => manquent d'exemples représentatifs, d'où leurs mauvais résultats
+- page 29 :
+  - paragraphe "Module de prétraitement spécifique aux signaux" => redondant avec ce qui est expliqué page 27 non ?
+  - "Voyant que les résultats n’étaient pas terrible" => que les résultats étaient décevants
+  - "J’ai donc reproduis" => reproduit
+  - "Voici, l’idée" => à supprimer, mets deux points à la fin de la phrase précédente (tu mets, beaucoup, beaucoup, de virgules, je trouve)
+- page 30 :
+  - "sur les transducteurs (éventuellement pondérés) à état fini" => états finis
+  - " il existe un wraper Python" => un wrapper
+  - "Cet outils fournit" => Cet outil
+  - "J’ai du transformé le corpus" => J'ai dû transformer (même faute sur la phrase suivante)
+  - paragraphe "Lemmatiser Python" => ces trois paragraphes sont vraiment mal écrits, il faut les revoir dans la formulation. Pas forcément besoin d'être aussi spécifique, tu peux expliquer qu'il y avait des problèmes techniques qui étaient résolus en patchant les librairies, mais que du coup ça devenait vraiment difficile à maintenir dans le temps
+  - "classifieur maximun entropy, une régression logistique multinomiale, One vs All" => classifieur maximum entropy (régression logistique multinomiale)
+  - "Celui-ci est d’une bonne qualité puisque ses performances sont bonnes, mais aussi, car son modèle se construit en quelque seconde (30 secondes environs) et qu’il est rapidement déployable." => tautologie non ? Reformule.
+- page 31 :
+  - "Numpy est un module pour la gestion de tableau (matrice)." => une biliothèque d'algèbre vectorielle
+  - "ce plugin a pu être déployé en production" => erf, pas tout à fait pour l'instant, on a été occupés... :p
+  - "Les principales difficultés rencontrés en première partie" => rencontrées
+  - "Cependant, j’ai su passé outre" => J'ai cependant pu surmonter ces difficultés
+  - "D’autres outils existe mais en Python 2" => existent
+  - "Parfois, des wrapers permettant de faire le pond entre les deux, mais leur utilisations ne sont pas de bonnes pratiques" => wrappers ... pont ... utilisation
+  - "Introduire un outils permettant de détecter" => Introduire un outil 
+  - "Data Publica a levée 10 m€ en janvier" => levé
+  - "Pour le moment ces noms propres sont rejeté comme feature car tous sont isolés n’étant pas les mêmes" => rejetés comme features ; la phrase ne veut rien dire...
+- page 32 :
+  - "des déjeuners et des pots conviviales a permis de renforcer et aussi de créer de premiers liens avec les collègues." => déjeuners et des pots conviviaux a permis de créer de premiers liens avec les collègues puis de les renforcer	
+  - "j’ai énormément progresser dans le domaine" => progressé ; manque un verbe dans la phrase suivante
+- page 35 :
+  - t'as pas mis Emmanuel :p
+
+Pas lu après
+
+
+Je pense qu'il manque d'un planning, ou au moins un diagramme qui résume l'organisation de ton travail.

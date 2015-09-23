@@ -62,12 +62,12 @@
                 \end{itemize}
                 Ces cours proviennent du livre \textit{Introduction to Information Retrieval}\autocite{ir_web}.\\
 
-                En parallèle, j'ai visionné sur coursera les vidéos que cette même université avait diffusé suite à un MOOC sur le \textit{Natural Language Processing}. Grâce à ces cours, j'ai pris conscience de l'importance de bien choisir son modèle de classifieur. De plus, j'ai également compris l'intérêt des prétraitements, permettant de normaliser et formater les données textuelles afin d'augmenter les performances et la capacité de généralisation du classifieur.\\
+                En parallèle, j'ai visionné sur Coursera les vidéos que cette même université avait diffusé suite à un MOOC sur le \textit{Natural Language Processing}. Grâce à ces cours, j'ai pris conscience de l'importance de bien choisir son modèle de classifieur. De plus, j'ai également compris l'intérêt des prétraitements, permettant de normaliser et formater les données textuelles afin d'augmenter les performances et la capacité de généralisation du classifieur.\\
 
-                Durant ma formation au \textit{Natural Language Processing}, j'ai également lu les livres \textit{Natural Language Processing with Python}\autocite{nlp_p} et \textit{Python 3 Text Processing with NLTK 3 Cookbook}\autocite{nltk}, ainsi que les pages internets \textit{Introduction to Information Retrieval}\autocite{ir_web}.
+                Durant ma formation au \textit{Natural Language Processing}, j'ai également lu les livres \textit{Natural Language Processing with Python}\autocite{nlp_p} et \textit{Python 3 Text Processing with NLTK 3 Cookbook}\autocite{nltk}, ainsi que la version web du livre \textit{Introduction to Information Retrieval}\autocite{ir_web}.
 
             \subsubsection{Stanford POS Tagger (Part-Of-Speech) :}
-                Le \textit{POS Tagger} permet de savoir la fonction grammaticale de chaque mot d'une phrase. Celui-ci fonctionne aussi pour le français.
+                Le \textit{POS Tagger} permet d'indiquer la fonction grammaticale de chaque mot d'une phrase. Celui-ci fonctionne aussi pour le français.
 
                 \paragraph{Exemple :}
                     Entrée \og Gustave is the firstname of a very famous french architect.\fg\\
@@ -107,7 +107,7 @@ K$\highlight[magenta]{François}$W K$\highlight[magenta]{Bancilhon}$W is the CEO
                 Le \textit{Classifier} permet de construire un classifieur automatique pour la catégorisation de texte. Un classifieur \textit{maximum entropy} et un naïf bayésien sont disponibles. Cet outils propose une classe (\textit{ColumnDataClassifier}) qui permet de construire n'importe quel type de classifieur, simplement en lui fournissant un fichier de configurations, et des données d'apprentissage et de test. Le soucis de cette classe est que les données doivent se conformer à un format bien précis.
 
             \subsubsection{Stanford CoreNLP :}
-                Le \textit{CoreNLP} permet de construire une suite de traitements automatiques sur de l'anglais, du chinois, de l'espagnol. Un exemple de chaîne de traitement est visible en figure \ref{fig:coreNLP}. La particularité de cet outils, est qu'il permet de réutiliser les traitements précédents les uns à la suite des autres (sauf le \textit{Stanford Classifier}). De plus, il permet aussi d'appliquer des traitements supplémentaires à ceux énoncés jusque là. En effet, celui-ci permet de faire de la recherche morphologique telle que lemmatisation ou stemming. Le \textit{POS Tagger} et le \textit{Tokenizer} sont réutilisés pour ces traitements.
+                Le \textit{CoreNLP} permet de construire une suite de traitements automatiques sur de l'anglais, du chinois, de l'espagnol. Un exemple de chaîne de traitement est visible en figure \ref{fig:coreNLP}. La particularité de cet outil est qu'il permet de réutiliser les traitements précédents les uns à la suite des autres (sauf le \textit{Stanford Classifier}). De plus, il permet aussi d'appliquer des traitements supplémentaires à ceux énoncés jusque là. En effet, celui-ci permet de faire de la recherche morphologique telle que lemmatisation ou stemming. Le \textit{POS Tagger} et le \textit{Tokenizer} sont réutilisés pour ces traitements.
 
             \subsubsection{Lemmatisation et stemming :}
                 La lemmatisation consiste à trouver les lemmes de chaque mot d'une phrase. Ce traitement est détaillé en partie \ref{ssubsec:travaux_globaux}. Ce traitement nécessite que la phrase soit préalablement découpée en token (les mots de la phrase) par un \textit{Tokenizer} et que chacun d'entre eux soit tagué par le \textit{POS Tagger}. Ainsi, en couplant la fonction grammaticale d'un mot avec un dictionnaire, il est possible de retrouver le lemme du mot.
@@ -137,14 +137,14 @@ K$\overbrace{Les}^{le}\ \overbrace{chevaliers}^{cheva}\ \overbrace{chevauchent}^
             \end{figure}
 
             \subsubsection{Premier bilan sur la bibliothèque}
-                Dans un premier temps, mon objectif est seulement de réutiliser la partie \textit{Stanford Classifier} de la bibliothèque pour créer un classifieur binaire. Celui-ci doit être capable de classifier les signaux relatifs aux offres d'emploi et de stage (soit le tag \textit{JOB}). La classe \textit{ColumnDataClassifier} va mettre d'une grande aide, même si elle exige des données dans un format particulier et qu'elle ne gère pas certains prétraitements.\\
+                Dans un premier temps, mon objectif étais seulement de réutiliser la partie \textit{Stanford Classifier} de la bibliothèque pour créer un classifieur binaire. Celui-ci devait être capable de classifier les signaux relatifs aux offres d'emploi et de stage (soit le tag \textit{JOB}). La classe \textit{ColumnDataClassifier} m'a été d'une grande aide, même si elle exige des données dans un format particulier et qu'elle ne gère pas certains prétraitements.\\
 
-                Des traitements comme la lemmatisation ou le stemming seront utiles, lors de la normalisation des données. Pouvoir utiliser le \textit{StanfordCoreNLP} pour normaliser et sélectionner les features utiles serait l'idéal, avant de les fournir au classifieur pour construire un modèle.
+                Des traitements comme la lemmatisation ou le stemming ont été utiles, lors de la normalisation des données. Pouvoir utiliser le \textit{StanfordCoreNLP} pour normaliser et sélectionner les features utiles aurait été l'idéal, avant de les fournir au classifieur pour construire un modèle.
 
         \subsection{Première mise en pratique de la bibliothèque de Stanford}
         \label{ssec:premiere_mise_en_appli}
             \subsubsection{Première application Spring}
-                J'ai construis une application réalisant les actions suivantes (visible en figure \ref{fig:classif_building} et expliquée ci-après) :
+                J'ai construit une application réalisant les actions suivantes (visible en figure \ref{fig:classif_building} et expliquée ci-après) :
             \begin{itemize}
                 \item Récupérer les signaux stockés dans Mongo sous forme de liste ;
                 \item Créer un ensemble de données à partir des signaux validés manuellement ;
@@ -189,9 +189,9 @@ K$Offre\ de\ stage\ :\ Classification\ de\ signaux\ entreprises\ Java\ ou\ Pytho
 K$[\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\ ]$W
 K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
 \end{lstlisting}
-                Chaque ième composante du vecteur représente le nombre de fois que le ième mot de la liste est présent dans le signal. Par exemple, dans le premier vecteur (représente le premier signal), les deux premières composantes sont \og 1, 2 \fg. La première composante correspond au mot \og Offre \fg qui est le premier mot de la liste, et sa valeur est \og 1 \fg car \og Offre \fg est présent une fois dans le premier signal. De la même façon, la deuxième composante correspond au mot \og d' \fg, le deuxième mot de la liste et sa valeur est \og 2 \fg car il est présent deux fois dans le signal.\\
+                Chaque ième composante du vecteur représente le nombre de fois que le ième mot de la liste est présent dans le signal. Par exemple, dans le premier vecteur (qui représente le contenu du premier signal), les deux premières composantes sont \og 1, 2 \fg. La première composante correspond au mot \og Offre \fg qui est le premier mot de la liste, et sa valeur est \og 1 \fg car \og Offre \fg est présent une fois dans le premier signal. De la même façon, la deuxième composante correspond au mot \og d' \fg, le deuxième mot de la liste et sa valeur est \og 2 \fg car il est présent deux fois dans le signal.\\
 
-                Quelque soit le classifieur que j'ai construis par la suite, l'ensemble de données est toujours construit suivant ce modèle. Pour mon premier classifieur binaire, les 123 signaux validés \textit{JOB} de l'ensemble des 1426 signaux validés (présentés dans le dernier paragraphe de la partie \ref{sec:etat_bd}), forment la classe \textit{JOB} contre le reste. J'ai utilisé le \textit{PTB Tokenizer} de \textit{Stanford Classifier} (détails au paragraphe \textbf{La segmentation ou tokenisation} de la partie \ref{ssubsec:travaux_globaux}) pour découper les phrases en mots.\\
+                La méthode de construction de l'ensemble de données d'apprentissage est restée la même pour la suite des expérimentations. Pour mon premier classifieur binaire, les 123 signaux validés \textit{JOB} de l'ensemble des 1426 signaux validés (présentés dans le dernier paragraphe de la partie \ref{sec:etat_bd}), forment la classe \textit{JOB} contre le reste. J'ai utilisé le \textit{PTB Tokenizer} de \textit{Stanford Classifier} (détails au paragraphe \textbf{La segmentation ou tokenisation} de la partie \ref{ssubsec:travaux_globaux}) pour découper les phrases en mots.\\
 
                 Enfin, le seul pré-traitement des données mis en place est le fait de garder les éléments du \textit{bag of words} apparaissant au moins cinq fois. Ceci afin de supprimer les mots rares qui n'apportent pas d'informations, quand on fait de la classification textuelle (les mots mal orthographiés, les mots très spécifiques, les noms propres, etc).
 
@@ -305,10 +305,10 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
 
             \subsubsection{Les travaux de prétraitement global}
             \label{ssubsec:travaux_globaux}
-                Les traitements, expliqués ci-après, sont réalisés dans la construction de l'application, en amont de la construction de l'ensemble de donnée selon le modèle du \textit{bag of words}.
+                Les traitements, expliqués ci-après, sont réalisés dans la construction de l'application, en amont de la construction de l'ensemble de données selon le modèle du \textit{bag of words}.
 
                 \paragraph{La segmentation ou tokenisation :}
-                    La tokenisation consiste à découper une phrase en token, dans l'idéal représentant des mots. Cette tâche est très spécifique à chaque langue. Les difficultés principales sont surtout liées aux contractions. Il est nécessaire de s'attarder sur cette phase de la normalisation pour minimiser la perte sémantique, car beaucoup de traitements s'appuient sur la tokenisation. Dans mon application, j'ai utilisé le \textit{PTB Tokenizer} disponible dans \textit{Stanford Classifier}.
+                    La tokenisation consiste à découper une phrase en tokens, dans l'idéal représentant des mots. Cette tâche est très spécifique à chaque langue. Les difficultés principales sont surtout liées aux contractions. Il est nécessaire de s'attarder sur cette phase de la normalisation pour minimiser la perte sémantique, car beaucoup de traitements s'appuient sur la tokenisation. Dans mon application, j'ai utilisé le \textit{PTB Tokenizer} disponible dans \textit{Stanford Classifier}.
 
                     \paragraph{Exemple :}
                     Entrée : \og Je n'ai pas d'argent. En as-tu ? \fg\\
@@ -334,7 +334,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     \end{itemize}
 
                 \paragraph{Les stopwords :}
-                    Les stopwords sont les mots d'une phrase inutiles à la compréhension de celle-ci. Ils ne portent pas d'information et sont présents dans n'importe quels documents textuels. Il est bien de les supprimer pour réduire le bruit. Une liste de stopwords contient majoritairement des pronoms, des prépositions et des déterminants comme : \og a \fg, \og au \fg, \og ce \fg, \og de \fg, \og le \fg, \og mon \fg, etc.
+                    Les stopwords sont les mots d'une phrase inutiles à la compréhension de celle-ci. Ils ne portent pas d'information et sont présents dans tous les documents textuels. Il est avantageux de les supprimer pour réduire le bruit et la taille du vocabulaire. Une liste de stopwords contient majoritairement des pronoms, des prépositions et des déterminants comme : \og a \fg, \og au \fg, \og ce \fg, \og de \fg, \og le \fg, \og mon \fg, etc.
 
                 \paragraph{La recherche morphologique :}
                     Enfin, les deux derniers moyens permettant de normaliser du texte sont la lemmatisation et le stemming. Ces deux traitements ont pour objectif de faire baisser le nombre de forme infléchie. Une forme infléchie est appelé un lexème en morphologie. Il faut savoir qu'un lexème est composé de différentes types de morphèmes : les stems et les affixes. Voici leur définition à l'aide d'un exemple :\\
@@ -352,14 +352,14 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
 
                 \paragraph{Remarques :}
                     Le stemming fait perdre plus d'information à nos features que la lemmatisation, j'ai donc choisi de garder les lemmes des mots.\\
-                    La bibliothèque de Stanford ne propose pas de Lemmatizer pour la langue française. J'ai utilisé une \href{http://staffwww.dcs.shef.ac.uk/people/A.Aker/activityNLPProjects.html}{bibliothèque externe} de Ahmet Aker, que j'ai rajouté dans le projet Spring grâce à Maven en ajoutant une dépendance.
+                    La bibliothèque de Stanford ne propose pas de Lemmatizer pour la langue française. J'ai utilisé une \href{http://staffwww.dcs.shef.ac.uk/people/A.Aker/activityNLPProjects.html}{bibliothèque externe} de Ahmet Aker, que j'ai rajoutée dans le projet Spring grâce à Maven en ajoutant une dépendance.
 
             \subsubsection{Bilan sur les prétraitements globaux}
                 Dans l'idéal, j'aurais aimé pouvoir réaliser les prétraitements avec le \textit{Stanford CoreNLP} mais il ne gère pas bien le français et il est très gourmand en mémoire.\\
-                En outre, les prétraitements permettent de normaliser le texte et de réduire le nombre de feature présent dans le sac de mot. Il est important de réduire la disparité des features pour pouvoir calculer leur fréquence par la suite.\\
+                En outre, les prétraitements permettent de normaliser le texte et de réduire la taille du vocabulaire, ce qui facilite la tâche du classifieur. Il est important de réduire la disparité des features pour pouvoir calculer leur fréquence par la suite.\\
                 Un parallèle pourrait être fait entre la lemmatisation et la compression de données numériques par ACP (Analyse en Composantes Principales).
 
-            \subsubsection{Les travaux de prétraitement spécifique}
+            \subsubsection{Feature engineering (ou les travaux de prétraitement spécifiques}
                 Il est possible et important de traiter nos données plus spécifiquement, afin d'augmenter les performances du classifieur par la suite. Pour cette tâche, il faut d'avantage s'attarder sur le fond des données de chaque classe, et se demander si des informations (tel que des motifs particuliers) ne seraient pas être détruites par les traitements précédents. Tous les traitements qui suivent sont réalisés en amont de la tokenisation.
 
                 \paragraph{Les signaux issus de Twitter :}
@@ -404,7 +404,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     Une solution potentielle serait d'autoriser le classifieur à attribuer plusieurs label. C'est ce qu'avait fait Samuel Charron en Python mais les résultats n'étaient pas bons.
 
                 \paragraph{Le problème des FN (faux négatifs) :}
-                    Les signaux ne sont pas toujours très succins et précis. De ce fait, parfois en plus d'un contenu intéressant le signal peut contenir du bruit, ce qui engendre une quantité non négligeable de faux négatifs. Ce qui baisse les rappels. Exemple :
+                    Les signaux ne sont pas toujours très succincts et précis. De ce fait, parfois en plus d'un contenu intéressant le signal peut contenir du bruit, ce qui engendre une quantité non négligeable de faux négatifs. Ce qui baisse les rappels. Exemple :
                     \begin{itemize}
                         \item Signal : "Dans le cadre de son développement, EXCELIUM a fait l'acquisition du fonds de commerce de la société lyonnaise SES Vidéo, spécialisée dans l'installation de systèmes vidéo et d'alarme." Label : Aucun alors que c'est \textit{MONEY}
                         \item Signal : "A l'occasion de la fête de la gastronomie, nous vous invitons à visiter notre nouveau laboratoire à Téteghem samedi 27 septembre de 10 h à 18h. Visite, dégustation et chèques cadeaux offerts pour toute commande passée sur le site cette semaine !" Label : aucun alors que c'est \textit{EVENT}
@@ -427,4 +427,4 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                         \label{tab:classif_perf4}
                     \end{table}
 
-                Malgré tout, grâce à tout ces prétraitements, mon classifieur a obtenu de meilleures performances, jugées suffisantes par mon maître de stage Samuel Charron pour que je puisse passer à l'implémentation en Python. Les classes \textit{PRODUCT} et \textit{MONEY} manque d'exemple représentatif, d'où leur mauvais résultat. Un QA supplémentaire sur ces classes leur permettrait de se bonifier.
+                Malgré tout, grâce à tout ces prétraitements, mon classifieur a obtenu de meilleures performances, jugées suffisantes par mon maître de stage Samuel Charron pour que je puisse passer à l'implémentation en Python. Les classes \textit{PRODUCT} et \textit{MONEY} manquent d'exemples représentatifs, d'où leurs mauvais résultats. Un QA supplémentaire sur ces classes leur permettrait de se bonifier.

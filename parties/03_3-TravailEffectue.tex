@@ -2,7 +2,7 @@
 \label{sec:travaux_python}
     À la suite de ces deux mois de formations au \textit{Text Mining}, au \textit{Naturel Language Processing} et à l'\textit{Information Retrieval}, j'étais à présent capable d'identifier les tâches à réaliser en Python :
     \begin{itemize}
-        \item Construire un module Python permettant de réaliser tout les prétraitements expliqués précédemment ;
+        \item Construire un module Python permettant de réaliser tous les prétraitements expliqués précédemment ;
         \item Reprendre le plugin Python de Samuel Charron afin d'appliquer ces prétraitement en amont de la construction de l'ensemble de données ;
         \item Changer de modèle de classifieur.\\
     \end{itemize}
@@ -26,7 +26,7 @@
             Pour ce module, j'ai réutilisé le module \href{http://www.nltk.org/}{NLTK} (\textit{Natural Language Toolkit}) en Python qui propose un tokenizer de texte en phrase pour le français. Pour la tokenisation des phrases en mots, il n'y a pas de tokenizer spécifique pour le français. J'ai donc repris un tokenizer \textit{TreebankWordTokenizer} auquel j'ai apporté quelques règles pour gérer les apostrophes et les tirets.
 
         \subsubsection{Module de lemmatisation}
-            En Python 3, il n'existe pas de module permettant de faire de la lemmatisation de la langue française. J'ai réutilisé le \textit{SnowballStemmer} disponible dans la bibliothèque NLTK. Voyant que les résultats n'étaient pas terrible, je me suis alors demandé comment le lemmatizer utilisé en Java fonctionnait. Celui-ci couplait le \textit{POS Tagging} des mots à un autre outils, le HFST (\textit{Helsinki Finite State Transducer}), permettant de trouver les différents lemmes possibles d'un mot.\\
+            En Python 3, il n'existe pas de module permettant de faire de la lemmatisation de la langue française. J'ai réutilisé le \textit{SnowballStemmer} disponible dans la bibliothèque NLTK. Voyant que les résultats étaient décevants, je me suis alors demandé comment le lemmatizer utilisé en Java fonctionnait. Celui-ci couplait le \textit{POS Tagging} des mots à un autre outils, le HFST (\textit{Helsinki Finite State Transducer}), permettant de trouver les différents lemmes possibles d'un mot.\\
 
             \paragraph{Exemple d'utilisation du HFST:}
                 Entrée : \og suis \fg\\
@@ -39,7 +39,7 @@ K$suivre+verb+singular+indicative+present+secondPerson$W
 \end{lstlisting}
 
             \paragraph{Idée du lemmatizer Java:}
-                J'ai donc reproduis l'idée du lemmatizer Java pour l'implémenter en Python. Voici, l'idée :
+                J'ai donc reproduit l'idée du lemmatizer Java pour l'implémenter en Python :
                 \begin{enumerate}
                     \item Pour chaque phrase, calculer le \textit{POS Tagging} de chaque mot via un POS Tagger ;
                     \item Pour chaque mot de chaque phrase, trouver tous ses potentiels lemmes via le HFST ;
@@ -47,14 +47,14 @@ K$suivre+verb+singular+indicative+present+secondPerson$W
                 \end{enumerate}
 
         \subsubsection{Helsinki Finite-State Transducer Technology (HFST)}
-            Le \textit{Helsinki Finite-State Transducer software} est une implémentation de plusieurs outils d'analyse morphologique et d'autres outils basés sur les transducteurs (éventuellement pondérés) à état fini. Il s'agit d'un \href{http://www.ling.helsinki.fi/kieliteknologia/tutkimus/hfst/}{grand projet} portant sur les transducteurs littéralement en anglais \og transform reducer \fg.\\
-            Le HFST propose un module Python permettant de trouver tout les lemmes d'un mot grâce notamment à un modèle de transducteur du français.
+            Le \textit{Helsinki Finite-State Transducer software} est une implémentation de plusieurs outils d'analyse morphologique et d'autres outils basés sur les transducteurs (éventuellement pondérés) à états finis. Il s'agit d'un \href{http://www.ling.helsinki.fi/kieliteknologia/tutkimus/hfst/}{grand projet} portant sur les transducteurs littéralement en anglais \og transform reducer \fg.\\
+            Le HFST propose un module Python permettant de trouver tous les lemmes d'un mot grâce notamment à un modèle de transducteur du français.
 
         \subsubsection{Stanford POS Tagger}
-            Pour le POS Tagging, il existe un wraper Python du \textit{Stanford POS Tagger}. Cet outils fournit également un modèle français pour taguer des phrases en français.
+            Pour le POS Tagging, il existe un wrapper Python du \textit{Stanford POS Tagger}. Cet outil fournit également un modèle français pour taguer des phrases en français.
 
             \paragraph{Qualité du POS Tagger :}
-                Pour vérifier la qualité de celui-ci, j'ai utilisé des corpus de texte français. Ceux-ci présentent un texte dans un format XML, sous forme de liste de paires mot/fonction grammaticale. J'ai du transformé le corpus en un texte composé de phrases afin de pouvoir le passer à mon \textit{POS Tagger} Python. J'ai également du transformé le corpus car les séparateurs utilisés créaient un décalage entre la sortie de mon POS Tagging et cette liste de paires.\\
+                Pour vérifier la qualité de celui-ci, j'ai utilisé des corpus de texte français. Ceux-ci présentent un texte dans un format XML, sous forme de liste de paires mot/fonction grammaticale. J'ai dû transformer le corpus en un texte composé de phrases afin de pouvoir le passer à mon \textit{POS Tagger} Python. J'ai également dû transformer le corpus car les séparateurs utilisés créaient un décalage entre la sortie de mon POS Tagging et cette liste de paires.\\
                 Une fois les problèmes de formatage résolus pour un texte du corpus, j'ai testé le \textit{POS Tagger} dessus et celui-ci a obtenu un taux d'erreur jugé suffisant (inférieur à 10\%).
 
         \subsubsection{Lemmatiser Python :}
@@ -62,15 +62,15 @@ K$suivre+verb+singular+indicative+present+secondPerson$W
 
             En plus de ce problème, on sait aperçu que la lemmatisation était extrêmement lente (facteur 100 sur la durée de traitement d'un signal) malgré une parallélisation des tâches (multithread), car à chaque appelle de la méthode de POS Tagging, le processus lancé par le wrapper Python relançait une nouvelle JVM.\\
 
-            La lemmatisation permettait d'améliorer les performances du classifieur de 2\% environ. Comme ce progrès était infime, on a retiré la lemmatisation pour la remplacer pour le stemming.
+            La lemmatisation permettait d'améliorer les performances du classifieur de 2\% environ. Comme ce progrès était infime, on a retiré la lemmatisation pour la remplacer par le stemming.
 
 
     \subsection{Plugin de classification}
-        Le plugin de classification permet de récupérer les 4000 signaux depuis un point d'API, de les normaliser et de construire un ensemble de données avec, selon le modèle du \textit{bag of words}, et enfin de créer un classifieur \textit{maximun entropy}, une régression logistique multinomiale, \textit{One vs All} à partir de l'ensemble de données construit. Celui-ci est d'une bonne qualité puisque ses performances sont bonnes, mais aussi, car son modèle se construit en quelque seconde (30 secondes environs) et qu'il est rapidement déployable.\\
+        Le plugin de classification permet de récupérer les 4000 signaux depuis un point d'API, de les normaliser et de construire un ensemble de données avec, selon le modèle du \textit{bag of words}, et enfin de créer un classifieur \textit{maximun entropy} (une régression logistique multinomiale) \textit{One vs All} à partir de l'ensemble de données construit. Celui-ci est d'une bonne qualité puisque ses performances sont bonnes, mais aussi, car son modèle se construit en quelque seconde (30 secondes environs) et qu'il est rapidement déployable.\\
 
-        Sa qualité est évalué par une validation croisée sur 10 plis. Il se révèle aussi performant que le modèle créé en Java à peu de choses près (2\% d'écart selon les classes maximum).\\
+        Sa qualité est évalué par une validation croisée sur dix plis. Il se révèle aussi performant que le modèle créé en Java à peu de choses près (2\% d'écart selon les classes maximum).\\
 
         Une fois le classifieur créé, ce plugin est déployable et permet de taguer de nouveaux signaux.\\
 
-        Ce plugin utilise les modules Python 3 scikit-learn et numpy. Numpy est un module pour la gestion de tableau (matrice). Scikit-learn est un module de machine learning construit au dessus de numpy.\\
+        Ce plugin utilise les modules Python 3 \href{http://scikit-learn.org/stable/}{scikit-learn} et \href{http://www.numpy.org/}{numpy}. Numpy est un module pour la gestion de tableau (matrice). Scikit-learn est un module de machine learning construit au dessus de numpy.\\
         L'utilisation de scikit-learn est relativement facile car la documentation est très bien faite mêlant explications aux exemples d'utilisation.
