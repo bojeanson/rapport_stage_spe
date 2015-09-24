@@ -204,7 +204,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 À noter que la méthode de la bibliothèque, permettant de diviser l'ensemble de données en deux ensembles, ne garantit pas que la proportion des classes soit conservée dans les deux ensembles résultant. De plus, l'ensemble n'est pas mélangé à chaque nouvelle construction du classifieur, il y donc un risque de sur-apprentissage. Christian Frisch me l'a fait remarqué, lors d'une réunion de suivi. J'ai donc repris le code source de la méthode pour ré-implémenter le bon comportement.
 
             \subsubsection{Optimisation des hyper-paramètres par validation croisée}
-                Une méthode de la bibliothèque se charge d'optimiser l'hyper-paramètre du classifieur par validation croisée\footnote{Définition en annexe \ref{annexe:cv}}. Dans un premier temps, j'ai simplement réutilisé cette méthode, car les performances en étaient bonifiées.
+                Une méthode de la bibliothèque se charge d'optimiser l'hyper-paramètre\footnote{Définition en annexe \ref{annexe:hyper_param}.} du classifieur par validation croisée\footnote{Définition en annexe \ref{annexe:cv}.}. Dans un premier temps, j'ai simplement réutilisé cette méthode, car les performances en étaient bonifiées.
 
             \subsubsection{Évaluation de la qualité du classifieur}
                 Enfin pour évaluer la qualité de mon classifieur, je l'ai testé sur un ensemble de test, non utilisé jusqu'ici (les 25\% de l'ensemble initial). J'ai calculé la précision et le rappel obtenus par la classe \textit{JOB} et par la classe \textit{USELESS} représentant le reste (pas \textit{JOB}). Ceux-ci sont visibles en table \ref{tab:classif_perf}.
@@ -221,14 +221,15 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                     \caption{Performances du classifieurs.}
                     \label{tab:classif_perf}
                 \end{table}
+                Pour rappel, ce classifieur a été construit avec comme exemples pour la classe \textit{JOB} les 123 signaux validés \textit{JOB} de l’ensemble des 1426 signaux validés (présentés dans le dernier paragraphe de la partie 2.3), contre le reste des signaux.
 
             \paragraph{Remarques :}
-                Ici, on met l'accent sur le fait d'avoir une précision\footnote{Définition en annexe \ref{annexe:precision}} très élevée quitte à avoir un rappel\footnote{Définition en annexe \ref{annexe:rappel}} un peu diminué (car quand l'un augmente l'autre diminue et vice versa). On préfère se tromper très rarement dans notre classification (précision élevée) quitte à rater des signaux (rappel moyen). Autrement dit, on préfère qu'un utilisateur voit peu de signaux intéressants plutôt qu'il voit beaucoup de signaux dont l'intérêt reste à démontrer.
+                Ici, on met l'accent sur le fait d'avoir une précision\footnote{Définition en annexe \ref{annexe:precision}.} très élevée quitte à avoir un rappel\footnote{Définition en annexe \ref{annexe:rappel}.} un peu diminué (car quand l'un augmente l'autre diminue et vice versa). On préfère se tromper très rarement dans notre classification (précision élevée) quitte à rater des signaux (rappel moyen). Autrement dit, on préfère qu'un utilisateur voit peu de signaux intéressants plutôt qu'il voit beaucoup de signaux dont l'intérêt reste à démontrer.
 
             \subsubsection{Premier bilan}
                 Le classifieur construit est prometteur. Cependant, la généralisation à plusieurs classes, va amener à faire de nouveaux choix :
                 \begin{itemize}
-                    \item Faut-il adopter une stratégie de type \textit{One versus All} ou \textit{One versus One} ?
+                    \item Faut-il adopter une stratégie de type \textit{One versus All}\footnote{Définition en annexe \ref{annexe:one_vs_all}.} ou \textit{One versus One}\footnote{Définition en annexe \ref{annexe:one_vs_one}.} ?
                     \item Est-ce que le modèle naïf bayésien va bien se généraliser ?
                     \item Faut-il un prétraitement global et/ou spécifique à chaque classe ?
                 \end{itemize}
@@ -238,7 +239,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
             \begin{itemize}
                 \item Pour qu'elle récupère mes données directement depuis Mongo ;
                 \item Pour qu'elle leur applique des prétraitements avant de construire l'ensemble de données ;
-                \item Pour qu'elle réalise dix plis de validation croisée lors de l'apprentissage du classifieur.
+                \item Pour qu'elle réalise de la validation croisée stratifiée\footnote{Définition en \ref{annexe:cv_s}.} sur dix plis lors de l'apprentissage du classifieur.
             \end{itemize}
             Ce dernier point, me permet d'avoir une idée de la capacité de généralisation de mon classifieur.
             \subsubsection{Agrandissement de mon ensemble de signaux validés}
@@ -246,7 +247,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
 
                 Durant mon stage, j'ai donc organisé plusieurs QAs\footnote{Définition en annexe \ref{annexe:qa}.} (\textit{Quality Assessment}) pour approfondir l'ensemble des signaux d’apprentissage et de test.
 
-                \paragraph{Proportions des signaux :}
+                \paragraph{Proportions des classes dans les signaux validés:}
                 La proportion des signaux sans intérêt est énorme (plus de 80\% sur environ 300.000).\\
                 Pour les QAs, j'ai donc fais une pré-sélection des signaux à valider. J'ai réutilisé le premier classifieur implémenté en Python de Samuel Charron, construit avec les 1426 signaux. Celui-ci a classifié des signaux non validés. Ce sont les signaux appartenant potentiellement aux catégories \textit{EVENT}, \textit{JOB} et \textit{PRODUCT} (\og selon le classifieur \fg) qui ont été sélectionnés pour être validés manuellement. Pour les classes \textit{MONEY} et \textit{PEOPLE}, ils ont été sélectionnés dans Mongo à l'aide d'expressions rationnelles sur des termes comme \og levée de fonds \fg, \og chiffre d'affaire \fg, \og nommer \fg, \og nomination \fg, etc.\\
 
@@ -263,10 +264,10 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 \end{itemize}
 
             \subsubsection{Le passage au multi-classe}
-                Pour le passage au multi-classe, la bibliothèque de Stanford impose une stratégie \textit{One vs All}. Concernant le modèle de classifieur, deux options s'offraient à moi :
+                Pour le passage au multi-classe, la bibliothèque de Stanford impose une stratégie \textit{One versus All}. Concernant le modèle de classifieur, deux options s'offraient à moi :
                 \begin{itemize}
-                    \item Un modèle génératif\footnote{Définition en annexe \ref{annexe:generatif}} et notamment un classifieur naïf bayésien ;
-                    \item Un modèle discriminant\footnote{Définition en annexe \ref{annexe:discriminatif}} et notamment un classifieur qui maximise l'entropie.
+                    \item Un modèle génératif\footnote{Définition en annexe \ref{annexe:generatif}.} et notamment un classifieur naïf bayésien ;
+                    \item Un modèle discriminant\footnote{Définition en annexe \ref{annexe:discriminatif}.} et notamment un classifieur qui maximise l'entropie.
                 \end{itemize}
                 Jusque là, j'avais opté pour le modèle bayésien car c'est ce qui ressortait le plus souvent dans la littérature. J'ai donc repris mon application précédente et j'ai construit un classifieur naïf bayésien multinomial\footnote{qui suit plusieurs lois binomiales.} avec les 4000 signaux tagués de la même manière que précédemment. Les performances obtenues (visibles en table \ref{tab:classif_perf2}) avaient grandement baissées (la classe \textit{PRODUCT} n'y figure pas car elle n'était pas suffisament représentée).
                 \begin{table}[h]

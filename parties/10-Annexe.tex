@@ -84,20 +84,28 @@
     \end{figure}
 
 \section{La validation croisée et les hyper-paramètres}
-\label{annexe:cv}
-    La validation croisée est une technique de validation indiquant comment les résultats d'une analyse statistique se généralisent à un ensemble de données indépendant. Cette dernière est particulièrement utilisée lorsque l'on souhaite estimer la précision d'un modèle prédictif en pratique. En générale, dans les problèmes de prédiction, un modèle est construit avec un ensemble de données d'apprentissage, et ensuite un autre ensemble de données (jamais vu du modèle) sont utilisées pour tester le modèle. Le but de la validation croisée est de définir un ensemble de données utilisé pour tester le modèle durant sa phase d’entraînement (de construction). L'ensemble de données de validation est utilisé pour éviter les problèmes de sur-apprentissage et pour donner un aperçu de comment le modèle va se généraliser à un ensemble de données indépendant (un ensemble de données inconnu).\\
+    \subsection{Les hyper-paramètres}
+    \label{annexe:hyper_param}
 
-    Un plis de validation croisée consiste à partitionner un échantillon des données en deux sous-ensembles. Le premier permet d'effectuer l'analyse sur celui-ci (appelé l'ensemble d'apprentissage), et le second de valider l'analyse sur celui-là (appelé l'ensemble de validation ou de test). Pour réduire l'incertitude, de multiples plis de validation croisée sont effectué en partitionnant l'ensemble de données en plusieurs partitions utilisées à chaque plis. Les résultats de la validation sont moyennés sur les différents plis.\\
+    \subsection{La validation croisée}
+    \label{annexe:cv}
+        La validation croisée est une technique de validation indiquant comment les résultats d'une analyse statistique se généralisent à un ensemble de données indépendant. Cette dernière est particulièrement utilisée lorsque l'on souhaite estimer la précision d'un modèle prédictif en pratique. En générale, dans les problèmes de prédiction, un modèle est construit avec un ensemble de données d'apprentissage, et ensuite un autre ensemble de données (jamais vu du modèle) sont utilisées pour tester le modèle. Le but de la validation croisée est de définir un ensemble de données utilisé pour tester le modèle durant sa phase d’entraînement (de construction). L'ensemble de données de validation est utilisé pour éviter les problèmes de sur-apprentissage et pour donner un aperçu de comment le modèle va se généraliser à un ensemble de données indépendant (un ensemble de données inconnu).\\
 
-    La validation croisée est importante pour évaluer la qualité et la capacité de généralisation d'un modèle surtout lorsque les données sont rares ou difficiles à collecter.\\
+        Un plis de validation croisée consiste à partitionner un échantillon des données en deux sous-ensembles. Le premier permet d'effectuer l'analyse sur celui-ci (appelé l'ensemble d'apprentissage), et le second de valider l'analyse sur celui-là (appelé l'ensemble de validation ou de test). Pour réduire l'incertitude, de multiples plis de validation croisée sont effectué en partitionnant l'ensemble de données en plusieurs partitions utilisées à chaque plis. Les résultats de la validation sont moyennés sur les différents plis.\\
 
-    L'une des raisons principales pour laquelle on l'utilise, plutôt qu'une méthode plus traditionnelle (consistant à partitionner l'ensemble de données en deux ensembles, 70\% de l'ensemble pour la phase d'apprentissage et 30\% pour la phase de test), est la suivante : Dans une validation traditionnelle, l'erreur sur l'ensemble d'apprentissage n'est généralement pas un bon estimateur de la performance du modèle, de même que l'erreur sur l'ensemble de test. Celles-ci ne décrivent pas totalement la performance du modèle. C'est le cas lorsqu'il n'y a pas suffisamment de données disponibles ou lorsque la distribution et la disparité des données à partitionner ne sont pas bonnes en phase d'apprentissage et de test.\\
+        La validation croisée est importante pour évaluer la qualité et la capacité de généralisation d'un modèle surtout lorsque les données sont rares ou difficiles à collecter.\\
 
-    Les deux techniques de validation croisée s'appellent :
-    \begin{itemize}
-        \item \textit{Leave-p-out cross-validation} : méthode la plus traditionnelle ;
-        \item \textit{k-fold cross-validation} : autre méthode décris ci-dessus fonctionnant par plis.
-    \end{itemize}
+        L'une des raisons principales pour laquelle on l'utilise, plutôt qu'une méthode plus traditionnelle (consistant à partitionner l'ensemble de données en deux ensembles, 70\% de l'ensemble pour la phase d'apprentissage et 30\% pour la phase de test), est la suivante : Dans une validation traditionnelle, l'erreur sur l'ensemble d'apprentissage n'est généralement pas un bon estimateur de la performance du modèle, de même que l'erreur sur l'ensemble de test. Celles-ci ne décrivent pas totalement la performance du modèle. C'est le cas lorsqu'il n'y a pas suffisamment de données disponibles ou lorsque la distribution et la disparité des données à partitionner ne sont pas bonnes en phase d'apprentissage et de test.\\
+
+        Les deux techniques de validation croisée s'appellent :
+        \begin{itemize}
+            \item \textit{Leave-p-out cross-validation} : méthode la plus traditionnelle ;
+            \item \textit{k-fold cross-validation} : autre méthode décris ci-dessus fonctionnant par plis.
+        \end{itemize}
+
+    \subsection{La validation croisée stratifiée}
+    \label{annexe:cv_s}
+        Lors du partitionnement de l'ensemble de données en k sous-ensembles, la validation croisée stratifiée  garantit que la proportion des classes soit conservée dans les k sous-ensembles résultant. De plus, l’ensemble est mélangé à chaque nouvelle construction du modèle avant d'être diviser en k sous-ensembles.
 
 \section{Les métriques de mesure de la qualité d'une classification}
     \subsection{Terminologies}
@@ -120,6 +128,14 @@
         Pour une classe donnée, le rappel est défini par le nombre de documents correctement assignés à cette classe au regard du nombre total de documents appartenant réellement à cette classe.\\
         Le rappel mesure le fait que le classifieur ait trouvé tous les documents d'une classe.\\
         $Rappel\ =\ \frac{TP}{TP+FN}$
+
+\section{Les stratégies de modèles de classification en contexte multi-classe}
+    \subsection{One versus All}
+    \label{annexe:one_vs_all}
+
+    \subsection{One versus One}
+    \label{annexe:one_vs_one}
+
 
 \section{Le QA ou Quality Assessment}
 \label{annexe:qa}
