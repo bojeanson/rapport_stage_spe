@@ -14,13 +14,7 @@
 
     \subsection{Modules implémentés}
         \subsubsection{Module de prétraitement spécifique aux signaux}
-            Ce module de prétraitement (basé sur des expressions rationnelles) prend en charge la détection des motifs précédents à savoir : les emails, les URLs, les pseudonymes et les références Twitter, les mentions \og H/F \fg, les devises, la ponctuation et les stopwords ; et les traite spécifiquement :
-            \begin{itemize}
-                \item les emails, les URLs, les pseudonymes Twitter, la ponctuation et les stopwords sont supprimés ;
-                \item les références Twitter perdent leur dièses (\#) ;
-                \item les mentions \og H/F \fg  sont remplacés par la chaîne de caractère \og hommeoufemme \fg ;
-                \item les devises (k€, m€) sont remplacés par les chaînes de caractère \og millier d'euros \fg, \og millions d'euros \fg.
-            \end{itemize}
+            Ce module de prétraitement (basé sur des expressions rationnelles) prend en charge la détection des motifs précédents à savoir : les emails, les URLs, les pseudonymes et les références Twitter, les mentions \og H/F \fg, les devises, la ponctuation et les stopwords ; et les traite spécifiquement (voir le paragraphe \textbf{Feature engineering} partie \ref{ssubsec:feature_engineering}).
 
         \subsubsection{Module de tokenisation}
             Pour ce module, j'ai réutilisé le module \href{http://www.nltk.org/}{NLTK} (\textit{Natural Language Toolkit}) en Python qui propose un tokenizer de texte en phrase pour le français. Pour la tokenisation des phrases en mots, il n'y a pas de tokenizer spécifique pour le français. J'ai donc repris un tokenizer \textit{TreebankWordTokenizer} auquel j'ai apporté quelques règles pour gérer les apostrophes et les tirets.
@@ -66,11 +60,11 @@ K$suivre+verb+singular+indicative+present+secondPerson$W
 
 
     \subsection{Plugin de classification}
-        Le plugin de classification permet de récupérer les 4000 signaux depuis un point d'API, de les normaliser et de construire un ensemble de données avec, selon le modèle du \textit{bag of words}, et enfin de créer un classifieur \textit{maximun entropy} (une régression logistique multinomiale) \textit{One vs All} à partir de l'ensemble de données construit. Celui-ci est d'une bonne qualité puisque ses performances sont bonnes, mais aussi, car son modèle se construit en quelque seconde (30 secondes environs) et qu'il est rapidement déployable.\\
+        Le plugin de classification permet de récupérer les 4000 signaux depuis un point d'API, de les normaliser et de construire un ensemble de données avec, selon le modèle du \textit{bag of words}, et enfin de créer un classifieur \textit{maximun entropy} (une régression logistique multinomiale) \textit{One vs All} à partir de l'ensemble de données construit. Ce dernier est très efficace de par ses performances en classification, mais aussi de part la rapidité de construction de son modèle (30 secondes environs) et de son déploiement.\\
 
         Sa qualité est évalué par une validation croisée sur dix plis. Il se révèle aussi performant que le modèle créé en Java à peu de choses près (2\% d'écart selon les classes maximum).\\
 
         Une fois le classifieur créé, ce plugin est déployable et permet de taguer de nouveaux signaux.\\
 
-        Ce plugin utilise les modules Python 3 \href{http://scikit-learn.org/stable/}{scikit-learn} et \href{http://www.numpy.org/}{numpy}. Numpy est un module pour la gestion de tableau (matrice). Scikit-learn est un module de machine learning construit au dessus de numpy.\\
+        Ce plugin utilise les modules Python 3 \href{http://scikit-learn.org/stable/}{scikit-learn} et \href{http://www.numpy.org/}{numpy}. Numpy est une biliothèque d'algèbre vectorielle. Scikit-learn est un module de machine learning construit au dessus de numpy.\\
         L'utilisation de scikit-learn est relativement facile car la documentation est très bien faite mêlant explications aux exemples d'utilisation.

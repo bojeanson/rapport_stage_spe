@@ -110,7 +110,7 @@ K$\highlight[magenta]{François}$W K$\highlight[magenta]{Bancilhon}$W is the CEO
                 Le \textit{CoreNLP} permet de construire une suite de traitements automatiques sur de l'anglais, du chinois, de l'espagnol. Un exemple de chaîne de traitement est visible en figure \ref{fig:coreNLP}. La particularité de cet outil est qu'il permet de réutiliser les traitements précédents les uns à la suite des autres (sauf le \textit{Stanford Classifier}). De plus, il permet aussi d'appliquer des traitements supplémentaires à ceux énoncés jusque là. En effet, celui-ci permet de faire de la recherche morphologique telle que lemmatisation ou stemming. Le \textit{POS Tagger} et le \textit{Tokenizer} sont réutilisés pour ces traitements.
 
             \subsubsection{Lemmatisation et stemming :}
-                La lemmatisation consiste à trouver les lemmes de chaque mot d'une phrase. Ce traitement est détaillé en partie \ref{ssubsec:travaux_globaux}. Ce traitement nécessite que la phrase soit préalablement découpée en token (les mots de la phrase) par un \textit{Tokenizer} et que chacun d'entre eux soit tagué par le \textit{POS Tagger}. Ainsi, en couplant la fonction grammaticale d'un mot avec un dictionnaire, il est possible de retrouver le lemme du mot.
+                La lemmatisation consiste à trouver les lemmes de chaque mot d'une phrase. Ce traitement est détaillé dans le paragraphe \textbf{La lemmatisation} en partie \ref{ssubsec:travaux_globaux}. Ce traitement nécessite que la phrase soit préalablement découpée en tokens (les mots de la phrase) par un \textit{Tokenizer} et que chacun d'entre eux soit tagué par le \textit{POS Tagger}. Ainsi, en couplant la fonction grammaticale d'un mot avec un dictionnaire, il est possible de retrouver le lemme du mot.
 
                 \paragraph{Exemple :}
                 Entrée \og No better example than these could have been found.\fg\\
@@ -120,7 +120,7 @@ K$\overbrace{No}^{\highlight[yellow]{no}}\ \overbrace{better}^{\highlight[yellow
 \end{lstlisting}
 
                 \paragraph{Le stemming :}
-                Le stemming est un traitement assez similaire à la lemmatisation. Celui-ci consiste à trouver les stems et non les lemmes. Ce traitement est détaillé en partie \ref{ssubsec:travaux_globaux}.
+                Le stemming est un traitement assez similaire à la lemmatisation. Celui-ci consiste à trouver les stems et non les lemmes. Ce traitement est détaillé dans le paragraphe \textbf{Le stemming} en partie \ref{ssubsec:travaux_globaux}.
 
                 \paragraph{Exemple :}
                 Entrée \og Les chevaliers chevauchent leur chevaux, le cavalier son cheval.\fg\\
@@ -137,7 +137,7 @@ K$\overbrace{Les}^{le}\ \overbrace{chevaliers}^{cheva}\ \overbrace{chevauchent}^
             \end{figure}
 
             \subsubsection{Premier bilan sur la bibliothèque}
-                Dans un premier temps, mon objectif étais seulement de réutiliser la partie \textit{Stanford Classifier} de la bibliothèque pour créer un classifieur binaire. Celui-ci devait être capable de classifier les signaux relatifs aux offres d'emploi et de stage (soit le tag \textit{JOB}). La classe \textit{ColumnDataClassifier} m'a été d'une grande aide, même si elle exige des données dans un format particulier et qu'elle ne gère pas certains prétraitements.\\
+                Dans un premier temps, mon objectif était seulement de réutiliser la partie \textit{Stanford Classifier} de la bibliothèque pour créer un classifieur binaire. Celui-ci devait être capable de classifier les signaux relatifs aux offres d'emploi et de stage (soit le tag \textit{JOB}). La classe \textit{ColumnDataClassifier} m'a été d'une grande aide, même si elle exige des données dans un format particulier et qu'elle ne gère pas certains prétraitements.\\
 
                 Des traitements comme la lemmatisation ou le stemming ont été utiles, lors de la normalisation des données. Pouvoir utiliser le \textit{StanfordCoreNLP} pour normaliser et sélectionner les features utiles aurait été l'idéal, avant de les fournir au classifieur pour construire un modèle.
 
@@ -204,7 +204,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 À noter que la méthode de la bibliothèque, permettant de diviser l'ensemble de données en deux ensembles, ne garantit pas que la proportion des classes soit conservée dans les deux ensembles résultant. De plus, l'ensemble n'est pas mélangé à chaque nouvelle construction du classifieur, il y donc un risque de sur-apprentissage. Christian Frisch me l'a fait remarqué, lors d'une réunion de suivi. J'ai donc repris le code source de la méthode pour ré-implémenter le bon comportement.
 
             \subsubsection{Optimisation des hyper-paramètres par validation croisée}
-                Une méthode de la bibliothèque se charge d'optimiser l'hyper-paramètre du classifieur par validation croisée. Dans un premier temps, j'ai simplement réutilisé cette méthode, car les performances en étaient bonifiées.
+                Une méthode de la bibliothèque se charge d'optimiser l'hyper-paramètre du classifieur par validation croisée\footnote{Définition en annexe \ref{annexe:cv}}. Dans un premier temps, j'ai simplement réutilisé cette méthode, car les performances en étaient bonifiées.
 
             \subsubsection{Évaluation de la qualité du classifieur}
                 Enfin pour évaluer la qualité de mon classifieur, je l'ai testé sur un ensemble de test, non utilisé jusqu'ici (les 25\% de l'ensemble initial). J'ai calculé la précision et le rappel obtenus par la classe \textit{JOB} et par la classe \textit{USELESS} représentant le reste (pas \textit{JOB}). Ceux-ci sont visibles en table \ref{tab:classif_perf}.
@@ -301,7 +301,7 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
 
                 \paragraph{Le \textit{MaxEnt} ou \textit{Maximum Entropy} :}
                     Les modèles \textit{maximum entropy} sont aussi connus sous le nom de \textit{softmax classifiers} et sont équivalents aux modèles de régression logistique multi-classe (avec des paramètres différents). Il s'agit de la généralisation de la régression logistique au cas multinomial. Dans ce cas, maximiser la vraisemblance revient à maximiser l'entropie. Il s'agit ni plus ni moins que du passage du cas binaire au cas N classes.\\
-                    Ce type de modèle  (\textit{MaxEnt}) est avantageux dans le cas où les données sont \textit{sparse}\footnote{peu représentative, littéralement \og clairsemé \fg}. Ce qui est le cas, d'où des résultats meilleurs qu'avec le modèle bayésien.
+                    Ce type de modèle  (\textit{MaxEnt}) est avantageux dans le cas où les données sont \textit{sparse}\footnote{beaucoup de dimensions pour décrire les données. Pour un exemple, la plupart des coordonnées sont nulles (ce qui est le cas pour les données textuelles avec un modèle de type \textit{bag of words} parce que un texte utilise une faible proportion du vocabulaire existant).}. Ce qui est le cas, d'où des résultats meilleurs qu'avec le modèle bayésien.
 
             \subsubsection{Les travaux de prétraitement global}
             \label{ssubsec:travaux_globaux}
@@ -359,7 +359,8 @@ K$[\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 1,\ 2,\ 1,\ 1,\ 1,\ 1,\ 1,\ 1\ ]$W
                 En outre, les prétraitements permettent de normaliser le texte et de réduire la taille du vocabulaire, ce qui facilite la tâche du classifieur. Il est important de réduire la disparité des features pour pouvoir calculer leur fréquence par la suite.\\
                 Un parallèle pourrait être fait entre la lemmatisation et la compression de données numériques par ACP (Analyse en Composantes Principales).
 
-            \subsubsection{Feature engineering (ou les travaux de prétraitement spécifiques}
+            \subsubsection{Feature engineering (ou les travaux de prétraitement spécifiques)}
+            \label{ssubsec:feature_engineering}
                 Il est possible et important de traiter nos données plus spécifiquement, afin d'augmenter les performances du classifieur par la suite. Pour cette tâche, il faut d'avantage s'attarder sur le fond des données de chaque classe, et se demander si des informations (tel que des motifs particuliers) ne seraient pas être détruites par les traitements précédents. Tous les traitements qui suivent sont réalisés en amont de la tokenisation.
 
                 \paragraph{Les signaux issus de Twitter :}
